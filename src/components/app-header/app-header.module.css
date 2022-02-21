@@ -1,0 +1,48 @@
+.header {
+  width: 100%;
+  background-color: #1c1c21;
+}
+
+.content {
+  display: flex;
+  max-width: calc(1920px - 2 * 320px);
+  margin: 0 auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav {
+  margin-right: 112px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+.link,
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 40px;
+}
+
+.link {
+  color: #fff;
+}
+
+.link-text {
+}
+
+.button {
+  border: 0;
+  margin-left: auto;
+  background-color: transparent;
+  font-family: inherit;
+}
