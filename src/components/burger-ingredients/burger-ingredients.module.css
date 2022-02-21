@@ -1,0 +1,28 @@
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.reset {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.menu {
+  display: flex;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sublist {
+  display: grid;
+  grid-template-columns: repeat(2, 272px);
+  grid-template-rows: 208px;
+  justify-content: space-between;
+  gap: 24px 32px;
+  margin-top: 24px;
+}
