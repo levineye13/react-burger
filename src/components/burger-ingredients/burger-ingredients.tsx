@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import data from '../../utils/data';
 import { TABS } from '../../utils/constants';
 
 class BurgerIngredients extends Component {
@@ -20,7 +19,7 @@ class BurgerIngredients extends Component {
   componentDidMount() {
     const ingredients = { bun: [], sauce: [], main: [] };
 
-    data.forEach((item) => {
+    this.props.ingredients.forEach((item) => {
       ingredients[item.type].push(item);
     });
 
@@ -118,5 +117,9 @@ class BurgerIngredients extends Component {
     );
   }
 }
+
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.array.isRequired,
+};
 
 export default BurgerIngredients;
