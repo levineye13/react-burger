@@ -30,18 +30,18 @@ class BurgerConstructor extends Component {
     return { type: undefined, text: '', isLocked: false };
   }
 
-  calculateSum() {}
+  calculatePrice(arr) {
+    return arr.reduce((acc, item) => {
+      return acc + item.price;
+    }, 0);
+  }
 
   componentDidMount() {
     const { ingredients = [] } = this.props;
 
-    if (ingredients.length > 0) {
-      const sum = ingredients.reduce((acc, item) => {
-        return acc + item.price;
-      }, 0);
+    const sum = this.calculatePrice(ingredients);
 
-      this.setState({ sum });
-    }
+    this.setState({ sum });
   }
 
   render() {

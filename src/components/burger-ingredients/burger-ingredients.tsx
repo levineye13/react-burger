@@ -16,19 +16,27 @@ class BurgerIngredients extends Component {
     };
   }
 
-  componentDidMount() {
+  setCurrentTab = (tabName) => {
+    this.setState({ ...this.setState, currentTab: tabName });
+  };
+
+  filterIngredients(arr) {
     const ingredients = { bun: [], sauce: [], main: [] };
 
     this.props.ingredients.forEach((item) => {
       ingredients[item.type].push(item);
     });
 
-    this.setState({ ...this.state, ingredients });
+    return ingredients;
   }
 
-  setCurrentTab = (tabName) => {
-    this.setState({ ...this.setState, currentTab: tabName });
-  };
+  componentDidMount() {
+    const { ingredients = [] } = this.props;
+
+    const filteredIngredients = this.filterIngredients(ingredients);
+
+    this.setState({ ...this.state, ingredients: filteredIngredients });
+  }
 
   render() {
     const { bun, sauce, main } = this.state.ingredients;
