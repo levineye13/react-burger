@@ -77,8 +77,8 @@ class BurgerIngredients extends Component {
             </li>
           </ul>
         </nav>
-        <ul className={`${styles.list} ${styles.reset} mt-10`}>
-          <li className="mt-10">
+        <ul className={`${styles.list} ${styles.reset}`}>
+          <li>
             <h2 className="text text_type_main-medium">Булки</h2>
             <ul className={`${styles.sublist} ${styles.reset}`}>
               {bun.map((item) => (

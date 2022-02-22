@@ -16,6 +16,25 @@
 .list {
   display: flex;
   flex-direction: column;
+  max-height: 756px;
+  overflow-y: scroll;
+  margin-top: 40px;
+  padding-right: 8px;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+  height: 100%;
+  max-height: 664px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+}
+
+.list::-webkit-scrollbar-thumb {
+  height: 492px;
+  background-color: #8585ad;
 }
 
 .sublist {

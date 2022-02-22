@@ -48,8 +48,8 @@ class BurgerConstructor extends Component {
     const { ingredients } = this.props;
 
     return (
-      <section className={`${styles.section} pt-25 pl-4 pr-4 ml-10`}>
-        <ul className={styles.list}>
+      <section className={`${styles.section} pt-25 ml-10`}>
+        <ul className={`${styles.list} pl-4 pr-4`}>
           {ingredients.map((item, index) => {
             const data = this.checkEdgeElement(index, ingredients.length);
 
