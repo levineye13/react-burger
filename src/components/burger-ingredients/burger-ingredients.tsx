@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import data from '../../utils/data';
+import { TABS } from '../../utils/constants';
 
 class BurgerIngredients extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      currentTab: TABS.one,
       ingredients: { bun: [], sauce: [], main: [] },
     };
   }
@@ -22,11 +24,17 @@ class BurgerIngredients extends Component {
       ingredients[item.type].push(item);
     });
 
-    this.setState({ ingredients });
+    this.setState({ ...this.state, ingredients });
   }
+
+  setCurrentTab = (tabName) => {
+    this.setState({ ...this.setState, currentTab: tabName });
+  };
 
   render() {
     const { bun, sauce, main } = this.state.ingredients;
+    const { currentTab } = this.state;
+    const { one, two, three } = TABS;
 
     return (
       <section className={style.section}>
@@ -34,17 +42,29 @@ class BurgerIngredients extends Component {
         <nav className="mt-5">
           <ul className={`${style.menu} ${style.reset}`}>
             <li>
-              <Tab value={one} active={true} onClick={() => {}}>
+              <Tab
+                value={one}
+                active={currentTab === one}
+                onClick={this.setCurrentTab}
+              >
                 Булки
               </Tab>
             </li>
             <li>
-              <Tab value={two} active={false} onClick={() => {}}>
+              <Tab
+                value={two}
+                active={currentTab === two}
+                onClick={this.setCurrentTab}
+              >
                 Соусы
               </Tab>
             </li>
             <li>
-              <Tab value={three} active={false} onClick={() => {}}>
+              <Tab
+                value={three}
+                active={currentTab === three}
+                onClick={this.setCurrentTab}
+              >
                 Начинка
               </Tab>
             </li>
