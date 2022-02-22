@@ -43,12 +43,16 @@ class AppHeader extends Component {
             </ul>
           </nav>
           <Logo />
-          <button className={styles.button} type="button">
+          <a
+            className={`${styles.link} ${styles.account}`}
+            href="#"
+            target="_self"
+          >
             <ProfileIcon type="secondary" />
             <span className="text text_type_main-default text_color_inactive ml-2">
               Личный кабинет
             </span>
-          </button>
+          </a>
         </div>
       </header>
     );

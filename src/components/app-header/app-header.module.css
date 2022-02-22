@@ -24,8 +24,7 @@
   list-style: none;
 }
 
-.link,
-.button {
+.link {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -33,16 +32,10 @@
   border-radius: 40px;
 }
 
+.account {
+  margin-left: auto;
+}
+
 .link {
   color: #fff;
-}
-
-.link-text {
-}
-
-.button {
-  border: 0;
-  margin-left: auto;
-  background-color: transparent;
-  font-family: inherit;
 }
