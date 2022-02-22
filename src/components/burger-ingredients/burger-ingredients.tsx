@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-import style from './burger-ingredients.module.css';
+import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import { TABS } from '../../utils/constants';
 
@@ -36,10 +36,10 @@ class BurgerIngredients extends Component {
     const { one, two, three } = TABS;
 
     return (
-      <section className={style.section}>
+      <section className={styles.section}>
         <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
         <nav className="mt-5">
-          <ul className={`${style.menu} ${style.reset}`}>
+          <ul className={`${styles.menu} ${styles.reset}`}>
             <li>
               <Tab
                 value={one}
@@ -69,10 +69,10 @@ class BurgerIngredients extends Component {
             </li>
           </ul>
         </nav>
-        <ul className={`${style.list} ${style.reset} mt-10`}>
+        <ul className={`${styles.list} ${styles.reset} mt-10`}>
           <li className="mt-10">
             <h2 className="text text_type_main-medium">Булки</h2>
-            <ul className={`${style.sublist} ${style.reset}`}>
+            <ul className={`${styles.sublist} ${styles.reset}`}>
               {bun.map((item) => (
                 <li key={item._id}>
                   <Ingredient
@@ -86,7 +86,7 @@ class BurgerIngredients extends Component {
           </li>
           <li className="mt-10">
             <h2 className="text text_type_main-medium">Соусы</h2>
-            <ul className={`${style.sublist} ${style.reset}`}>
+            <ul className={`${styles.sublist} ${styles.reset}`}>
               {sauce.map((item) => (
                 <li key={item._id}>
                   <Ingredient
@@ -100,7 +100,7 @@ class BurgerIngredients extends Component {
           </li>
           <li className="mt-10">
             <h2 className="text text_type_main-medium">Начинка</h2>
-            <ul className={`${style.sublist} ${style.reset}`}>
+            <ul className={`${styles.sublist} ${styles.reset}`}>
               {main.map((item) => (
                 <li key={item._id}>
                   <Ingredient
