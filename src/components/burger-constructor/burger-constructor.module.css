@@ -1,0 +1,35 @@
+.section {
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.sum {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.item > svg {
+  margin-right: 8px;
+}
