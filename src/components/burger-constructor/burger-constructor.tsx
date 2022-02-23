@@ -18,54 +18,70 @@ class BurgerConstructor extends Component {
     };
   }
 
-  checkEdgeElement(index, length) {
-    if (index === 0) {
-      return { type: 'top', text: ' (верх)', isLocked: true };
-    }
+  calculatePrice(arr, bun) {
+    const bunPrice = bun.price * 2 || 0;
 
-    if (index === length - 1) {
-      return { type: 'bottom', text: ' (низ)', isLocked: true };
-    }
-
-    return { type: undefined, text: '', isLocked: false };
-  }
-
-  calculatePrice(arr) {
     return arr.reduce((acc, item) => {
       return acc + item.price;
-    }, 0);
+    }, bunPrice);
   }
 
-  componentDidMount() {
-    const { ingredients = [] } = this.props;
-
-    const sum = this.calculatePrice(ingredients);
-
+  setSum(ingredients, bun) {
+    const sum = this.calculatePrice(ingredients, bun);
     this.setState({ sum });
   }
 
+  componentDidMount() {
+    const { bun = {}, ingredients = [] } = this.props;
+    this.setSum(ingredients, bun);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { bun, ingredients } = this.props;
+
+    if (bun !== prevProps.bun) {
+      this.setSum(ingredients, bun);
+    }
+  }
+
   render() {
-    const { ingredients } = this.props;
+    const { bun = {}, ingredients = [] } = this.props;
 
     return (
-      <section className={`${styles.section} pt-25 ml-10`}>
-        <ul className={`${styles.list} pl-4 pr-4`}>
-          {ingredients.map((item, index) => {
-            const data = this.checkEdgeElement(index, ingredients.length);
-
-            return (
-              <li key={item._id} className={styles.item}>
-                {!data.isLocked && <DragIcon type="primary" />}
+      <section className={`${styles.section} pt-25 ml-10 pl-4`}>
+        <ul className={styles.list}>
+          <li className={`${styles.item} mr-4`}>
+            <ConstructorElement
+              type="top"
+              thumbnail={bun.image}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              isLocked={true}
+            />
+          </li>
+          <ul className={styles.sublist}>
+            {ingredients.map((item, index) => (
+              <li key={item._id} className={`${styles.subitem} mr-2`}>
+                <DragIcon type="primary" />
                 <ConstructorElement
-                  type={data.type}
+                  type={undefined}
                   thumbnail={item.image}
-                  text={`${item.name} ${data.text}`}
+                  text={item.name}
                   price={item.price}
-                  isLocked={data.isLocked}
+                  isLocked={false}
                 />
               </li>
-            );
-          })}
+            ))}
+          </ul>
+          <li className={`${styles.item} mr-4`}>
+            <ConstructorElement
+              type="bottom"
+              thumbnail={bun.image}
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              isLocked={true}
+            />
+          </li>
         </ul>
         <div className={`${styles.sum} mt-10`}>
           <span className="text text_type_main-large mr-10">
@@ -82,6 +98,11 @@ class BurgerConstructor extends Component {
 }
 
 BurgerConstructor.propTypes = {
+  bun: PropTypes.shape({
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+  }),
   ingredients: PropTypes.array.isRequired,
 };
 
