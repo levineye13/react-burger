@@ -4,7 +4,8 @@ import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import data from '../../utils/data';
+import { useFetch } from '../../hooks/useFetch';
+import { API_URL } from '../../utils/constants';
 
 function App() {
   const [ingredients, setIngredients] = useState({
@@ -13,10 +14,14 @@ function App() {
     main: [],
   });
 
+  const { data, success } = useFetch(API_URL);
+
   useEffect(() => {
-    const filteredIngredients = filterIngredients(data);
-    setIngredients(filteredIngredients);
-  }, []);
+    if (success) {
+      const filteredIngredients = filterIngredients(data);
+      setIngredients(filteredIngredients);
+    }
+  }, [success, JSON.stringify(data)]);
 
   function filterIngredients(arr) {
     const ingredients = { bun: [], sauce: [], main: [] };
