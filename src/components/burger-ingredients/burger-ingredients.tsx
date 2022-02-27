@@ -6,7 +6,7 @@ import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import { TABS } from '../../utils/constants';
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients({ ingredients, onIngredientClick, onClose }) {
   const [currentTab, setCurrentTab] = useState(TABS.one);
 
   const { bun = [], sauce = [], main = [] } = ingredients;
@@ -52,11 +52,7 @@ function BurgerIngredients({ ingredients }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {bun.map((item) => (
               <li key={item._id}>
-                <Ingredient
-                  name={item.name}
-                  image={item.image}
-                  price={item.price}
-                />
+                <Ingredient onClick={onIngredientClick} {...item} />
               </li>
             ))}
           </ul>
@@ -66,11 +62,7 @@ function BurgerIngredients({ ingredients }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {sauce.map((item) => (
               <li key={item._id}>
-                <Ingredient
-                  name={item.name}
-                  image={item.image}
-                  price={item.price}
-                />
+                <Ingredient onClick={onIngredientClick} {...item} />
               </li>
             ))}
           </ul>
@@ -80,11 +72,7 @@ function BurgerIngredients({ ingredients }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {main.map((item) => (
               <li key={item._id}>
-                <Ingredient
-                  name={item.name}
-                  image={item.image}
-                  price={item.price}
-                />
+                <Ingredient onClick={onIngredientClick} {...item} />
               </li>
             ))}
           </ul>
@@ -100,6 +88,8 @@ BurgerIngredients.propTypes = {
     sauce: PropTypes.array.isRequired,
     main: PropTypes.array.isRequired,
   }).isRequired,
+  onIngredientClick: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

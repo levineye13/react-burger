@@ -10,7 +10,7 @@ import {
 import styles from './burger-constructor.module.css';
 import { sumByKey } from '../../utils/utils';
 
-function BurgerConstructor({ bun = {}, ingredients = [] }) {
+function BurgerConstructor({ bun = {}, ingredients = [], onButtonClick }) {
   const [sum, setSum] = useState(0);
 
   useEffect(() => {
@@ -62,7 +62,12 @@ function BurgerConstructor({ bun = {}, ingredients = [] }) {
           <span className="mr-2">{sum}</span>
           <CurrencyIcon type="primary" />
         </span>
-        <Button type="primary" size="large" htmlType="submit">
+        <Button
+          type="primary"
+          size="large"
+          htmlType="submit"
+          onClick={onButtonClick}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -77,6 +82,7 @@ BurgerConstructor.propTypes = {
     price: PropTypes.number.isRequired,
   }),
   ingredients: PropTypes.array.isRequired,
+  onButtonClick: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
