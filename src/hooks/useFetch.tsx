@@ -30,6 +30,7 @@ export function useFetch(url, { method = 'GET', headers = {} } = {}) {
         }
 
         setIsSuccess(false);
+        console.error(e);
       }
     }
 
