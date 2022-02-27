@@ -4,18 +4,22 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import style from './ingredient.module.css';
 
-function Ingredient({ name, image, price }) {
+function Ingredient({ onClick, ...props }) {
+  function handleClick() {
+    onClick(props);
+  }
+
   return (
-    <article className={style.card}>
+    <article className={style.card} onClick={handleClick}>
       <figure className={style.figure}>
-        <img src={image} alt={name} />
+        <img src={props.image} alt={props.name} />
         <figcaption>
           <div className={`${style.price} text text_type_main-medium mt-1`}>
-            <span className="mr-2">{price}</span>
+            <span className="mr-2">{props.price}</span>
             <CurrencyIcon type="primary" />
           </div>
           <p className={`${style.name} text text_type_main-default mt-1`}>
-            {name}
+            {props.name}
           </p>
         </figcaption>
       </figure>
@@ -27,6 +31,7 @@ Ingredient.propTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Ingredient;
