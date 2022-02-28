@@ -1,6 +1,11 @@
 {
   "name": "react-burger",
   "version": "0.1.0",
+  "description": "Stellar Burger",
+  "author": {
+    "name": "Oleg Zharov",
+    "email": "levineye@yandex.ru"
+  },
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
