@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import style from './modal.module.css';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 import { modalContainer, ESC_CODE } from '../../utils/constants';
 
 function Modal({ children, onClose, title }) {
@@ -20,15 +21,18 @@ function Modal({ children, onClose, title }) {
   }, []);
 
   return createPortal(
-    <dialog className={`${style.modal} pt-10 pl-10 pr-10 p-15`}>
-      <header className={style.header}>
-        <h1 className="text text_type_main-large">{title}</h1>
-        <button className={style.button} type="button">
-          <CloseIcon type="primary" onClick={onClose} />
-        </button>
-      </header>
-      {children}
-    </dialog>,
+    <>
+      <dialog className={`${style.modal} pt-10 pl-10 pr-10 p-15`}>
+        <header className={style.header}>
+          <h1 className="text text_type_main-large">{title}</h1>
+          <button className={style.button} type="button">
+            <CloseIcon type="primary" onClick={onClose} />
+          </button>
+        </header>
+        {children}
+      </dialog>
+      <ModalOverlay onClose={onClose} />
+    </>,
     modalContainer
   );
 }

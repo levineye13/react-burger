@@ -6,7 +6,6 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
-import ModalOverlay from '../modal-overlay/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import { API_URL } from '../../utils/constants';
@@ -19,7 +18,6 @@ function App() {
   });
   const [isOpenIngredientModal, setIsOpenIngredientModal] = useState(false);
   const [isOpenOrderModal, setIsOpenOrderModal] = useState(false);
-  const [isOpenOverlay, setIsOpenOverlay] = useState(false);
   const [currentIngredient, setCurrentIngredient] = useState(null);
 
   const { data, success } = useFetch(API_URL);
@@ -44,18 +42,15 @@ function App() {
   function closeModals() {
     setIsOpenIngredientModal(false);
     setIsOpenOrderModal(false);
-    setIsOpenOverlay(false);
   }
 
   function handleIngredientClick(ingredient) {
     setCurrentIngredient(ingredient);
     setIsOpenIngredientModal(true);
-    setIsOpenOverlay(true);
   }
 
   function handleOrderClick() {
     setIsOpenOrderModal(true);
-    setIsOpenOverlay(true);
   }
 
   return (
@@ -73,7 +68,6 @@ function App() {
           onButtonClick={handleOrderClick}
         />
       </main>
-      <ModalOverlay isOpen={isOpenOverlay} onClose={closeModals} />
       {isOpenIngredientModal && (
         <Modal onClose={closeModals} title="Детали ингредиента">
           <IngredientDetails {...currentIngredient} />

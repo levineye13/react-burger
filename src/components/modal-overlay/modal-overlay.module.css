@@ -6,13 +6,5 @@
   top: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0.3s, opacity 0.3s;
   cursor: pointer;
-}
-
-.overlay_active {
-  visibility: visible;
-  opacity: 1;
 }
