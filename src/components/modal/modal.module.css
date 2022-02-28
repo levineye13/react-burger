@@ -15,14 +15,6 @@
   background-color: #1c1c21;
   border-radius: 40px;
   color: #f2f2f3;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0.3s, opacity 0.3s;
-}
-
-.modal_active {
-  visibility: visible;
-  opacity: 1;
 }
 
 .header {

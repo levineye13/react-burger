@@ -9,7 +9,7 @@ import Modal from '../modal/modal';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
-import { API_URL, ESC_CODE } from '../../utils/constants';
+import { API_URL } from '../../utils/constants';
 
 function App() {
   const [ingredients, setIngredients] = useState({
@@ -30,18 +30,6 @@ function App() {
       setIngredients(filteredIngredients);
     }
   }, [success, JSON.stringify(data)]);
-
-  useEffect(() => {
-    function handleClickEsc(e) {
-      if (e.keyCode === ESC_CODE) {
-        closeModals();
-      }
-    }
-
-    document.addEventListener('keydown', handleClickEsc);
-
-    return () => document.removeEventListener('keydown', handleClickEsc);
-  }, []);
 
   function filterIngredients(arr) {
     const ingredients = { bun: [], sauce: [], main: [] };
@@ -86,16 +74,16 @@ function App() {
         />
       </main>
       <ModalOverlay isOpen={isOpenOverlay} onClose={closeModals} />
-      <Modal
-        isOpen={isOpenIngredientModal}
-        onClose={closeModals}
-        title="Детали ингредиента"
-      >
-        <IngredientDetails {...currentIngredient} />
-      </Modal>
-      <Modal isOpen={isOpenOrderModal} onClose={closeModals}>
-        <OrderDetails />
-      </Modal>
+      {isOpenIngredientModal && (
+        <Modal onClose={closeModals} title="Детали ингредиента">
+          <IngredientDetails {...currentIngredient} />
+        </Modal>
+      )}
+      {isOpenOrderModal && (
+        <Modal onClose={closeModals}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   );
 }
