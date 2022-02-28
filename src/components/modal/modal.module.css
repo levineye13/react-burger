@@ -17,7 +17,7 @@
   color: #f2f2f3;
 }
 
-.header {
+.wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

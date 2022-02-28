@@ -23,12 +23,12 @@ function Modal({ children, onClose, title }) {
   return createPortal(
     <>
       <dialog className={`${style.modal} pt-10 pl-10 pr-10 p-15`}>
-        <header className={style.header}>
+        <div className={style.wrapper}>
           <h1 className="text text_type_main-large">{title}</h1>
           <button className={style.button} type="button">
             <CloseIcon type="primary" onClick={onClose} />
           </button>
-        </header>
+        </div>
         {children}
       </dialog>
       <ModalOverlay onClose={onClose} />
