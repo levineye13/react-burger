@@ -86,11 +86,6 @@ function BurgerIngredients({ onIngredientClick, onClose }) {
 }
 
 BurgerIngredients.propTypes = {
-  // ingredients: PropTypes.shape({
-  //   bun: PropTypes.array.isRequired,
-  //   sauce: PropTypes.array.isRequired,
-  //   main: PropTypes.array.isRequired,
-  // }).isRequired,
   onIngredientClick: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
