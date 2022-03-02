@@ -9,20 +9,24 @@ import {
 
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../context/IngredientsContext';
-import { sumForAllObjSubarrays } from '../../utils/utils';
+import { sumForObjSubarrays } from '../../utils/utils';
 
 function BurgerConstructor({ onButtonClick }) {
   const { ingredients, currentBun, sum, sumDispatcher } =
     useContext(IngredientsContext);
 
   useEffect(() => {
+    function calculatePrice(obj, property, bun) {
+      return (
+        sumForObjSubarrays(obj, property, ['sauce', 'main']) +
+        (bun[property] || 0) * 2
+      );
+    }
+
     const sum = calculatePrice(ingredients, 'price', currentBun);
 
     sumDispatcher({ type: 'setSum', payload: sum });
   }, [currentBun, JSON.stringify(ingredients)]);
-
-  const calculatePrice = (obj, property, bun) =>
-    sumForAllObjSubarrays(obj, property) + (bun.price || 0) * 2;
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
