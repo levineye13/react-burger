@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   ConstructorElement,
@@ -14,9 +14,11 @@ import { INGREDIENT_TYPE } from '../../utils/constants';
 
 const { sauce, main } = INGREDIENT_TYPE;
 
-function BurgerConstructor({ onButtonClick }) {
+function BurgerConstructor({ onButtonClick, setOrderNumber }) {
   const { ingredients, currentBun, sum, sumDispatcher } =
     useContext(IngredientsContext);
+
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
 
   useEffect(() => {
     function calculatePrice(obj, property, bun) {
@@ -29,7 +31,25 @@ function BurgerConstructor({ onButtonClick }) {
     const sum = calculatePrice(ingredients, 'price', currentBun);
 
     sumDispatcher({ type: 'setSum', payload: sum });
+    //! Временно, пока функционала выбора булочки нет
+    setSelectedIngredients([...ingredients.sauce, ...ingredients.main]);
   }, [currentBun, JSON.stringify(ingredients)]);
+
+  async function handleButtonClick() {
+    const ids = selectedIngredients.map((ingredient) => ingredient._id);
+
+    try {
+      const res = await onButtonClick(ids);
+
+      if (res.success) {
+        setOrderNumber(res.order.number);
+      } else {
+        setOrderNumber(null);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
@@ -44,19 +64,18 @@ function BurgerConstructor({ onButtonClick }) {
           />
         </li>
         <ul className={styles.sublist}>
-          {ingredients &&
-            [...ingredients.sauce, ...ingredients.main].map((item, index) => (
-              <li key={item._id} className={`${styles.subitem} mr-2`}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  type={undefined}
-                  thumbnail={item.image}
-                  text={item.name}
-                  price={item.price}
-                  isLocked={false}
-                />
-              </li>
-            ))}
+          {selectedIngredients.map((item, index) => (
+            <li key={item._id} className={`${styles.subitem} mr-2`}>
+              <DragIcon type="primary" />
+              <ConstructorElement
+                type={undefined}
+                thumbnail={item.image}
+                text={item.name}
+                price={item.price}
+                isLocked={false}
+              />
+            </li>
+          ))}
         </ul>
         <li className={`${styles.item} mr-4`}>
           <ConstructorElement
@@ -77,7 +96,7 @@ function BurgerConstructor({ onButtonClick }) {
           type="primary"
           size="large"
           htmlType="submit"
-          onClick={onButtonClick}
+          onClick={handleButtonClick}
         >
           Оформить заказ
         </Button>
