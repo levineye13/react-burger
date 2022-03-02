@@ -41,6 +41,8 @@ function App() {
     if (success) {
       const filteredIngredients = filterIngredients(data);
       setIngredients(filteredIngredients);
+      //! Временно, пока функционала выбора булочки нет
+      setCurrentBun(filteredIngredients.bun[0]);
     }
   }, [success, JSON.stringify(data)]);
 
@@ -74,7 +76,7 @@ function App() {
       <IngredientsContext.Provider
         value={{
           ingredients,
-          currentBun: ingredients.bun[0] || {},
+          currentBun,
           sum: sumState.sum,
           sumDispatcher,
         }}
