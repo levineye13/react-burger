@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   ConstructorElement,
@@ -8,18 +8,21 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-constructor.module.css';
-import { sumByKey } from '../../utils/utils';
+import { IngredientsContext } from '../../context/IngredientsContext';
+import { sumForAllObjSubarrays } from '../../utils/utils';
 
-function BurgerConstructor({ bun = {}, ingredients = [], onButtonClick }) {
-  const [sum, setSum] = useState(0);
+function BurgerConstructor({ onButtonClick }) {
+  const { ingredients, currentBun, sum, sumDispatcher } =
+    useContext(IngredientsContext);
 
   useEffect(() => {
-    const sum = calculatePrice(ingredients, bun);
-    setSum(sum);
-  }, [bun, JSON.stringify(ingredients)]);
+    const sum = calculatePrice(ingredients, 'price', currentBun);
 
-  const calculatePrice = (arr, bun) =>
-    sumByKey(arr, 'price') + (bun.price * 2 || 0);
+    sumDispatcher({ type: 'setSum', payload: sum });
+  }, [currentBun, JSON.stringify(ingredients)]);
+
+  const calculatePrice = (obj, property, bun) =>
+    sumForAllObjSubarrays(obj, property) + (bun.price || 0) * 2;
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
@@ -27,32 +30,33 @@ function BurgerConstructor({ bun = {}, ingredients = [], onButtonClick }) {
         <li className={`${styles.item} mr-4`}>
           <ConstructorElement
             type="top"
-            thumbnail={bun.image}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
+            thumbnail={currentBun.image || ''}
+            text={`${currentBun.name || ''} (верх)`}
+            price={currentBun.price || 0}
             isLocked={true}
           />
         </li>
         <ul className={styles.sublist}>
-          {ingredients.map((item, index) => (
-            <li key={item._id} className={`${styles.subitem} mr-2`}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                type={undefined}
-                thumbnail={item.image}
-                text={item.name}
-                price={item.price}
-                isLocked={false}
-              />
-            </li>
-          ))}
+          {ingredients &&
+            [...ingredients.sauce, ...ingredients.main].map((item, index) => (
+              <li key={item._id} className={`${styles.subitem} mr-2`}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  type={undefined}
+                  thumbnail={item.image}
+                  text={item.name}
+                  price={item.price}
+                  isLocked={false}
+                />
+              </li>
+            ))}
         </ul>
         <li className={`${styles.item} mr-4`}>
           <ConstructorElement
             type="bottom"
-            thumbnail={bun.image}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
+            thumbnail={currentBun.image || ''}
+            text={`${currentBun.name || ''} (низ)`}
+            price={currentBun.price || 0}
             isLocked={true}
           />
         </li>
@@ -76,12 +80,12 @@ function BurgerConstructor({ bun = {}, ingredients = [], onButtonClick }) {
 }
 
 BurgerConstructor.propTypes = {
-  bun: PropTypes.shape({
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }),
-  ingredients: PropTypes.array.isRequired,
+  // bun: PropTypes.shape({
+  //   image: PropTypes.string.isRequired,
+  //   name: PropTypes.string.isRequired,
+  //   price: PropTypes.number.isRequired,
+  // }),
+  // ingredients: PropTypes.array.isRequired,
   onButtonClick: PropTypes.func.isRequired,
 };
 
