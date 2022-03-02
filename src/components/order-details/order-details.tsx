@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from './order-details.module.css';
 import OrderDone from '../../images/done.jpg';
@@ -20,5 +21,9 @@ function OrderDetails({ orderNumber }) {
     </article>
   );
 }
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.number.isRequired,
+};
 
 export default OrderDetails;
