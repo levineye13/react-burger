@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
 import styles from './burger-ingredients.module.css';
+import { IngredientsContext } from '../../context/IngredientsContext';
 import Ingredient from '../ingredient/ingredient';
 import { TABS } from '../../utils/constants';
 
-function BurgerIngredients({ ingredients, onIngredientClick, onClose }) {
+function BurgerIngredients({ onIngredientClick, onClose }) {
   const [currentTab, setCurrentTab] = useState(TABS.one);
+
+  const { ingredients } = useContext(IngredientsContext);
 
   const { bun = [], sauce = [], main = [] } = ingredients;
   const { one, two, three } = TABS;
@@ -83,11 +86,11 @@ function BurgerIngredients({ ingredients, onIngredientClick, onClose }) {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.shape({
-    bun: PropTypes.array.isRequired,
-    sauce: PropTypes.array.isRequired,
-    main: PropTypes.array.isRequired,
-  }).isRequired,
+  // ingredients: PropTypes.shape({
+  //   bun: PropTypes.array.isRequired,
+  //   sauce: PropTypes.array.isRequired,
+  //   main: PropTypes.array.isRequired,
+  // }).isRequired,
   onIngredientClick: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
