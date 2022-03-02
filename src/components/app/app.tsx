@@ -9,7 +9,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
-import { API_URL } from '../../utils/constants';
+import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
 
 const initialState = { sum: 0 };
 
@@ -34,8 +34,11 @@ function App() {
   const [isOpenOrderModal, setIsOpenOrderModal] = useState(false);
   const [currentIngredient, setCurrentIngredient] = useState(null);
   const [currentBun, setCurrentBun] = useState({});
+  const [orderNumber, setOrderNumber] = useState(null);
 
-  const { data, success } = useFetch(API_URL);
+  const { data, success } = useFetch(
+    `${API_BASE_URL}${API_ENDPOINT.ingredients}`
+  );
 
   useEffect(() => {
     if (success) {
@@ -66,8 +69,24 @@ function App() {
     setIsOpenIngredientModal(true);
   }
 
-  function handleOrderClick() {
+  async function handleOrderClick(ingredientsId) {
+    const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
+      method: HTTP_METHOD.post,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsId,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`${res.status} - ${res.statusText}`);
+    }
+
     setIsOpenOrderModal(true);
+
+    return res.json();
   }
 
   return (
@@ -86,7 +105,10 @@ function App() {
             onIngredientClick={handleIngredientClick}
             onClose={closeModals}
           />
-          <BurgerConstructor onButtonClick={handleOrderClick} />
+          <BurgerConstructor
+            onButtonClick={handleOrderClick}
+            setOrderNumber={setOrderNumber}
+          />
         </main>
       </IngredientsContext.Provider>
       {isOpenIngredientModal && (
@@ -94,9 +116,9 @@ function App() {
           <IngredientDetails {...currentIngredient} />
         </Modal>
       )}
-      {isOpenOrderModal && (
+      {isOpenOrderModal && orderNumber && (
         <Modal onClose={closeModals}>
-          <OrderDetails />
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </div>
