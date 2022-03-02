@@ -10,6 +10,9 @@ import {
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../context/IngredientsContext';
 import { sumForObjSubarrays } from '../../utils/utils';
+import { INGREDIENT_TYPE } from '../../utils/constants';
+
+const { sauce, main } = INGREDIENT_TYPE;
 
 function BurgerConstructor({ onButtonClick }) {
   const { ingredients, currentBun, sum, sumDispatcher } =
@@ -18,7 +21,7 @@ function BurgerConstructor({ onButtonClick }) {
   useEffect(() => {
     function calculatePrice(obj, property, bun) {
       return (
-        sumForObjSubarrays(obj, property, ['sauce', 'main']) +
+        sumForObjSubarrays(obj, property, [sauce, main]) +
         (bun[property] || 0) * 2
       );
     }
