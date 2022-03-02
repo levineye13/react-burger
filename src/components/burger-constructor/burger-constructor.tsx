@@ -106,13 +106,8 @@ function BurgerConstructor({ onButtonClick, setOrderNumber }) {
 }
 
 BurgerConstructor.propTypes = {
-  // bun: PropTypes.shape({
-  //   image: PropTypes.string.isRequired,
-  //   name: PropTypes.string.isRequired,
-  //   price: PropTypes.number.isRequired,
-  // }),
-  // ingredients: PropTypes.array.isRequired,
   onButtonClick: PropTypes.func.isRequired,
+  setOrderNumber: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
