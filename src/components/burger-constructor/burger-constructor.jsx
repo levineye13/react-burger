@@ -9,6 +9,7 @@ import {
 
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/IngredientsContext';
+import Price from '../price/price';
 import { sumForObjSubarrays } from '../../utils/utils';
 import { INGREDIENT_TYPE } from '../../utils/constants';
 
@@ -88,10 +89,12 @@ function BurgerConstructor({ onButtonClick, setOrderNumber }) {
         </li>
       </ul>
       <div className={`${styles.sum} mt-10`}>
-        <span className="text text_type_main-large mr-10">
-          <span className="mr-2">{sum}</span>
-          <CurrencyIcon type="primary" />
-        </span>
+        <Price
+          type="large"
+          price={sum}
+          iconType="large"
+          externalGeometry="mr-10"
+        />
         <Button
           type="primary"
           size="large"
