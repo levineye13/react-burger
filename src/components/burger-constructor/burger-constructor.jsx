@@ -8,7 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-constructor.module.css';
-import { IngredientsContext } from '../../context/IngredientsContext';
+import { IngredientsContext } from '../../services/IngredientsContext';
 import { sumForObjSubarrays } from '../../utils/utils';
 import { INGREDIENT_TYPE } from '../../utils/constants';
 

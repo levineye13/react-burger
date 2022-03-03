@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 
 import styles from './app.module.css';
 import { useFetch } from '../../hooks/useFetch';
-import { IngredientsContext } from '../../context/IngredientsContext';
+import { IngredientsContext } from '../../services/IngredientsContext';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
