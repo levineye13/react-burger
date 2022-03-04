@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useState,
-  useMemo,
-  useCallback,
-} from 'react';
+import React, { useEffect, useContext, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   ConstructorElement,
@@ -66,16 +60,13 @@ function BurgerConstructor({ setOrderNumber }) {
     }
   }
 
-  const calculatePrice = useCallback(
-    (arr, property, bun) => {
-      return sumByKey(arr, property) + (bun[property] || 0) * 2;
-    },
-    [currentBun, JSON.stringify(selectedIngredients)]
-  );
+  function calculatePrice(arr, property, bun) {
+    return sumByKey(arr, property) + (bun[property] || 0) * 2;
+  }
 
   const sum = useMemo(() => {
     return calculatePrice(selectedIngredients, 'price', currentBun);
-  }, [currentBun, JSON.stringify(selectedIngredients)]);
+  }, [currentBun, selectedIngredients]);
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
