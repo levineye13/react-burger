@@ -7,12 +7,11 @@ import { IngredientsContext } from '../../services/IngredientsContext';
 import Ingredient from '../ingredient/ingredient';
 import { TABS } from '../../utils/constants';
 
-function BurgerIngredients({ onIngredientClick, onClose }) {
+function BurgerIngredients({ onIngredientClick }) {
   const [currentTab, setCurrentTab] = useState(TABS.one);
 
-  const { ingredients } = useContext(IngredientsContext);
+  const { bun = [], sauce = [], main = [] } = useContext(IngredientsContext);
 
-  const { bun = [], sauce = [], main = [] } = ingredients;
   const { one, two, three } = TABS;
 
   return (
@@ -87,7 +86,6 @@ function BurgerIngredients({ onIngredientClick, onClose }) {
 
 BurgerIngredients.propTypes = {
   onIngredientClick: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

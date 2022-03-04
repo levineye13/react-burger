@@ -14,21 +14,25 @@ import {
 
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/IngredientsContext';
+import { CurrentBunContext } from '../../services/CurrentBunContext';
 import Price from '../price/price';
 import { sumByKey } from '../../utils/utils';
 import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
 
 function BurgerConstructor({ setOrderNumber }) {
-  const { ingredients, currentBun } = useContext(IngredientsContext);
+  const ingredients = useContext(IngredientsContext);
+  const currentBun = useContext(CurrentBunContext);
 
   const [selectedIngredients, setSelectedIngredients] = useState([]);
 
   //! Временно (useEffect), пока функционала выбора ингредиентов нет
   useEffect(() => {
-    setSelectedIngredients([
-      ...ingredients.sauce.slice(0, 2),
-      ...ingredients.main.slice(0, 4),
-    ]);
+    if (ingredients) {
+      setSelectedIngredients([
+        ...ingredients.sauce.slice(0, 2),
+        ...ingredients.main.slice(0, 4),
+      ]);
+    }
   }, [JSON.stringify(ingredients)]);
 
   async function handleButtonClick() {
