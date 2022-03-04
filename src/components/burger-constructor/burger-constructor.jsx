@@ -1,40 +1,34 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   ConstructorElement,
   DragIcon,
   Button,
-  CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/IngredientsContext';
 import Price from '../price/price';
-import { sumForObjSubarrays } from '../../utils/utils';
-import { INGREDIENT_TYPE } from '../../utils/constants';
-
-const { sauce, main } = INGREDIENT_TYPE;
+import { sumByKey } from '../../utils/utils';
 
 function BurgerConstructor({ onButtonClick, setOrderNumber }) {
-  const { ingredients, currentBun, sum, sumDispatcher } =
-    useContext(IngredientsContext);
+  const { ingredients, currentBun } = useContext(IngredientsContext);
 
   const [selectedIngredients, setSelectedIngredients] = useState([]);
 
+  //! Временно (useEffect), пока функционала выбора ингредиентов нет
   useEffect(() => {
-    function calculatePrice(obj, property, bun) {
-      return (
-        sumForObjSubarrays(obj, property, [sauce, main]) +
-        (bun[property] || 0) * 2
-      );
-    }
-
-    const sum = calculatePrice(ingredients, 'price', currentBun);
-
-    sumDispatcher({ type: 'setSum', payload: sum });
-    //! Временно, пока функционала выбора булочки нет
-    setSelectedIngredients([...ingredients.sauce, ...ingredients.main]);
-  }, [currentBun, JSON.stringify(ingredients)]);
+    setSelectedIngredients([
+      ...ingredients.sauce.slice(0, 2),
+      ...ingredients.main.slice(0, 3),
+    ]);
+  }, [JSON.stringify(ingredients)]);
 
   async function handleButtonClick() {
     const ids = selectedIngredients.map((ingredient) => ingredient._id);
@@ -51,6 +45,17 @@ function BurgerConstructor({ onButtonClick, setOrderNumber }) {
       console.error(e);
     }
   }
+
+  const calculatePrice = useCallback(
+    (arr, property, bun) => {
+      return sumByKey(arr, property) + (bun[property] || 0) * 2;
+    },
+    [currentBun, JSON.stringify(selectedIngredients)]
+  );
+
+  const sum = useMemo(() => {
+    return calculatePrice(selectedIngredients, 'price', currentBun);
+  }, [currentBun, JSON.stringify(selectedIngredients)]);
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>

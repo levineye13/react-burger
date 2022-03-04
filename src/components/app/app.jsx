@@ -11,20 +11,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
 
-const initialState = { sum: 0 };
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'setSum':
-      return { ...state, sum: action.payload };
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-}
-
 function App() {
-  const [sumState, sumDispatcher] = useReducer(reducer, initialState);
-
   const [ingredients, setIngredients] = useState({
     bun: [],
     sauce: [],
@@ -89,24 +76,29 @@ function App() {
     return res.json();
   }
 
+  // const provider = React.useMemo(
+  //   () => ({
+  //     ingredients,
+  //     currentBun,
+  //   }),
+  //   [ingredients, currentBun]
+  // );
+  const provider = {
+    ingredients,
+    currentBun,
+  };
+
   return (
     <div className={styles.page}>
       <AppHeader />
-      <IngredientsContext.Provider
-        value={{
-          ingredients,
-          currentBun,
-          sum: sumState.sum,
-          sumDispatcher,
-        }}
-      >
+      <IngredientsContext.Provider value={provider}>
         <main className={`${styles.main} pb-10`}>
           <BurgerIngredients
             onIngredientClick={handleIngredientClick}
             onClose={closeModals}
           />
           <BurgerConstructor
-            onButtonClick={handleOrderClick}
+            onButtonClick={() => {}}
             setOrderNumber={setOrderNumber}
           />
         </main>

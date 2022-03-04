@@ -1,9 +1,3 @@
-export function sumForObjSubarrays(obj, property, keyList) {
-  let sum = 0;
-
-  for (const key of keyList) {
-    sum += obj[key].reduce((acc, item) => acc + item[property], 0);
-  }
-
-  return sum;
+export function sumByKey(arr, property) {
+  return arr.reduce((sum, item) => sum + (item[property] || 0), 0);
 }
