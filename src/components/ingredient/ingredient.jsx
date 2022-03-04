@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import style from './ingredient.module.css';
+import styles from './ingredient.module.css';
+import Price from '../price/price';
 
 function Ingredient({ onClick, ...props }) {
   function handleClick() {
@@ -10,15 +10,12 @@ function Ingredient({ onClick, ...props }) {
   }
 
   return (
-    <article className={style.card} onClick={handleClick}>
-      <figure className={style.figure}>
+    <article className={styles.card} onClick={handleClick}>
+      <figure className={styles.figure}>
         <img src={props.image} alt={props.name} />
         <figcaption>
-          <div className={`${style.price} text text_type_main-medium mt-1`}>
-            <span className="mr-2">{props.price}</span>
-            <CurrencyIcon type="primary" />
-          </div>
-          <p className={`${style.name} text text_type_main-default mt-1`}>
+          <Price price={props.price} />
+          <p className={`${styles.name} text text_type_main-default mt-1`}>
             {props.name}
           </p>
         </figcaption>

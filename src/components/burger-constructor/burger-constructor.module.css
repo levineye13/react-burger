@@ -1,9 +1,10 @@
 .section {
+  box-sizing: border-box;
   max-width: 600px;
-  width: 100%;
+  flex-basis: 600px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex-shrink: 0;
 }
 
 .reset {
@@ -44,12 +45,16 @@
 
 .item {
   align-self: flex-end;
+  width: 536px;
+}
+
+.item > div {
+  width: 100%;
 }
 
 .subitem {
   display: flex;
   flex-direction: row;
-  /* justify-content: flex-end; */
   align-items: center;
 }
 

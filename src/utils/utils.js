@@ -1,2 +1,3 @@
-export const sumByKey = (arr, key) =>
-  arr.reduce((acc, item) => acc + (item[key] || 0), 0);
+export function sumByKey(arr, property) {
+  return arr.reduce((sum, item) => sum + (item[property] || 0), 0);
+}
