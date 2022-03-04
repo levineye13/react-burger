@@ -18,7 +18,6 @@ function App() {
     main: [],
   });
   const [isOpenIngredientModal, setIsOpenIngredientModal] = useState(false);
-  const [isOpenOrderModal, setIsOpenOrderModal] = useState(false);
   const [currentIngredient, setCurrentIngredient] = useState(null);
   const [currentBun, setCurrentBun] = useState({});
   const [orderNumber, setOrderNumber] = useState(null);
@@ -48,32 +47,12 @@ function App() {
 
   function closeModals() {
     setIsOpenIngredientModal(false);
-    setIsOpenOrderModal(false);
+    setOrderNumber(null);
   }
 
   function handleIngredientClick(ingredient) {
     setCurrentIngredient(ingredient);
     setIsOpenIngredientModal(true);
-  }
-
-  async function handleOrderClick(ingredientsId) {
-    const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
-      method: HTTP_METHOD.post,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsId,
-      }),
-    });
-
-    if (!res.ok) {
-      throw new Error(`${res.status} - ${res.statusText}`);
-    }
-
-    setIsOpenOrderModal(true);
-
-    return res.json();
   }
 
   // const provider = React.useMemo(
@@ -97,10 +76,7 @@ function App() {
             onIngredientClick={handleIngredientClick}
             onClose={closeModals}
           />
-          <BurgerConstructor
-            onButtonClick={() => {}}
-            setOrderNumber={setOrderNumber}
-          />
+          <BurgerConstructor setOrderNumber={setOrderNumber} />
         </main>
       </IngredientsContext.Provider>
       {isOpenIngredientModal && (
@@ -108,7 +84,7 @@ function App() {
           <IngredientDetails {...currentIngredient} />
         </Modal>
       )}
-      {isOpenOrderModal && orderNumber && (
+      {orderNumber && (
         <Modal onClose={closeModals}>
           <OrderDetails orderNumber={orderNumber} />
         </Modal>

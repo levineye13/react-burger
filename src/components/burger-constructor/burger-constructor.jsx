@@ -16,8 +16,9 @@ import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/IngredientsContext';
 import Price from '../price/price';
 import { sumByKey } from '../../utils/utils';
+import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
 
-function BurgerConstructor({ onButtonClick, setOrderNumber }) {
+function BurgerConstructor({ setOrderNumber }) {
   const { ingredients, currentBun } = useContext(IngredientsContext);
 
   const [selectedIngredients, setSelectedIngredients] = useState([]);
@@ -26,7 +27,7 @@ function BurgerConstructor({ onButtonClick, setOrderNumber }) {
   useEffect(() => {
     setSelectedIngredients([
       ...ingredients.sauce.slice(0, 2),
-      ...ingredients.main.slice(0, 3),
+      ...ingredients.main.slice(0, 4),
     ]);
   }, [JSON.stringify(ingredients)]);
 
@@ -34,10 +35,25 @@ function BurgerConstructor({ onButtonClick, setOrderNumber }) {
     const ids = selectedIngredients.map((ingredient) => ingredient._id);
 
     try {
-      const res = await onButtonClick(ids);
+      const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
+        method: HTTP_METHOD.post,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ingredients: ids,
+        }),
+      });
 
-      if (res.success) {
-        setOrderNumber(res.order.number);
+      if (!res.ok) {
+        setOrderNumber(null);
+        throw new Error(`${res.status} - ${res.statusText}`);
+      }
+
+      const dataOrder = await res.json();
+
+      if (dataOrder.success) {
+        setOrderNumber(dataOrder.order.number);
       } else {
         setOrderNumber(null);
       }
@@ -114,7 +130,6 @@ function BurgerConstructor({ onButtonClick, setOrderNumber }) {
 }
 
 BurgerConstructor.propTypes = {
-  onButtonClick: PropTypes.func.isRequired,
   setOrderNumber: PropTypes.func.isRequired,
 };
 
