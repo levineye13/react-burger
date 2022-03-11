@@ -1,16 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 
 import styles from './burger-ingredients.module.css';
-import { IngredientsContext } from '../../services/IngredientsContext';
 import Ingredient from '../ingredient/ingredient';
 import { TABS } from '../../utils/constants';
+import { openIngredient } from '../../services/actions';
 
-function BurgerIngredients({ onIngredientClick }) {
+function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState(TABS.one);
 
-  const { bun = [], sauce = [], main = [] } = useContext(IngredientsContext);
+  const dispatch = useDispatch();
+  const { bun, sauce, main } = useSelector(
+    (state) => state.ingredients.sortedIngredients
+  );
+
+  function handleIngredientClick(ingredient) {
+    dispatch(openIngredient(ingredient));
+  }
 
   const { one, two, three } = TABS;
 
@@ -54,7 +61,7 @@ function BurgerIngredients({ onIngredientClick }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {bun.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={onIngredientClick} {...item} />
+                <Ingredient onClick={handleIngredientClick} {...item} />
               </li>
             ))}
           </ul>
@@ -64,7 +71,7 @@ function BurgerIngredients({ onIngredientClick }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {sauce.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={onIngredientClick} {...item} />
+                <Ingredient onClick={handleIngredientClick} {...item} />
               </li>
             ))}
           </ul>
@@ -74,7 +81,7 @@ function BurgerIngredients({ onIngredientClick }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {main.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={onIngredientClick} {...item} />
+                <Ingredient onClick={handleIngredientClick} {...item} />
               </li>
             ))}
           </ul>
@@ -83,9 +90,5 @@ function BurgerIngredients({ onIngredientClick }) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  onIngredientClick: PropTypes.func.isRequired,
-};
 
 export default BurgerIngredients;

@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ConstructorElement,
   DragIcon,
@@ -7,30 +7,17 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-constructor.module.css';
-import { IngredientsContext } from '../../services/IngredientsContext';
-import { CurrentBunContext } from '../../services/CurrentBunContext';
 import Price from '../price/price';
 import { sumByKey } from '../../utils/utils';
 import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
+import { openOrder, closeOrder } from '../../services/actions';
 
-function BurgerConstructor({ setOrderNumber }) {
-  const ingredients = useContext(IngredientsContext);
-  const currentBun = useContext(CurrentBunContext);
-
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
-
-  //! Временно (useEffect), пока функционала выбора ингредиентов нет
-  useEffect(() => {
-    if (ingredients) {
-      setSelectedIngredients([
-        ...ingredients.sauce.slice(0, 2),
-        ...ingredients.main.slice(0, 4),
-      ]);
-    }
-  }, [JSON.stringify(ingredients)]);
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
 
   async function handleButtonClick() {
-    const ids = selectedIngredients.map((ingredient) => ingredient._id);
+    const ids = ingredients.map((ingredient) => ingredient._id);
 
     try {
       const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
@@ -44,16 +31,21 @@ function BurgerConstructor({ setOrderNumber }) {
       });
 
       if (!res.ok) {
-        setOrderNumber(null);
+        dispatch(closeOrder());
         throw new Error(`${res.status} - ${res.statusText}`);
       }
 
       const dataOrder = await res.json();
 
       if (dataOrder.success) {
-        setOrderNumber(dataOrder.order.number);
+        dispatch(
+          openOrder({
+            name: dataOrder.name,
+            number: dataOrder.order.number,
+          })
+        );
       } else {
-        setOrderNumber(null);
+        dispatch(closeOrder());
       }
     } catch (e) {
       console.error(e);
@@ -65,8 +57,8 @@ function BurgerConstructor({ setOrderNumber }) {
   }
 
   const sum = useMemo(() => {
-    return calculatePrice(selectedIngredients, 'price', currentBun);
-  }, [currentBun, selectedIngredients]);
+    return calculatePrice(ingredients, 'price', bun);
+  }, [bun, ingredients]);
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
@@ -74,14 +66,14 @@ function BurgerConstructor({ setOrderNumber }) {
         <li className={`${styles.item} mr-4`}>
           <ConstructorElement
             type="top"
-            thumbnail={currentBun.image || ''}
-            text={`${currentBun.name || ''} (верх)`}
-            price={currentBun.price || 0}
+            thumbnail={bun.image || ''}
+            text={`${bun.name || ''} (верх)`}
+            price={bun.price || 0}
             isLocked={true}
           />
         </li>
         <ul className={styles.sublist}>
-          {selectedIngredients.map((item, index) => (
+          {ingredients.map((item) => (
             <li key={item._id} className={`${styles.subitem} mr-2`}>
               <DragIcon type="primary" />
               <ConstructorElement
@@ -97,9 +89,9 @@ function BurgerConstructor({ setOrderNumber }) {
         <li className={`${styles.item} mr-4`}>
           <ConstructorElement
             type="bottom"
-            thumbnail={currentBun.image || ''}
-            text={`${currentBun.name || ''} (низ)`}
-            price={currentBun.price || 0}
+            thumbnail={bun.image || ''}
+            text={`${bun.name || ''} (низ)`}
+            price={bun.price || 0}
             isLocked={true}
           />
         </li>
@@ -123,9 +115,5 @@ function BurgerConstructor({ setOrderNumber }) {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  setOrderNumber: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;
