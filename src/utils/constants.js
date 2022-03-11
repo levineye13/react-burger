@@ -7,6 +7,11 @@ export const HTTP_METHOD = {
   get: 'GET',
   post: 'POST',
 };
+
+export const HEADERS = {
+  'Content-Type': 'application/json',
+};
+
 export const modalContainer = document.getElementById('modal');
 export const ESC_CODE = 27;
 
