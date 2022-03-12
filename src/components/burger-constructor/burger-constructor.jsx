@@ -5,16 +5,38 @@ import {
   DragIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDrop } from 'react-dnd';
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from './burger-constructor.module.css';
 import Price from '../price/price';
 import { sumByKey } from '../../utils/utils';
-import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
-import { openOrder, closeOrder } from '../../services/actions';
+import {
+  API_BASE_URL,
+  API_ENDPOINT,
+  HTTP_METHOD,
+  HEADERS,
+} from '../../utils/constants';
+import {
+  openOrder,
+  closeOrder,
+  addIngredient,
+  deleteIngredient,
+  increment,
+  decrement,
+} from '../../services/actions';
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
+
+  const [, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(ingredient) {
+      dispatch(addIngredient(ingredient));
+      dispatch(increment(ingredient));
+    },
+  });
 
   async function handleButtonClick() {
     const ids = ingredients.map((ingredient) => ingredient._id);
@@ -22,9 +44,7 @@ function BurgerConstructor() {
     try {
       const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
         method: HTTP_METHOD.post,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           ingredients: ids,
         }),
@@ -52,6 +72,11 @@ function BurgerConstructor() {
     }
   }
 
+  function handleDelete(item) {
+    dispatch(deleteIngredient(item._id));
+    dispatch(decrement(item));
+  }
+
   function calculatePrice(arr, property, bun) {
     return sumByKey(arr, property) + (bun[property] || 0) * 2;
   }
@@ -62,7 +87,7 @@ function BurgerConstructor() {
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
-      <ul className={styles.list}>
+      <ul className={styles.list} ref={dropTarget}>
         <li className={`${styles.item} mr-4`}>
           <ConstructorElement
             type="top"
@@ -74,7 +99,7 @@ function BurgerConstructor() {
         </li>
         <ul className={styles.sublist}>
           {ingredients.map((item) => (
-            <li key={item._id} className={`${styles.subitem} mr-2`}>
+            <li key={uuidv4()} className={`${styles.subitem} mr-2`}>
               <DragIcon type="primary" />
               <ConstructorElement
                 type={undefined}
@@ -82,6 +107,7 @@ function BurgerConstructor() {
                 text={item.name}
                 price={item.price}
                 isLocked={false}
+                handleClose={() => handleDelete(item)}
               />
             </li>
           ))}
