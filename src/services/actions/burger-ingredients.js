@@ -2,6 +2,8 @@ import { HTTP_METHOD, HEADERS } from '../../utils/constants';
 
 export const SET_INGREDIENTS = 'SET_INGREDIENTS';
 export const SET_SORTED_INGREDIENTS = 'SET_SORTED_INGREDIENTS';
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
 
 export const setIngredients = (url) => async (dispatch) => {
   try {
@@ -24,5 +26,15 @@ export const setIngredients = (url) => async (dispatch) => {
 
 export const setSortedIngredients = (payload) => ({
   type: SET_SORTED_INGREDIENTS,
+  payload,
+});
+
+export const increment = (payload) => ({
+  type: INCREMENT,
+  payload,
+});
+
+export const decrement = (payload) => ({
+  type: DECREMENT,
   payload,
 });
