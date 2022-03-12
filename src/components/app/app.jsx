@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -49,12 +51,6 @@ function App() {
     const filteredIngredients = filterIngredients(ingredients);
 
     dispatch(setSortedIngredients(filteredIngredients));
-
-    //! Временно, пока функционала выбора булочки нет
-    if (filteredIngredients.bun[0]) {
-      dispatch(setCurrentBun(filteredIngredients.bun[0]));
-      dispatch(setSelectedIngredients(ingredients.slice(3, 6)));
-    }
   }, [ingredients, dispatch]);
 
   function closeModals() {
@@ -66,8 +62,10 @@ function App() {
     <div className={styles.page}>
       <AppHeader />
       <main className={`${styles.main} pb-10`}>
-        <BurgerIngredients />
-        <BurgerConstructor />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
       {currentIngredient.isOpen && (
         <Modal onClose={closeModals} title="Детали ингредиента">
