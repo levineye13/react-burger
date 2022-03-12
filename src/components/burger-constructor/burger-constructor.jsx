@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   ConstructorElement,
-  DragIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrop } from 'react-dnd';
@@ -10,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import styles from './burger-constructor.module.css';
 import Price from '../price/price';
+import ConstructorIngredient from '../constructor-ingredient/constructor-ingredient';
 import { sumByKey } from '../../utils/utils';
 import {
   API_BASE_URL,
@@ -98,18 +98,14 @@ function BurgerConstructor() {
           />
         </li>
         <ul className={styles.sublist}>
-          {ingredients.map((item) => (
-            <li key={uuidv4()} className={`${styles.subitem} mr-2`}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                type={undefined}
-                thumbnail={item.image}
-                text={item.name}
-                price={item.price}
-                isLocked={false}
-                handleClose={() => handleDelete(item)}
-              />
-            </li>
+          {ingredients.map((item, index) => (
+            <ConstructorIngredient
+              key={uuidv4()}
+              handleDelete={handleDelete}
+              className={`${styles.subitem} mr-2`}
+              index={index}
+              {...item}
+            />
           ))}
         </ul>
         <li className={`${styles.item} mr-4`}>

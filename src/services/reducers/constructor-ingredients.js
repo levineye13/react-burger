@@ -3,6 +3,7 @@ import {
   SET_CURRENT_BUN,
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
+  MOVE_INGREDIENT,
 } from '../actions';
 
 import { INGREDIENT_TYPE } from '../../utils/constants';
@@ -50,6 +51,23 @@ export const burgerConstructorReducer = (
                 ...state.ingredients.slice(index + 1),
               ]
             : state.ingredients,
+      };
+    }
+
+    case MOVE_INGREDIENT: {
+      const { dragIndex, targetIndex } = action.payload;
+      const dragCard = state.ingredients[dragIndex];
+      const newIngredients = [...state.ingredients];
+
+      newIngredients.splice(dragIndex, 1);
+      newIngredients.splice(targetIndex, 0, dragCard);
+
+      return {
+        ...state,
+        bun: {
+          ...state.bun,
+        },
+        ingredients: newIngredients,
       };
     }
 
