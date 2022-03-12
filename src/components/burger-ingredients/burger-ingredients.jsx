@@ -16,6 +16,7 @@ function BurgerIngredients() {
   const { bun, sauce, main } = useSelector(
     (state) => state.ingredients.sortedIngredients
   );
+  const { ingredientsCount } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
     const listElement = sectionRef.current.children[2];
@@ -87,7 +88,11 @@ function BurgerIngredients() {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {bun.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={handleIngredientClick} {...item} />
+                <Ingredient
+                  onClick={handleIngredientClick}
+                  count={ingredientsCount.bun[item._id]}
+                  {...item}
+                />
               </li>
             ))}
           </ul>
@@ -97,7 +102,11 @@ function BurgerIngredients() {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {sauce.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={handleIngredientClick} {...item} />
+                <Ingredient
+                  onClick={handleIngredientClick}
+                  count={ingredientsCount[item._id]}
+                  {...item}
+                />
               </li>
             ))}
           </ul>
@@ -107,7 +116,11 @@ function BurgerIngredients() {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {main.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={handleIngredientClick} {...item} />
+                <Ingredient
+                  onClick={handleIngredientClick}
+                  count={ingredientsCount[item._id]}
+                  {...item}
+                />
               </li>
             ))}
           </ul>
