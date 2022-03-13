@@ -15,8 +15,6 @@ import {
   setIngredients,
   setSortedIngredients,
   closeIngredient,
-  setCurrentBun,
-  setSelectedIngredients,
   closeOrder,
 } from '../../services/actions';
 
