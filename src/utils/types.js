@@ -5,6 +5,7 @@ export const ingredientPropTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  handleDelete: PropTypes.func,
   type: PropTypes.string.isRequired,
 };
