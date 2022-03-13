@@ -101,6 +101,7 @@ function BurgerConstructor() {
           size="large"
           htmlType="submit"
           onClick={handleButtonClick}
+          disabled={!bun.image}
         >
           Оформить заказ
         </Button>
