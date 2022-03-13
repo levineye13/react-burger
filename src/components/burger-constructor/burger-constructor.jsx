@@ -12,18 +12,11 @@ import Price from '../price/price';
 import ConstructorIngredient from '../constructor-ingredient/constructor-ingredient';
 import { sumByKey } from '../../utils/utils';
 import {
-  API_BASE_URL,
-  API_ENDPOINT,
-  HTTP_METHOD,
-  HEADERS,
-} from '../../utils/constants';
-import {
-  openOrder,
-  closeOrder,
   addIngredient,
   deleteIngredient,
   increment,
   decrement,
+  makeOrder,
 } from '../../services/actions';
 
 function BurgerConstructor() {
@@ -39,37 +32,8 @@ function BurgerConstructor() {
   });
 
   async function handleButtonClick() {
-    const ids = ingredients.map((ingredient) => ingredient._id);
-
-    try {
-      const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
-        method: HTTP_METHOD.post,
-        headers: HEADERS,
-        body: JSON.stringify({
-          ingredients: ids,
-        }),
-      });
-
-      if (!res.ok) {
-        dispatch(closeOrder());
-        throw new Error(`${res.status} - ${res.statusText}`);
-      }
-
-      const dataOrder = await res.json();
-
-      if (dataOrder.success) {
-        dispatch(
-          openOrder({
-            name: dataOrder.name,
-            number: dataOrder.order.number,
-          })
-        );
-      } else {
-        dispatch(closeOrder());
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    const ingredientsId = ingredients.map((ingredient) => ingredient._id);
+    dispatch(makeOrder(ingredientsId));
   }
 
   function handleDelete(item) {
