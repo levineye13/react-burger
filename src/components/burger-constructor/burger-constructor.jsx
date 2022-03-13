@@ -17,6 +17,9 @@ import {
   decrement,
   makeOrder,
 } from '../../services/actions';
+import { INGREDIENT_TYPE } from '../../utils/constants';
+
+const { bun: bunType } = INGREDIENT_TYPE;
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -25,8 +28,10 @@ function BurgerConstructor() {
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
     drop(ingredient) {
-      dispatch(addIngredient(ingredient));
-      dispatch(increment(ingredient));
+      if (ingredient.type === bunType || bun._id !== undefined) {
+        dispatch(addIngredient(ingredient));
+        dispatch(increment(ingredient));
+      }
     },
   });
 
