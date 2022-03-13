@@ -5,7 +5,7 @@ import {
   HTTP_METHOD,
   HEADERS,
 } from '../../utils/constants';
-import { clearIngredients } from './';
+import { clearIngredients, clearCounters } from './';
 
 export const openOrder = (payload) => ({ type: OPEN_ORDER, payload });
 
@@ -36,6 +36,7 @@ export const makeOrder = (ingredientsId) => async (dispatch) => {
         })
       );
       dispatch(clearIngredients());
+      dispatch(clearCounters());
     } else {
       dispatch(closeOrder());
     }

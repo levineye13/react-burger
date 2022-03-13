@@ -3,6 +3,7 @@ import {
   SET_SORTED_INGREDIENTS,
   INCREMENT,
   DECREMENT,
+  CLEAR_COUNTERS,
 } from '../action-types';
 import { HTTP_METHOD, HEADERS } from '../../utils/constants';
 
@@ -39,3 +40,5 @@ export const decrement = (payload) => ({
   type: DECREMENT,
   payload,
 });
+
+export const clearCounters = () => ({ type: CLEAR_COUNTERS });

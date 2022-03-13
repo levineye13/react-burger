@@ -3,6 +3,7 @@ import {
   SET_SORTED_INGREDIENTS,
   INCREMENT,
   DECREMENT,
+  CLEAR_COUNTERS,
 } from '../action-types';
 
 const initialIngredients = {
@@ -68,6 +69,12 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         },
       };
     }
+
+    case CLEAR_COUNTERS:
+      return {
+        ...state,
+        ingredientsCount: initialIngredients.ingredientsCount,
+      };
 
     default:
       return state;
