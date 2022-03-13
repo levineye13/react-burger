@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   SET_SELECTED_INGREDIENTS,
   SET_CURRENT_BUN,
@@ -13,7 +15,10 @@ export const setSelectedIngredients = (payload) => ({
 
 export const setCurrentBun = (payload) => ({ type: SET_CURRENT_BUN, payload });
 
-export const addIngredient = (payload) => ({ type: ADD_INGREDIENT, payload });
+export const addIngredient = (payload) => ({
+  type: ADD_INGREDIENT,
+  payload: { ...payload, uuid: uuidv4() },
+});
 
 export const deleteIngredient = (payload) => ({
   type: DELETE_INGREDIENT,

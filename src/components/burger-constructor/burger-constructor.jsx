@@ -5,7 +5,6 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrop } from 'react-dnd';
-import { v4 as uuidv4 } from 'uuid';
 
 import styles from './burger-constructor.module.css';
 import Price from '../price/price';
@@ -66,7 +65,7 @@ function BurgerConstructor() {
             <ul className={styles.sublist}>
               {ingredients.map((item, index) => (
                 <ConstructorIngredient
-                  key={uuidv4()}
+                  key={item.uuid}
                   handleDelete={handleDelete}
                   className={`${styles.subitem} mr-2`}
                   index={index}
