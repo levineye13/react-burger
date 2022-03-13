@@ -3,7 +3,7 @@ import {
   SET_SORTED_INGREDIENTS,
   INCREMENT,
   DECREMENT,
-} from '../actions';
+} from '../action-types';
 
 const initialIngredients = {
   list: [],

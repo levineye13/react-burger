@@ -4,7 +4,7 @@ import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
-} from '../actions';
+} from '../action-types';
 
 import { INGREDIENT_TYPE } from '../../utils/constants';
 

@@ -1,4 +1,4 @@
-import { OPEN_ORDER, CLOSE_ORDER } from '../actions';
+import { OPEN_ORDER, CLOSE_ORDER } from '../action-types';
 
 const initialOrder = {
   isOpen: false,

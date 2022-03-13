@@ -1,4 +1,4 @@
-import { OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../actions';
+import { OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../action-types';
 
 const initialCurrentIngredient = {
   isOpen: false,
