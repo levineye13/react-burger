@@ -88,35 +88,43 @@ function BurgerConstructor() {
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
       <ul className={styles.list} ref={dropTarget}>
-        <li className={`${styles.item} mr-4`}>
-          <ConstructorElement
-            type="top"
-            thumbnail={bun.image || ''}
-            text={`${bun.name || ''} (верх)`}
-            price={bun.price || 0}
-            isLocked={true}
-          />
-        </li>
-        <ul className={styles.sublist}>
-          {ingredients.map((item, index) => (
-            <ConstructorIngredient
-              key={uuidv4()}
-              handleDelete={handleDelete}
-              className={`${styles.subitem} mr-2`}
-              index={index}
-              {...item}
-            />
-          ))}
-        </ul>
-        <li className={`${styles.item} mr-4`}>
-          <ConstructorElement
-            type="bottom"
-            thumbnail={bun.image || ''}
-            text={`${bun.name || ''} (низ)`}
-            price={bun.price || 0}
-            isLocked={true}
-          />
-        </li>
+        {bun.image ? (
+          <>
+            <li className={`${styles.item} mr-4`}>
+              <ConstructorElement
+                type="top"
+                thumbnail={bun.image || ''}
+                text={`${bun.name || ''} (верх)`}
+                price={bun.price || 0}
+                isLocked={true}
+              />
+            </li>
+            <ul className={styles.sublist}>
+              {ingredients.map((item, index) => (
+                <ConstructorIngredient
+                  key={uuidv4()}
+                  handleDelete={handleDelete}
+                  className={`${styles.subitem} mr-2`}
+                  index={index}
+                  {...item}
+                />
+              ))}
+            </ul>
+            <li className={`${styles.item} mr-4`}>
+              <ConstructorElement
+                type="bottom"
+                thumbnail={bun.image || ''}
+                text={`${bun.name || ''} (низ)`}
+                price={bun.price || 0}
+                isLocked={true}
+              />
+            </li>
+          </>
+        ) : (
+          <p className={`${styles.prompt} text text_type_main-medium`}>
+            Добавьте булочку
+          </p>
+        )}
       </ul>
       <div className={`${styles.sum} mt-10`}>
         <Price
