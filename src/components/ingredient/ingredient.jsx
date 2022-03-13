@@ -6,14 +6,14 @@ import styles from './ingredient.module.css';
 import Price from '../price/price';
 import { ingredientPropTypes } from '../../utils/types';
 
-function Ingredient({ onClick, count, name, image, price }) {
+function Ingredient({ onClick, count, ...props }) {
   const [, ingredientRef] = useDrag({
     type: 'ingredient',
-    item: { name, image, price },
+    item: props,
   });
 
   function handleClick() {
-    onClick({ name, image, price });
+    onClick(props);
   }
 
   return (
@@ -25,11 +25,11 @@ function Ingredient({ onClick, count, name, image, price }) {
     >
       <figure className={styles.figure}>
         {count && <Counter count={count} />}
-        <img src={image} alt={name} />
+        <img src={props.image} alt={props.name} />
         <figcaption>
-          <Price price={price} />
+          <Price price={props.price} />
           <p className={`${styles.name} text text_type_main-default mt-1`}>
-            {name}
+            {props.name}
           </p>
         </figcaption>
       </figure>
