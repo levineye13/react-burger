@@ -4,6 +4,7 @@ import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
+  CLEAR_INGREDIENTS,
 } from '../action-types';
 
 import { INGREDIENT_TYPE } from '../../utils/constants';
@@ -70,6 +71,9 @@ export const burgerConstructorReducer = (
         ingredients: newIngredients,
       };
     }
+
+    case CLEAR_INGREDIENTS:
+      return initialSelectedIngredients;
 
     default:
       return state;

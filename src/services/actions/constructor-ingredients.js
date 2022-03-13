@@ -6,6 +6,7 @@ import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
+  CLEAR_INGREDIENTS,
 } from '../action-types';
 
 export const setSelectedIngredients = (payload) => ({
@@ -26,3 +27,5 @@ export const deleteIngredient = (payload) => ({
 });
 
 export const moveIngredient = (payload) => ({ type: MOVE_INGREDIENT, payload });
+
+export const clearIngredients = () => ({ type: CLEAR_INGREDIENTS });
