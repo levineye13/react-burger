@@ -1,19 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './ingredient.module.css';
 import Price from '../price/price';
+import { ingredientPropTypes } from '../../utils/types';
 
-function Ingredient({ onClick, count, ...props }) {
+function Ingredient({ onClick, count, name, image, price }) {
   const [, ingredientRef] = useDrag({
     type: 'ingredient',
-    item: { ...props },
+    item: { name, image, price },
   });
 
   function handleClick() {
-    onClick(props);
+    onClick({ name, image, price });
   }
 
   return (
@@ -25,11 +25,11 @@ function Ingredient({ onClick, count, ...props }) {
     >
       <figure className={styles.figure}>
         {count && <Counter count={count} />}
-        <img src={props.image} alt={props.name} />
+        <img src={image} alt={name} />
         <figcaption>
-          <Price price={props.price} />
+          <Price price={price} />
           <p className={`${styles.name} text text_type_main-default mt-1`}>
-            {props.name}
+            {name}
           </p>
         </figcaption>
       </figure>
@@ -37,13 +37,6 @@ function Ingredient({ onClick, count, ...props }) {
   );
 }
 
-Ingredient.propTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
-};
+Ingredient.propTypes = ingredientPropTypes;
 
 export default Ingredient;

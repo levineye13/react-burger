@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { useDrag, useDrop } from 'react-dnd';
 import {
   ConstructorElement,
@@ -8,6 +7,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { moveIngredient } from '../../services/actions';
+import { ingredientPropTypes } from '../../utils/types';
 
 function ConstructorIngredient({ handleDelete, className, index, ...props }) {
   const ref = useRef(null);
@@ -53,13 +53,6 @@ function ConstructorIngredient({ handleDelete, className, index, ...props }) {
   );
 }
 
-ConstructorIngredient.propTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
-};
+ConstructorIngredient.propTypes = ingredientPropTypes;
 
 export default ConstructorIngredient;
