@@ -1,5 +1,4 @@
-export const OPEN_INGREDIENT = 'OPEN_INGREDIENT';
-export const CLOSE_INGREDIENT = 'CLOSE_INGREDIENT';
+import { OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../action-types';
 
 export const openIngredient = (payload) => ({ type: OPEN_INGREDIENT, payload });
 

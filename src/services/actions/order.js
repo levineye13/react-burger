@@ -1,5 +1,4 @@
-export const OPEN_ORDER = 'OPEN_ORDER';
-export const CLOSE_ORDER = 'CLOSE_ORDER';
+import { OPEN_ORDER, CLOSE_ORDER } from '../action-types';
 
 export const openOrder = (payload) => ({ type: OPEN_ORDER, payload });
 

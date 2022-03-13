@@ -1,8 +1,10 @@
-export const SET_SELECTED_INGREDIENTS = 'SET_SELECTED_INGREDIENTS';
-export const SET_CURRENT_BUN = 'SET_CURRENT_BUN';
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
-export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
+import {
+  SET_SELECTED_INGREDIENTS,
+  SET_CURRENT_BUN,
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  MOVE_INGREDIENT,
+} from '../action-types';
 
 export const setSelectedIngredients = (payload) => ({
   type: SET_SELECTED_INGREDIENTS,
