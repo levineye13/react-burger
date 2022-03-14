@@ -1,21 +1,55 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 
 import styles from './burger-ingredients.module.css';
-import { IngredientsContext } from '../../services/IngredientsContext';
 import Ingredient from '../ingredient/ingredient';
 import { TABS } from '../../utils/constants';
+import { openIngredient } from '../../services/actions';
 
-function BurgerIngredients({ onIngredientClick }) {
+function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState(TABS.one);
+  const sectionRef = useRef();
 
-  const { bun = [], sauce = [], main = [] } = useContext(IngredientsContext);
+  const dispatch = useDispatch();
+
+  const { bun, sauce, main } = useSelector(
+    (state) => state.ingredients.sortedIngredients
+  );
+  const { ingredientsCount } = useSelector((state) => state.ingredients);
+
+  useEffect(() => {
+    const listElement = sectionRef.current.children[2];
+
+    function handleScroll() {
+      const { children } = listElement;
+
+      const buns = children[0].firstChild.getBoundingClientRect();
+      const sauce = children[1].firstChild.getBoundingClientRect();
+      const main = children[2].firstChild.getBoundingClientRect();
+
+      if (buns.top < sauce.top && buns.top > 0) {
+        setCurrentTab(one);
+      } else if (sauce.top < main.top && sauce.top > 0) {
+        setCurrentTab(two);
+      } else {
+        setCurrentTab(three);
+      }
+    }
+
+    listElement.addEventListener('scroll', handleScroll);
+
+    return () => listElement.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  function handleIngredientClick(ingredient) {
+    dispatch(openIngredient(ingredient));
+  }
 
   const { one, two, three } = TABS;
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} ref={sectionRef}>
       <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
       <nav className="mt-5">
         <ul className={`${styles.menu} ${styles.reset}`}>
@@ -54,7 +88,11 @@ function BurgerIngredients({ onIngredientClick }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {bun.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={onIngredientClick} {...item} />
+                <Ingredient
+                  onClick={handleIngredientClick}
+                  count={ingredientsCount.bun[item._id]}
+                  {...item}
+                />
               </li>
             ))}
           </ul>
@@ -64,7 +102,11 @@ function BurgerIngredients({ onIngredientClick }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {sauce.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={onIngredientClick} {...item} />
+                <Ingredient
+                  onClick={handleIngredientClick}
+                  count={ingredientsCount[item._id]}
+                  {...item}
+                />
               </li>
             ))}
           </ul>
@@ -74,7 +116,11 @@ function BurgerIngredients({ onIngredientClick }) {
           <ul className={`${styles.sublist} ${styles.reset}`}>
             {main.map((item) => (
               <li key={item._id}>
-                <Ingredient onClick={onIngredientClick} {...item} />
+                <Ingredient
+                  onClick={handleIngredientClick}
+                  count={ingredientsCount[item._id]}
+                  {...item}
+                />
               </li>
             ))}
           </ul>
@@ -83,9 +129,5 @@ function BurgerIngredients({ onIngredientClick }) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  onIngredientClick: PropTypes.func.isRequired,
-};
 
 export default BurgerIngredients;

@@ -1,63 +1,48 @@
-import React, { useEffect, useContext, useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ConstructorElement,
-  DragIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDrop } from 'react-dnd';
 
 import styles from './burger-constructor.module.css';
-import { IngredientsContext } from '../../services/IngredientsContext';
-import { CurrentBunContext } from '../../services/CurrentBunContext';
 import Price from '../price/price';
+import ConstructorIngredient from '../constructor-ingredient/constructor-ingredient';
 import { sumByKey } from '../../utils/utils';
-import { API_BASE_URL, API_ENDPOINT, HTTP_METHOD } from '../../utils/constants';
+import {
+  addIngredient,
+  deleteIngredient,
+  increment,
+  decrement,
+  makeOrder,
+} from '../../services/actions';
+import { INGREDIENT_TYPE } from '../../utils/constants';
 
-function BurgerConstructor({ setOrderNumber }) {
-  const ingredients = useContext(IngredientsContext);
-  const currentBun = useContext(CurrentBunContext);
+const { bun: bunType } = INGREDIENT_TYPE;
 
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
 
-  //! Временно (useEffect), пока функционала выбора ингредиентов нет
-  useEffect(() => {
-    if (ingredients) {
-      setSelectedIngredients([
-        ...ingredients.sauce.slice(0, 2),
-        ...ingredients.main.slice(0, 4),
-      ]);
-    }
-  }, [JSON.stringify(ingredients)]);
+  const [, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(ingredient) {
+      if (ingredient.type === bunType || bun._id !== undefined) {
+        dispatch(addIngredient(ingredient));
+        dispatch(increment(ingredient));
+      }
+    },
+  });
 
   async function handleButtonClick() {
-    const ids = selectedIngredients.map((ingredient) => ingredient._id);
+    const ingredientsId = ingredients.map((ingredient) => ingredient._id);
+    dispatch(makeOrder(ingredientsId));
+  }
 
-    try {
-      const res = await fetch(`${API_BASE_URL}${API_ENDPOINT.orders}`, {
-        method: HTTP_METHOD.post,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ingredients: ids,
-        }),
-      });
-
-      if (!res.ok) {
-        setOrderNumber(null);
-        throw new Error(`${res.status} - ${res.statusText}`);
-      }
-
-      const dataOrder = await res.json();
-
-      if (dataOrder.success) {
-        setOrderNumber(dataOrder.order.number);
-      } else {
-        setOrderNumber(null);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  function handleDelete(item) {
+    dispatch(deleteIngredient(item._id));
+    dispatch(decrement(item));
   }
 
   function calculatePrice(arr, property, bun) {
@@ -65,44 +50,49 @@ function BurgerConstructor({ setOrderNumber }) {
   }
 
   const sum = useMemo(() => {
-    return calculatePrice(selectedIngredients, 'price', currentBun);
-  }, [currentBun, selectedIngredients]);
+    return calculatePrice(ingredients, 'price', bun);
+  }, [bun, ingredients]);
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
-      <ul className={styles.list}>
-        <li className={`${styles.item} mr-4`}>
-          <ConstructorElement
-            type="top"
-            thumbnail={currentBun.image || ''}
-            text={`${currentBun.name || ''} (верх)`}
-            price={currentBun.price || 0}
-            isLocked={true}
-          />
-        </li>
-        <ul className={styles.sublist}>
-          {selectedIngredients.map((item, index) => (
-            <li key={item._id} className={`${styles.subitem} mr-2`}>
-              <DragIcon type="primary" />
+      <ul className={styles.list} ref={dropTarget}>
+        {bun.image ? (
+          <>
+            <li className={`${styles.item} mr-4`}>
               <ConstructorElement
-                type={undefined}
-                thumbnail={item.image}
-                text={item.name}
-                price={item.price}
-                isLocked={false}
+                type="top"
+                thumbnail={bun.image || ''}
+                text={`${bun.name || ''} (верх)`}
+                price={bun.price || 0}
+                isLocked={true}
               />
             </li>
-          ))}
-        </ul>
-        <li className={`${styles.item} mr-4`}>
-          <ConstructorElement
-            type="bottom"
-            thumbnail={currentBun.image || ''}
-            text={`${currentBun.name || ''} (низ)`}
-            price={currentBun.price || 0}
-            isLocked={true}
-          />
-        </li>
+            <ul className={styles.sublist}>
+              {ingredients.map((item, index) => (
+                <ConstructorIngredient
+                  key={item.uuid}
+                  handleDelete={handleDelete}
+                  className={`${styles.subitem} mr-2`}
+                  index={index}
+                  {...item}
+                />
+              ))}
+            </ul>
+            <li className={`${styles.item} mr-4`}>
+              <ConstructorElement
+                type="bottom"
+                thumbnail={bun.image || ''}
+                text={`${bun.name || ''} (низ)`}
+                price={bun.price || 0}
+                isLocked={true}
+              />
+            </li>
+          </>
+        ) : (
+          <p className={`${styles.prompt} text text_type_main-medium`}>
+            Добавьте булочку
+          </p>
+        )}
       </ul>
       <div className={`${styles.sum} mt-10`}>
         <Price
@@ -116,6 +106,7 @@ function BurgerConstructor({ setOrderNumber }) {
           size="large"
           htmlType="submit"
           onClick={handleButtonClick}
+          disabled={!bun.image}
         >
           Оформить заказ
         </Button>
@@ -123,9 +114,5 @@ function BurgerConstructor({ setOrderNumber }) {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  setOrderNumber: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;
