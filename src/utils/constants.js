@@ -1,8 +1,20 @@
 export const API_BASE_URL = 'https://norma.nomoreparties.space/api';
+
 export const API_ENDPOINT = {
   ingredients: '/ingredients',
   orders: '/orders',
 };
+
+export const PAGES = {
+  root: '/',
+  login: '/login',
+  register: '/register',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
+  profile: '/profile',
+  ingredients: '/ingredients',
+};
+
 export const HTTP_METHOD = {
   get: 'GET',
   post: 'POST',
