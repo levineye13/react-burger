@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
 
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -7,13 +8,20 @@ import Main from '../main/main';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
-import { API_BASE_URL, API_ENDPOINT } from '../../utils/constants';
+import Login from '../../pages/login/login';
+import Register from '../../pages/register/register';
+import Profile from '../../pages/profile/profile';
+import ForgotPassword from '../../pages/forgot-password/forgot-password';
+import ResetPassword from '../../pages/reset-password/reset-password';
+import { API_BASE_URL, API_ENDPOINT, PAGES } from '../../utils/constants';
 import {
   setIngredients,
   setSortedIngredients,
   closeIngredient,
   closeOrder,
 } from '../../services/actions';
+
+const { root, login, register, profile, forgotPassword, resetPassword } = PAGES;
 
 function App() {
   const dispatch = useDispatch();
@@ -56,7 +64,14 @@ function App() {
   return (
     <div className={styles.page}>
       <AppHeader />
-      <Main />
+      <Routes>
+        <Route path={root} element={<Main />} />
+        <Route path={login} element={<Login />} />
+        <Route path={register} element={<Register />} />
+        <Route path={profile} element={<Profile />} />
+        <Route path={forgotPassword} element={<ForgotPassword />} />
+        <Route path={resetPassword} element={<ResetPassword />} />
+      </Routes>
       {currentIngredient.isOpen && (
         <Modal onClose={closeModals} title="Детали ингредиента">
           <IngredientDetails {...currentIngredient} />
