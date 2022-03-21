@@ -1,13 +1,16 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-
-import styles from './app-header.module.css';
+import { Link } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import styles from './app-header.module.css';
+import { PAGES } from '../../utils/constants';
+
+const { profile } = PAGES;
 
 function AppHeader() {
   return (
@@ -16,42 +19,30 @@ function AppHeader() {
         <nav className={styles.nav}>
           <ul className={styles.list}>
             <li>
-              <a
-                className={`${styles.link} pt-4 pr-5 pb-4 pl-5`}
-                href="#"
-                target="_self"
-              >
+              <Link className={`${styles.link} pt-4 pr-5 pb-4 pl-5`} to="/">
                 <BurgerIcon type="primary" />
                 <span className="text text_type_main-default ml-2">
                   Конструктор
                 </span>
-              </a>
+              </Link>
             </li>
             <li className="ml-2">
-              <a
-                className={`${styles.link} pt-4 pr-5 pb-4 pl-5`}
-                href="#"
-                target="_self"
-              >
+              <Link className={`${styles.link} pt-4 pr-5 pb-4 pl-5`} to="/">
                 <ListIcon type="secondary" />
                 <span className="text text_type_main-default text_color_inactive ml-2">
                   Лента заказов
                 </span>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
         <Logo />
-        <a
-          className={`${styles.link} ${styles.account}`}
-          href="#"
-          target="_self"
-        >
+        <Link className={`${styles.link} ${styles.account}`} to={profile}>
           <ProfileIcon type="secondary" />
           <span className="text text_type_main-default text_color_inactive ml-2">
             Личный кабинет
           </span>
-        </a>
+        </Link>
       </div>
     </header>
   );
