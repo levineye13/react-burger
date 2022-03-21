@@ -1,0 +1,23 @@
+.form {
+  width: 100%;
+  max-width: 480px;
+}
+
+.fieldset {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fieldset > div:not(:first-child),
+.fieldset > button {
+  margin-top: 24px;
+}
+
+.fieldset > div,
+.fieldset > div > div {
+  width: 100%;
+}
