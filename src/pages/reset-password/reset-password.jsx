@@ -17,14 +17,15 @@ function ResetPassword() {
           type="password"
           name="password"
           placeholder="Введите новый пароль"
+          icon="ShowIcon"
         />
         <Input type="text" name="code" placeholder="Введите код из письма" />
-        <Button type="primary" htmlType="submit" size="small">
+        <Button type="primary" htmlType="submit" size="medium">
           Сохранить
         </Button>
       </Form>
-      <p>
-        Вспомнили пароль? <Link to={PAGES.login}>Войти</Link>
+      <p className="text text_type_main-default text_color_inactive mt-20">
+        Вспомнили пароль?&ensp;<Link to={PAGES.login}>Войти</Link>
       </p>
     </AuthenticationSection>
   );
