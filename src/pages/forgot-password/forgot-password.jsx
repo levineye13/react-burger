@@ -14,12 +14,12 @@ function ForgotPassword() {
     <AuthenticationSection title="Восстановление пароля">
       <Form name="forgotPassword">
         <Input type="email" name="email" placeholder="Укажите e-mail" />
-        <Button type="primary" htmlType="submit" size="small">
+        <Button type="primary" htmlType="submit" size="medium">
           Восстановить
         </Button>
       </Form>
-      <p>
-        Вспомнили пароль? <Link to={PAGES.login}>Войти</Link>
+      <p className="text text_type_main-default text_color_inactive mt-20">
+        Вспомнили пароль?&ensp;<Link to={PAGES.login}>Войти</Link>
       </p>
     </AuthenticationSection>
   );
