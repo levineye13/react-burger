@@ -22,15 +22,18 @@ function Login() {
           placeholder="Пароль"
           icon="ShowIcon"
         />
-        <Button type="primary" size="small">
+
+        <Button type="primary" size="medium" htmlType="submit">
           Войти
         </Button>
       </Form>
-      <p>
-        Вы — новый пользователь? <Link to={register}>Зарегистрироваться</Link>
+      <p className="text text_type_main-default text_color_inactive mt-20">
+        Вы — новый пользователь?&ensp;
+        <Link to={register}>Зарегистрироваться</Link>
       </p>
-      <p>
-        Забыли пароль? <Link to={forgotPassword}>Восстановить пароль</Link>
+      <p className="text text_type_main-default text_color_inactive mt-4">
+        Забыли пароль?&ensp;
+        <Link to={forgotPassword}>Восстановить пароль</Link>
       </p>
     </AuthenticationSection>
   );
