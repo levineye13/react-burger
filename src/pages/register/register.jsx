@@ -21,12 +21,12 @@ function Register() {
           placeholder="Пароль"
           icon="ShowIcon"
         />
-        <Button type="primary" htmlType="submit" size="small">
+        <Button type="primary" htmlType="submit" size="medium">
           Зарегистрироваться
         </Button>
       </Form>
-      <p>
-        Уже зарегистрированы? <Link to={PAGES.login}>Войти</Link>
+      <p className="text text_type_main-default text_color_inactive mt-20">
+        Уже зарегистрированы?&ensp;<Link to={PAGES.login}>Войти</Link>
       </p>
     </AuthenticationSection>
   );
