@@ -35,6 +35,11 @@ export const HEADERS = {
 
 export const AUTH_SCHEMA_TYPE = 'Bearer';
 
+export const TOKEN_TYPE = {
+  access: 'accessToken',
+  refresh: 'refreshToken',
+};
+
 export const modalContainer = document.getElementById('modal');
 export const ESC_CODE = 27;
 

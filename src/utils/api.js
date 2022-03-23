@@ -4,6 +4,7 @@ import {
   HTTP_METHOD,
   HEADERS,
   AUTH_SCHEMA_TYPE,
+  TOKEN_TYPE,
 } from './constants';
 
 import Cookie from './cookie';
@@ -17,6 +18,8 @@ const {
   refreshToken,
   user,
 } = API_ENDPOINT;
+
+const { access, refresh } = TOKEN_TYPE;
 
 class Api {
   constructor(baseUrl, { headers = {}, schemaType = '' }) {
@@ -78,8 +81,8 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set('accessToken', data.accessToken);
-        Cookie.set('refreshToken', data.refreshToken);
+        Cookie.set(access, data[access]);
+        Cookie.set(refresh, data[refresh]);
       }
 
       return data;
@@ -99,8 +102,8 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set('accessToken', data.accessToken);
-        Cookie.set('refreshToken', data.refreshToken);
+        Cookie.set(access, data[access]);
+        Cookie.set(refresh, data[refresh]);
       }
 
       return data;
@@ -120,7 +123,7 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set('accessToken', data.accessToken);
+        Cookie.set(access, data[access]);
       }
 
       return data;
@@ -140,8 +143,8 @@ class Api {
       const data = this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.delete('accessToken');
-        Cookie.delete('refreshToken');
+        Cookie.delete(access);
+        Cookie.delete(refresh);
       }
 
       return data;
@@ -156,7 +159,7 @@ class Api {
         method: HTTP_METHOD.get,
         headers: {
           ...this._headers,
-          authorization: `${this._schemaType} ${Cookie.get('accessToken')}`,
+          authorization: `${this._schemaType} ${Cookie.get(access)}`,
         },
       });
 
@@ -172,7 +175,7 @@ class Api {
         method: HTTP_METHOD.patch,
         headers: {
           ...this._headers,
-          authorization: `${this._schemaType} ${Cookie.get('accessToken')}`,
+          authorization: `${this._schemaType} ${Cookie.get(access)}`,
         },
         body: JSON.stringify({
           email,
