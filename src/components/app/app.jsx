@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -13,6 +13,7 @@ import Register from '../../pages/register/register';
 import Profile from '../../pages/profile/profile';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
+import ProtectedRoute from '../../hoc/protected-route';
 import { API_BASE_URL, API_ENDPOINT, PAGES } from '../../utils/constants';
 import {
   setIngredients,
@@ -64,14 +65,14 @@ function App() {
   return (
     <div className={styles.page}>
       <AppHeader />
-      <Routes>
-        <Route path={root} element={<Main />} />
-        <Route path={login} element={<Login />} />
-        <Route path={register} element={<Register />} />
-        <Route path={profile} element={<Profile />} />
-        <Route path={forgotPassword} element={<ForgotPassword />} />
-        <Route path={resetPassword} element={<ResetPassword />} />
-      </Routes>
+      <Switch>
+        <ProtectedRoute path={root} exact component={Main} />
+        <ProtectedRoute path={profile} component={Profile} />
+        <Route path={login} component={Login} />
+        <Route path={register} component={Register} />
+        <Route path={forgotPassword} component={ForgotPassword} />
+        <Route path={resetPassword} component={ResetPassword} />
+      </Switch>
       {currentIngredient.isOpen && (
         <Modal onClose={closeModals} title="Детали ингредиента">
           <IngredientDetails {...currentIngredient} />
