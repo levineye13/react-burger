@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   Input,
   Button,
@@ -10,6 +11,13 @@ import Form from '../../components/form/form';
 import { PAGES } from '../../utils/constants';
 
 function Register() {
+  const { isAuth } = useSelector((state) => state.user);
+  const { state } = useLocation();
+
+  if (isAuth) {
+    return <Redirect to={state?.from || PAGES.root} />;
+  }
+
   return (
     <AuthenticationSection title="Регистрация">
       <Form name="register">

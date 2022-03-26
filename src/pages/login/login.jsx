@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   Input,
   Button,
@@ -9,9 +10,16 @@ import AuthenticationSection from '../../components/authentication-section/authe
 import Form from '../../components/form/form';
 import { PAGES } from '../../utils/constants';
 
-const { register, forgotPassword } = PAGES;
+const { register, forgotPassword, root } = PAGES;
 
 function Login() {
+  const { isAuth } = useSelector((state) => state.user);
+  const { state } = useLocation();
+
+  if (isAuth) {
+    return <Redirect to={state?.from || root} />;
+  }
+
   return (
     <AuthenticationSection title="Вход">
       <Form name="login">

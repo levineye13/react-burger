@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   Input,
   Button,
@@ -9,7 +10,16 @@ import AuthenticationSection from '../../components/authentication-section/authe
 import Form from '../../components/form/form';
 import { PAGES } from '../../utils/constants';
 
+const { root, login, forgotPassword } = PAGES;
+
 function ResetPassword() {
+  const { isAuth } = useSelector((state) => state.user);
+  const { state } = useLocation();
+
+  if (isAuth || state?.from.pathname !== forgotPassword) {
+    return <Redirect to={state?.from || root} />;
+  }
+
   return (
     <AuthenticationSection title="Восстановление пароля">
       <Form name="resetPassword">
@@ -25,7 +35,7 @@ function ResetPassword() {
         </Button>
       </Form>
       <p className="text text_type_main-default text_color_inactive mt-20">
-        Вспомнили пароль?&ensp;<Link to={PAGES.login}>Войти</Link>
+        Вспомнили пароль?&ensp;<Link to={login}>Войти</Link>
       </p>
     </AuthenticationSection>
   );
