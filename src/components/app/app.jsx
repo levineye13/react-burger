@@ -66,8 +66,10 @@ function App() {
     <div className={styles.page}>
       <AppHeader />
       <Switch>
-        <ProtectedRoute path={root} exact component={Main} />
-        <ProtectedRoute path={profile} component={Profile} />
+        <Route path={root} exact component={Main} />
+        <ProtectedRoute path={profile}>
+          <Profile />
+        </ProtectedRoute>
         <Route path={login} component={Login} />
         <Route path={register} component={Register} />
         <Route path={forgotPassword} component={ForgotPassword} />
