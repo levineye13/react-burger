@@ -14,31 +14,28 @@ import Profile from '../../pages/profile/profile';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 import ProtectedRoute from '../../hoc/protected-route';
+import ModalRoute from '../modal-route/modal-route';
 import { API_BASE_URL, API_ENDPOINT, PAGES } from '../../utils/constants';
 import {
   setIngredients,
   setSortedIngredients,
-  closeIngredient,
   closeOrder,
 } from '../../services/actions';
 
 const { root, login, register, profile, forgotPassword, resetPassword } = PAGES;
+const { ingredients: ingredientsUrl } = API_ENDPOINT;
 
 function App() {
   const dispatch = useDispatch();
 
-  const {
-    list: ingredients,
-    currentIngredient,
-    order,
-  } = useSelector((state) => ({
+  const { list: ingredients, order } = useSelector((state) => ({
     list: state.ingredients.list,
     currentIngredient: state.currentIngredient,
     order: state.order,
   }));
 
   useEffect(() => {
-    dispatch(setIngredients(`${API_BASE_URL}${API_ENDPOINT.ingredients}`));
+    dispatch(setIngredients(`${API_BASE_URL}${ingredientsUrl}`));
   }, [dispatch]);
 
   useEffect(() => {
@@ -57,8 +54,7 @@ function App() {
     dispatch(setSortedIngredients(filteredIngredients));
   }, [ingredients, dispatch]);
 
-  function closeModals() {
-    dispatch(closeIngredient());
+  function closeOrderModal() {
     dispatch(closeOrder());
   }
 
@@ -74,14 +70,13 @@ function App() {
         <Route path={register} component={Register} />
         <Route path={forgotPassword} component={ForgotPassword} />
         <Route path={resetPassword} component={ResetPassword} />
+        <ModalRoute path={`${ingredientsUrl}/:id`} title="Детали ингредиента">
+          <IngredientDetails />
+        </ModalRoute>
       </Switch>
-      {currentIngredient.isOpen && (
-        <Modal onClose={closeModals} title="Детали ингредиента">
-          <IngredientDetails {...currentIngredient} />
-        </Modal>
-      )}
+
       {order.isOpen && (
-        <Modal onClose={closeModals}>
+        <Modal onClose={closeOrderModal}>
           <OrderDetails />
         </Modal>
       )}
