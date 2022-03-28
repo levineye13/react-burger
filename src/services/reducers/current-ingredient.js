@@ -1,19 +1,14 @@
-import { OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../action-types';
+import { SET_INGREDIENT } from '../action-types';
 
-const initialCurrentIngredient = {
-  isOpen: false,
-};
+const initialCurrentIngredient = {};
 
 export const currentIngredientReducer = (
   state = initialCurrentIngredient,
   action
 ) => {
   switch (action.type) {
-    case OPEN_INGREDIENT:
-      return { ...action.payload, isOpen: true };
-
-    case CLOSE_INGREDIENT:
-      return { isOpen: false };
+    case SET_INGREDIENT:
+      return { ...action.payload };
 
     default:
       return state;
