@@ -1,22 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import style from './ingredient-details.module.css';
+import { setIngredient } from '../../services/actions';
 
-function IngredientDetails({
-  image,
-  name,
-  calories,
-  proteins,
-  fat,
-  carbohydrates,
-}) {
+function IngredientDetails() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const { ingredients, currentIngredient } = useSelector((state) => state);
+
+  useEffect(() => {
+    if (!currentIngredient._id && ingredients.list.length > 0) {
+      const item = ingredients.list.find((item) => item._id === id) || {};
+      dispatch(setIngredient(item));
+    }
+  }, [dispatch, id, ingredients.list.length, currentIngredient._id]);
+
   return (
     <article className={style.article}>
       <figure className={style.description}>
-        <img className={style.img} src={image} alt={name} />
+        <img
+          className={style.img}
+          src={currentIngredient.image}
+          alt={currentIngredient.name}
+        />
         <figcaption className={`${style.name} text text_type_main-medium mt-4`}>
-          {name}
+          {currentIngredient.name}
         </figcaption>
       </figure>
       <ul className={`${style.list} mt-8`}>
@@ -25,7 +36,7 @@ function IngredientDetails({
             Калории,ккал
           </h2>
           <p className="text text_type_digits-default text_color_inactive mt-2">
-            {calories}
+            {currentIngredient.calories}
           </p>
         </li>
         <li className={style.item}>
@@ -33,7 +44,7 @@ function IngredientDetails({
             Белки, г
           </h2>
           <p className="text text_type_digits-default text_color_inactive mt-2">
-            {proteins}
+            {currentIngredient.proteins}
           </p>
         </li>
         <li className={style.item}>
@@ -41,7 +52,7 @@ function IngredientDetails({
             Жиры, г
           </h2>
           <p className="text text_type_digits-default text_color_inactive mt-2">
-            {fat}
+            {currentIngredient.fat}
           </p>
         </li>
         <li className={style.item}>
@@ -49,21 +60,12 @@ function IngredientDetails({
             Углеводы, г
           </h2>
           <p className="text text_type_digits-default text_color_inactive mt-2">
-            {carbohydrates}
+            {currentIngredient.carbohydrates}
           </p>
         </li>
       </ul>
     </article>
   );
 }
-
-IngredientDetails.propTypes = {
-  image: PropTypes.string,
-  name: PropTypes.string,
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-};
 
 export default IngredientDetails;
