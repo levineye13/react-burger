@@ -1,17 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import { TABS } from '../../utils/constants';
-import { openIngredient } from '../../services/actions';
+import { TABS, API_ENDPOINT } from '../../utils/constants';
+import { setIngredient } from '../../services/actions';
+
+const { ingredient: ingredientUrl } = API_ENDPOINT;
 
 function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState(TABS.one);
   const sectionRef = useRef();
-
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { bun, sauce, main } = useSelector(
     (state) => state.ingredients.sortedIngredients
@@ -43,7 +46,12 @@ function BurgerIngredients() {
   }, []);
 
   function handleIngredientClick(ingredient) {
-    dispatch(openIngredient(ingredient));
+    history.push({
+      pathname: ingredientUrl(ingredient._id),
+      state: { isModal: true },
+    });
+
+    dispatch(setIngredient(ingredient));
   }
 
   const { one, two, three } = TABS;
