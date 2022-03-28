@@ -10,6 +10,7 @@ export const API_ENDPOINT = {
   logout: 'auth/logout',
   refreshToken: 'auth/token',
   user: '/auth/user',
+  ingredient: (id) => `/ingredients/${id}`,
 };
 
 export const PAGES = {
