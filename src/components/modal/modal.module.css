@@ -17,6 +17,10 @@
   color: #f2f2f3;
 }
 
+.modal_type_component {
+  background-color: transparent;
+}
+
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -24,6 +28,10 @@
   align-items: center;
   max-width: 640px;
   width: 100%;
+}
+
+.wrapper_center {
+  justify-content: center;
 }
 
 .button {
