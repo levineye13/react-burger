@@ -7,12 +7,17 @@ import {
   REFRESH_TOKEN,
   RESTORE_PASSWORD,
   RESET_PASSWORD,
+  USER_REQUEST_SENT,
+  USER_REQUEST_SUCCESS,
+  USER_REQUEST_FAILED,
 } from '../action-types';
 
 const initialUser = {
   isAuth: false,
   email: '',
   name: '',
+  request: false,
+  failed: false,
 };
 
 export const userReducer = (state = initialUser, action) => {
@@ -32,6 +37,15 @@ export const userReducer = (state = initialUser, action) => {
     case RESTORE_PASSWORD:
     case RESET_PASSWORD:
       return state;
+
+    case USER_REQUEST_SENT:
+      return { ...state, request: true, failed: false };
+
+    case USER_REQUEST_SUCCESS:
+      return { ...state, request: false, failed: false };
+
+    case USER_REQUEST_FAILED:
+      return { ...state, request: false, failed: true };
 
     default:
       return state;
