@@ -8,13 +8,19 @@ import {
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
+import { useForm } from '../../hooks/useForm';
 import { PAGES } from '../../utils/constants';
+import { resetPassword } from '../../services/actions';
 
 const { root, login, forgotPassword } = PAGES;
 
 function ResetPassword() {
   const { isAuth } = useSelector((state) => state.user);
   const { state } = useLocation();
+  const { handleChange, handleSubmit, values } = useForm(
+    'resetPassword',
+    resetPassword
+  );
 
   if (isAuth || state?.from.pathname !== forgotPassword) {
     return <Redirect to={state?.from || root} />;
@@ -22,14 +28,22 @@ function ResetPassword() {
 
   return (
     <AuthenticationSection title="Восстановление пароля">
-      <Form name="resetPassword">
+      <Form name="resetPassword" onSubmit={handleSubmit}>
         <Input
           type="password"
           name="password"
           placeholder="Введите новый пароль"
           icon="ShowIcon"
+          onChange={handleChange}
+          value={values.password || ''}
         />
-        <Input type="text" name="code" placeholder="Введите код из письма" />
+        <Input
+          type="text"
+          name="code"
+          placeholder="Введите код из письма"
+          onChange={handleChange}
+          value={values.code || ''}
+        />
         <Button type="primary" htmlType="submit" size="medium">
           Сохранить
         </Button>

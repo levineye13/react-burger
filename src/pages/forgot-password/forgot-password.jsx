@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
@@ -8,34 +8,48 @@ import {
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
+import { useForm } from '../../hooks/useForm';
 import { PAGES } from '../../utils/constants';
+import { restorePassword } from '../../services/actions';
 
 const { root, login, resetPassword } = PAGES;
 
 function ForgotPassword() {
-  const { isAuth } = useSelector((state) => state.user);
+  const { isAuth, request, failed } = useSelector((state) => state.user);
   const { location, replace } = useHistory();
 
-  if (isAuth) {
-    return <Redirect to={location.state?.from || root} />;
-  }
+  useEffect(() => {
+    if (isAuth) {
+      return <Redirect to={location.state?.from || root} />;
+    }
+  }, [isAuth, location.state]);
 
-  function handleClick(e) {
-    e.preventDefault();
+  const onSubmit = useCallback(() => {
+    if (!request && !failed) {
+      replace({
+        pathname: resetPassword,
+        state: { from: location },
+      });
+    }
+  }, [request, failed, location, replace]);
 
-    replace({ pathname: resetPassword, state: { from: location } });
-  }
+  const { handleChange, handleSubmit, values } = useForm(
+    'forgotPassword',
+    restorePassword,
+    { callback: onSubmit }
+  );
 
   return (
     <AuthenticationSection title="Восстановление пароля">
-      <Form name="forgotPassword">
-        <Input type="email" name="email" placeholder="Укажите e-mail" />
-        <Button
-          type="primary"
-          htmlType="submit"
-          size="medium"
-          onClick={handleClick}
-        >
+      <Form name="forgotPassword" onSubmit={handleSubmit}>
+        <Input
+          type="email"
+          name="email"
+          placeholder="Укажите e-mail"
+          onChange={handleChange}
+          value={values.email || ''}
+        />
+        <Button type="primary" htmlType="submit" size="medium">
           Восстановить
         </Button>
       </Form>
