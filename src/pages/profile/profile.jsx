@@ -13,11 +13,6 @@ import { logout, updateUser } from '../../services/actions';
 
 const { profile } = PAGES;
 
-const setActiveLink = ({ isActive }) =>
-  `${styles.link} text text_type_main-medium ${
-    isActive ? styles.link_active : 'text_color_inactive'
-  }`;
-
 function Profile() {
   const { handleChange, handleSubmit, values } = useForm('profile', updateUser);
 
@@ -27,17 +22,30 @@ function Profile() {
         <nav>
           <ul className={styles.list}>
             <li className={styles.item}>
-              <NavLink to={profile} className={setActiveLink}>
+              <NavLink
+                to={profile}
+                className={`${styles.link} text text_type_main-medium text_color_inactive`}
+                activeClassName={styles.link_active}
+              >
                 Профиль
               </NavLink>
             </li>
             <li className={styles.item}>
-              <NavLink to="/" className={setActiveLink}>
+              <NavLink
+                to="/"
+                className={`${styles.link} text text_type_main-medium text_color_inactive`}
+                activeClassName={styles.link_active}
+              >
                 История заказов
               </NavLink>
             </li>
             <li className={styles.item}>
-              <NavLink to="/" className={setActiveLink} onClick={logout}>
+              <NavLink
+                to="/"
+                className={`${styles.link} text text_type_main-medium text_color_inactive`}
+                activeClassName={styles.link_active}
+                onClick={logout}
+              >
                 Выход
               </NavLink>
             </li>
