@@ -5,6 +5,7 @@ import { ingredientsReducer } from './burger-ingredients';
 import { burgerConstructorReducer } from './constructor-ingredients';
 import { currentIngredientReducer } from './current-ingredient';
 import { orderReducer } from './order';
+import { formReducer } from './form';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -12,4 +13,5 @@ export const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
   currentIngredient: currentIngredientReducer,
   order: orderReducer,
+  form: formReducer,
 });
