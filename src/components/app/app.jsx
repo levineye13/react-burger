@@ -15,15 +15,23 @@ import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 import ProtectedRoute from '../../hoc/protected-route';
 import ModalRoute from '../modal-route/modal-route';
-import { API_BASE_URL, API_ENDPOINT, PAGES } from '../../utils/constants';
+import Cookie from '../../utils/cookie';
+import {
+  API_BASE_URL,
+  API_ENDPOINT,
+  PAGES,
+  TOKEN_TYPE,
+} from '../../utils/constants';
 import {
   setIngredients,
   setSortedIngredients,
   closeOrder,
+  setAuth,
 } from '../../services/actions';
 
 const { root, login, register, profile, forgotPassword, resetPassword } = PAGES;
 const { ingredients: ingredientsUrl } = API_ENDPOINT;
+const { access } = TOKEN_TYPE;
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +41,14 @@ function App() {
     currentIngredient: state.currentIngredient,
     order: state.order,
   }));
+
+  useEffect(() => {
+    const token = Cookie.get(access);
+
+    if (token) {
+      dispatch(setAuth());
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setIngredients(`${API_BASE_URL}${ingredientsUrl}`));

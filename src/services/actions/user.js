@@ -10,9 +10,12 @@ import {
   USER_REQUEST_SENT,
   USER_REQUEST_SUCCESS,
   USER_REQUEST_FAILED,
+  SET_AUTH,
 } from '../action-types';
 
 import { api } from '../../utils/api';
+
+export const setAuth = () => ({ type: SET_AUTH });
 
 export const logout = () => async (dispatch) => {
   dispatch({ type: USER_REQUEST_SENT });

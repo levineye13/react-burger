@@ -10,6 +10,7 @@ import {
   USER_REQUEST_SENT,
   USER_REQUEST_SUCCESS,
   USER_REQUEST_FAILED,
+  SET_AUTH,
 } from '../action-types';
 
 const initialUser = {
@@ -22,6 +23,9 @@ const initialUser = {
 
 export const userReducer = (state = initialUser, action) => {
   switch (action.type) {
+    case SET_AUTH:
+      return { ...state, isAuth: true };
+
     case LOGOUT:
       return { ...state, isAuth: false };
 
