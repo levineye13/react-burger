@@ -89,7 +89,7 @@ class Api {
         Cookie.set(refresh, data[refresh]);
       }
 
-      return data;
+      return data.user;
     } catch (e) {
       console.error(e);
     }
@@ -110,7 +110,7 @@ class Api {
         Cookie.set(refresh, data[refresh]);
       }
 
-      return data;
+      return data.user;
     } catch (e) {
       console.error(e);
     }
@@ -168,7 +168,9 @@ class Api {
         },
       });
 
-      return this._getDataFromResponce(res);
+      const data = await this._getDataFromResponce(res);
+
+      return data.user;
     } catch (e) {
       console.error(e);
     }
@@ -189,7 +191,9 @@ class Api {
         }),
       });
 
-      return this._getDataFromResponce(res);
+      const data = await this._getDataFromResponce(res);
+
+      return data.user;
     } catch (e) {
       console.error(e);
     }

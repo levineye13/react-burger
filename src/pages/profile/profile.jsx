@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
   Input,
@@ -8,13 +9,25 @@ import {
 import styles from './profile.module.css';
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
-import { PAGES } from '../../utils/constants';
-import { logout, updateUser } from '../../services/actions';
+import Cookie from '../../utils/cookie';
+import { PAGES, TOKEN_TYPE } from '../../utils/constants';
+import { getUser, logout, updateUser } from '../../services/actions';
 
 const { profile } = PAGES;
+const { access } = TOKEN_TYPE;
 
 function Profile() {
+  const dispatch = useDispatch();
+  const { name, email } = useSelector((state) => state.user);
   const { handleChange, handleSubmit, values } = useForm('profile', updateUser);
+
+  useEffect(() => {
+    const token = Cookie.get(access);
+
+    if (token) {
+      dispatch(getUser());
+    }
+  }, [dispatch]);
 
   return (
     <section className={`${styles.section} mt-30`}>
@@ -64,7 +77,7 @@ function Profile() {
           placeholder="Имя"
           icon="EditIcon"
           onChange={handleChange}
-          value={values.name || ''}
+          value={values.name || name}
         />
         <Input
           type="email"
@@ -72,7 +85,7 @@ function Profile() {
           placeholder="Логин"
           icon="EditIcon"
           onChange={handleChange}
-          value={values.email || ''}
+          value={values.email || email}
         />
         <Input
           type="password"
