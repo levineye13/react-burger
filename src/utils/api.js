@@ -39,6 +39,10 @@ class Api {
       throw new Error(`${data}`);
     }
 
+    if (access in data) {
+      data[access] = data[access].replace(`${AUTH_SCHEMA_TYPE} `, '');
+    }
+
     return data;
   }
 
@@ -81,7 +85,7 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set(access, data[access]);
+        Cookie.set(access, data[access], { expires: 20 });
         Cookie.set(refresh, data[refresh]);
       }
 
@@ -102,7 +106,7 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set(access, data[access]);
+        Cookie.set(access, data[access], { expires: 20 });
         Cookie.set(refresh, data[refresh]);
       }
 
@@ -118,6 +122,7 @@ class Api {
         method: HTTP_METHOD.post,
         headers: this._headers,
         body: JSON.stringify({ token: Cookie.get('refreshToken') }),
+        credentials: 'include',
       });
 
       const data = await this._getDataFromResponce(res);
