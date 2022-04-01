@@ -1,14 +1,12 @@
 class Cookie {
-  static cookie = document.cookie;
-
   static set(name, value, options = {}) {
     let expires = options.expires;
 
-    if (typeof exp === 'number') {
+    if (typeof expires === 'number') {
       const date = new Date();
-      date.setTime(date.getTime() + expires * 1000);
+      date.setTime(date.getTime() + expires * 60 * 1000);
       expires = date;
-      options.expires = expires.toUTCString();
+      options.expires = expires?.toUTCString();
     }
 
     let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(
@@ -25,11 +23,11 @@ class Cookie {
       }
     }
 
-    Cookie.cookie = updatedCookie;
+    document.cookie = updatedCookie;
   }
 
   static get(name) {
-    const cookies = Cookie.cookie.split(';');
+    const cookies = document.cookie.split(';');
 
     for (let index = 0; index < cookies.length; index++) {
       const [key, value] = cookies[index].split('=');
