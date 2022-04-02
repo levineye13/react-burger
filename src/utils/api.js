@@ -46,6 +46,15 @@ class Api {
     return data;
   }
 
+  async _checkTokensAndUpdate() {
+    const accessToken = Cookie.get(access);
+    const refreshToken = Cookie.get(refresh);
+
+    if (!accessToken && refreshToken) {
+      await this.refreshToken(refreshToken);
+    }
+  }
+
   async restorePassword({ email }) {
     try {
       const res = await fetch(`${this._baseUrl}${restorePassword}`, {
@@ -116,19 +125,19 @@ class Api {
     }
   }
 
-  async refreshToken() {
+  async refreshToken(token) {
     try {
       const res = await fetch(`${this._baseUrl}${refreshToken}`, {
         method: HTTP_METHOD.post,
         headers: this._headers,
-        body: JSON.stringify({ token: Cookie.get(refresh) }),
-        credentials: 'include',
+        body: JSON.stringify({ token }),
       });
 
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set(access, data[access]);
+        Cookie.set(access, data[access], { expires: 20 });
+        Cookie.set(refresh, data[refresh]);
       }
 
       return data;
@@ -159,6 +168,8 @@ class Api {
   }
 
   async getUser() {
+    await this._checkTokensAndUpdate();
+
     try {
       const res = await fetch(`${this._baseUrl}${user}`, {
         method: HTTP_METHOD.get,
@@ -177,6 +188,8 @@ class Api {
   }
 
   async updateUser({ email, name, password }) {
+    await this._checkTokensAndUpdate();
+
     try {
       const res = await fetch(`${this._baseUrl}${user}`, {
         method: HTTP_METHOD.patch,
