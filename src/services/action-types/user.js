@@ -10,3 +10,4 @@ export const USER_REQUEST_SENT = 'REQUEST_SENT';
 export const USER_REQUEST_SUCCESS = 'REQUEST_SUCCESS';
 export const USER_REQUEST_FAILED = 'REQUEST_FAILED';
 export const SET_AUTH = 'SET_AUTH';
+export const SET_UNAUTH = 'SET_UNAUTH';

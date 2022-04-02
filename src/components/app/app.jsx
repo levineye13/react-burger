@@ -27,6 +27,7 @@ import {
   setSortedIngredients,
   closeOrder,
   setAuth,
+  refreshToken,
 } from '../../services/actions';
 
 const { root, login, register, profile, forgotPassword, resetPassword } = PAGES;
@@ -45,7 +46,9 @@ function App() {
   useEffect(() => {
     const token = Cookie.get(access);
 
-    if (token) {
+    if (!token) {
+      dispatch(refreshToken());
+    } else {
       dispatch(setAuth());
     }
   }, [dispatch]);

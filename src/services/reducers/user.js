@@ -11,6 +11,7 @@ import {
   USER_REQUEST_SUCCESS,
   USER_REQUEST_FAILED,
   SET_AUTH,
+  SET_UNAUTH,
 } from '../action-types';
 
 const initialUser = {
@@ -27,6 +28,7 @@ export const userReducer = (state = initialUser, action) => {
       return { ...state, isAuth: true };
 
     case LOGOUT:
+    case SET_UNAUTH:
       return { ...state, isAuth: false };
 
     case REGISTER:

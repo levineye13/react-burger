@@ -11,11 +11,16 @@ import {
   USER_REQUEST_SUCCESS,
   USER_REQUEST_FAILED,
   SET_AUTH,
+  SET_UNAUTH,
 } from '../action-types';
 
 import { api } from '../../utils/api';
+import Cookie from '../../utils/cookie';
+import { TOKEN_TYPE } from '../../utils/constants';
 
 export const setAuth = () => ({ type: SET_AUTH });
+
+export const setUnauth = () => ({ type: SET_UNAUTH });
 
 export const logout = () => async (dispatch) => {
   dispatch({ type: USER_REQUEST_SENT });
@@ -33,11 +38,12 @@ export const logout = () => async (dispatch) => {
 export const refreshToken = () => async (dispatch) => {
   dispatch({ type: USER_REQUEST_SENT });
 
-  const data = await api.refreshToken();
+  const data = await api.refreshToken(Cookie.get(TOKEN_TYPE.refresh));
 
   if (data) {
     dispatch({ type: REFRESH_TOKEN });
     dispatch({ type: USER_REQUEST_SUCCESS });
+    dispatch({ type: SET_AUTH });
   } else {
     dispatch({ type: USER_REQUEST_FAILED });
   }
