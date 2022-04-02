@@ -121,7 +121,7 @@ class Api {
       const res = await fetch(`${this._baseUrl}${refreshToken}`, {
         method: HTTP_METHOD.post,
         headers: this._headers,
-        body: JSON.stringify({ token: Cookie.get('refreshToken') }),
+        body: JSON.stringify({ token: Cookie.get(refresh) }),
         credentials: 'include',
       });
 
@@ -142,10 +142,10 @@ class Api {
       const res = await fetch(`${this._baseUrl}${logout}`, {
         method: HTTP_METHOD.post,
         headers: this._headers,
-        body: JSON.stringify({ token: Cookie.get('refreshToken') }),
+        body: JSON.stringify({ token: Cookie.get(refresh) }),
       });
 
-      const data = this._getDataFromResponce(res);
+      const data = await this._getDataFromResponce(res);
 
       if (data.success) {
         Cookie.delete(access);

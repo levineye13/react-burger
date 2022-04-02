@@ -29,6 +29,10 @@ function Profile() {
     }
   }, [dispatch]);
 
+  function handleLogout() {
+    dispatch(logout());
+  }
+
   return (
     <section className={`${styles.section} mt-30`}>
       <div className={`${styles.menu} mr-15`}>
@@ -57,7 +61,7 @@ function Profile() {
                 to="/"
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
-                onClick={logout}
+                onClick={handleLogout}
               >
                 Выход
               </NavLink>
