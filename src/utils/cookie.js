@@ -30,7 +30,7 @@ class Cookie {
     const cookies = document.cookie.split(';');
 
     for (let index = 0; index < cookies.length; index++) {
-      const [key, value] = cookies[index].split('=');
+      const [key, value] = cookies[index].trim().split('=');
 
       if (name === decodeURIComponent(key)) {
         return decodeURIComponent(value);
