@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setFieldValue } from '../services/actions';
+import { setFieldValue, clearForm } from '../services/actions';
 
 function useForm(formName, submitAction, { callback } = {}) {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function useForm(formName, submitAction, { callback } = {}) {
   function handleSubmit() {
     if (typeof submitAction === 'function') {
       dispatch(submitAction(form));
+      dispatch(clearForm(formName));
     }
 
     if (typeof callback === 'function') {
