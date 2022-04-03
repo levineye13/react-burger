@@ -20,6 +20,8 @@ export const PAGES = {
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   profile: '/profile',
+  orders: '/profile/orders',
+  order: (id) => `/profile/orders/${id}`,
   ingredients: '/ingredients',
 };
 
