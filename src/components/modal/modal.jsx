@@ -7,7 +7,7 @@ import style from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { modalContainer, ESC_CODE } from '../../utils/constants';
 
-function Modal({ children, onClose, title }) {
+function Modal({ children, onClose, title = '' }) {
   useEffect(() => {
     function handleClickEsc(e) {
       if (e.keyCode === ESC_CODE) {
@@ -18,7 +18,7 @@ function Modal({ children, onClose, title }) {
     document.addEventListener('keydown', handleClickEsc);
 
     return () => document.removeEventListener('keydown', handleClickEsc);
-  }, []);
+  }, [onClose]);
 
   return createPortal(
     <>
@@ -40,7 +40,7 @@ function Modal({ children, onClose, title }) {
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
   onClose: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default Modal;
