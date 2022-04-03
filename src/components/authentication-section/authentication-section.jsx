@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import styles from './authentication-section.module.css';
 
@@ -10,5 +11,13 @@ function AuthenticationSection({ children, title }) {
     </section>
   );
 }
+
+AuthenticationSection.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default AuthenticationSection;
