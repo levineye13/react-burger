@@ -43,6 +43,11 @@ export const TOKEN_TYPE = {
   refresh: 'refreshToken',
 };
 
+export const TOKEN_DURATION = {
+  access: 20,
+  refresh: 60 * 24 * 7,
+};
+
 export const modalContainer = document.getElementById('modal');
 export const ESC_CODE = 27;
 

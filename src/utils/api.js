@@ -5,6 +5,7 @@ import {
   HEADERS,
   AUTH_SCHEMA_TYPE,
   TOKEN_TYPE,
+  TOKEN_DURATION,
 } from './constants';
 
 import Cookie from './cookie';
@@ -94,8 +95,8 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set(access, data[access], { expires: 20 });
-        Cookie.set(refresh, data[refresh]);
+        Cookie.set(access, data[access], { expires: TOKEN_DURATION.access });
+        Cookie.set(refresh, data[refresh], { expires: TOKEN_DURATION.refresh });
       }
 
       return data.user;
@@ -115,8 +116,8 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set(access, data[access], { expires: 20 });
-        Cookie.set(refresh, data[refresh]);
+        Cookie.set(access, data[access], { expires: TOKEN_DURATION.access });
+        Cookie.set(refresh, data[refresh], { expires: TOKEN_DURATION.refresh });
       }
 
       return data.user;
@@ -136,8 +137,8 @@ class Api {
       const data = await this._getDataFromResponce(res);
 
       if (data.success) {
-        Cookie.set(access, data[access], { expires: 20 });
-        Cookie.set(refresh, data[refresh]);
+        Cookie.set(access, data[access], { expires: TOKEN_DURATION.access });
+        Cookie.set(refresh, data[refresh], { expires: TOKEN_DURATION.refresh });
       }
 
       return data;
