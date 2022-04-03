@@ -13,7 +13,7 @@ import Cookie from '../../utils/cookie';
 import { PAGES, TOKEN_TYPE } from '../../utils/constants';
 import { getUser, logout, updateUser } from '../../services/actions';
 
-const { profile } = PAGES;
+const { profile, orders, login } = PAGES;
 const { access } = TOKEN_TYPE;
 
 function Profile() {
@@ -43,13 +43,14 @@ function Profile() {
                 to={profile}
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
+                exact
               >
                 Профиль
               </NavLink>
             </li>
             <li className={styles.item}>
               <NavLink
-                to="/"
+                to={orders}
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
               >
@@ -58,7 +59,7 @@ function Profile() {
             </li>
             <li className={styles.item}>
               <NavLink
-                to="/"
+                to={login}
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
                 onClick={handleLogout}

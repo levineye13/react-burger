@@ -30,7 +30,15 @@ import {
   refreshToken,
 } from '../../services/actions';
 
-const { root, login, register, profile, forgotPassword, resetPassword } = PAGES;
+const {
+  root,
+  login,
+  register,
+  profile,
+  forgotPassword,
+  resetPassword,
+  orders,
+} = PAGES;
 const { ingredients: ingredientsUrl } = API_ENDPOINT;
 const { access } = TOKEN_TYPE;
 
@@ -89,9 +97,10 @@ function App() {
       <AppHeader />
       <Switch location={background || location}>
         <Route path={root} exact component={Main} />
-        <ProtectedRoute path={profile}>
+        <ProtectedRoute exact path={profile}>
           <Profile />
         </ProtectedRoute>
+        <ProtectedRoute exact path={orders}></ProtectedRoute>
         <Route path={login} component={Login} />
         <Route path={register} component={Register} />
         <Route path={forgotPassword} component={ForgotPassword} />
@@ -99,6 +108,7 @@ function App() {
         <Route path={`${ingredientsUrl}/:id`} exact>
           <IngredientPage />
         </Route>
+        <Route>404</Route>
       </Switch>
 
       {background && (
