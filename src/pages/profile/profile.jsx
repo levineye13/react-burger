@@ -9,8 +9,7 @@ import {
 import styles from './profile.module.css';
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
-import Cookie from '../../utils/cookie';
-import { PAGES, TOKEN_TYPE } from '../../utils/constants';
+import { PAGES } from '../../utils/constants';
 import {
   getUser,
   logout,
@@ -19,7 +18,6 @@ import {
 } from '../../services/actions';
 
 const { profile, orders, login } = PAGES;
-const { access } = TOKEN_TYPE;
 
 function Profile() {
   const dispatch = useDispatch();
@@ -41,11 +39,7 @@ function Profile() {
   );
 
   useEffect(() => {
-    const token = Cookie.get(access);
-
-    if (token) {
-      dispatch(getUser());
-    }
+    dispatch(getUser());
   }, [dispatch]);
 
   useEffect(() => {

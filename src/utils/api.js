@@ -47,12 +47,21 @@ class Api {
     return data;
   }
 
-  async _checkTokensAndUpdate() {
-    const accessToken = Cookie.get(access);
-    const refreshToken = Cookie.get(refresh);
+  async _checkResponce(res) {
+    const data = await res.json();
 
-    if (!accessToken && refreshToken) {
-      await this.refreshToken(refreshToken);
+    if (!res.ok) {
+      if (data.success === false) {
+        return false;
+      }
+
+      throw new Error(`${res.status} - ${res.statusText}`);
+    } else {
+      if (access in data) {
+        data[access] = data[access].replace(`${AUTH_SCHEMA_TYPE} `, '');
+      }
+
+      return data;
     }
   }
 
@@ -169,8 +178,6 @@ class Api {
   }
 
   async getUser() {
-    await this._checkTokensAndUpdate();
-
     try {
       const res = await fetch(`${this._baseUrl}${user}`, {
         method: HTTP_METHOD.get,
@@ -180,7 +187,11 @@ class Api {
         },
       });
 
-      const data = await this._getDataFromResponce(res);
+      const data = await this._checkResponce(res);
+
+      if (data === false) {
+        return false;
+      }
 
       return data.user;
     } catch (e) {
@@ -189,8 +200,6 @@ class Api {
   }
 
   async updateUser({ email, name, password }) {
-    await this._checkTokensAndUpdate();
-
     try {
       const res = await fetch(`${this._baseUrl}${user}`, {
         method: HTTP_METHOD.patch,
@@ -205,7 +214,11 @@ class Api {
         }),
       });
 
-      const data = await this._getDataFromResponce(res);
+      const data = await this._checkResponce(res);
+
+      if (data === false) {
+        return false;
+      }
 
       return data.user;
     } catch (e) {

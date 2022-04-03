@@ -84,11 +84,24 @@ export const getUser = () => async (dispatch) => {
 
   const user = await api.getUser();
 
-  if (user) {
-    dispatch({ type: GET_USER, payload: user });
-    dispatch({ type: USER_REQUEST_SUCCESS });
+  if (user === false) {
+    const data = await api.refreshToken(Cookie.get(TOKEN_TYPE.refresh));
+
+    if (!data) {
+      dispatch({ type: USER_REQUEST_FAILED });
+    } else {
+      const user = await api.getUser();
+
+      if (user) {
+        dispatch({ type: UPDATE_USER, payload: user });
+        dispatch({ type: USER_REQUEST_SUCCESS });
+      } else {
+        dispatch({ type: USER_REQUEST_FAILED });
+      }
+    }
   } else {
-    dispatch({ type: USER_REQUEST_FAILED });
+    dispatch({ type: UPDATE_USER, payload: user });
+    dispatch({ type: USER_REQUEST_SUCCESS });
   }
 };
 
@@ -99,11 +112,24 @@ export const updateUser =
 
     const user = await api.updateUser({ email, name, password });
 
-    if (user) {
+    if (user === false) {
+      const data = await api.refreshToken(Cookie.get(TOKEN_TYPE.refresh));
+
+      if (!data) {
+        dispatch({ type: USER_REQUEST_FAILED });
+      } else {
+        const user = await api.updateUser({ email, name, password });
+
+        if (user) {
+          dispatch({ type: UPDATE_USER, payload: user });
+          dispatch({ type: USER_REQUEST_SUCCESS });
+        } else {
+          dispatch({ type: USER_REQUEST_FAILED });
+        }
+      }
+    } else {
       dispatch({ type: UPDATE_USER, payload: user });
       dispatch({ type: USER_REQUEST_SUCCESS });
-    } else {
-      dispatch({ type: USER_REQUEST_FAILED });
     }
   };
 
