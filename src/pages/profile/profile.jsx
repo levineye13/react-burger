@@ -33,6 +33,18 @@ function Profile() {
     dispatch(logout());
   }
 
+  function isInputsChanged() {
+    if (
+      (name !== values.name && values.name !== undefined) ||
+      (email !== values.email && values.email !== undefined) ||
+      values.password
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   return (
     <section className={`${styles.section} mt-30`}>
       <div className={`${styles.menu} mr-15`}>
@@ -100,7 +112,11 @@ function Profile() {
           onChange={handleChange}
           value={values.password || ''}
         />
-        <div className={styles.buttons}>
+        <div
+          className={`${styles.buttons} ${
+            isInputsChanged() ? styles.buttons_visible : ''
+          }`}
+        >
           <Button type="secondary" size="medium" htmlType="button">
             Отмена
           </Button>

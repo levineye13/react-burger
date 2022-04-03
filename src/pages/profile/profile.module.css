@@ -40,4 +40,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s;
+}
+
+.buttons_visible {
+  visibility: visible;
+  opacity: 1;
 }
