@@ -65,7 +65,7 @@ function BurgerIngredients() {
   function handleIngredientClick(ingredient) {
     history.push({
       pathname: ingredientUrl(ingredient._id),
-      state: { isModal: true },
+      state: { background: history.location },
     });
 
     dispatch(setIngredient(ingredient));

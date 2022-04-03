@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import IngredientPage from '../ingredient-page/ingredient-page';
 import OrderDetails from '../order-details/order-details';
 import Login from '../../pages/login/login';
 import Register from '../../pages/register/register';
@@ -14,7 +15,6 @@ import Profile from '../../pages/profile/profile';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 import ProtectedRoute from '../../hoc/protected-route';
-import ModalRoute from '../modal-route/modal-route';
 import Cookie from '../../utils/cookie';
 import {
   API_BASE_URL,
@@ -36,6 +36,9 @@ const { access } = TOKEN_TYPE;
 
 function App() {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const background = history.location.state?.background;
+  const { location } = history;
 
   const { list: ingredients, order } = useSelector((state) => ({
     list: state.ingredients.list,
@@ -77,10 +80,14 @@ function App() {
     dispatch(closeOrder());
   }
 
+  function returnFromModal() {
+    history.goBack();
+  }
+
   return (
     <div className={styles.page}>
       <AppHeader />
-      <Switch>
+      <Switch location={background || location}>
         <Route path={root} exact component={Main} />
         <ProtectedRoute path={profile}>
           <Profile />
@@ -89,10 +96,18 @@ function App() {
         <Route path={register} component={Register} />
         <Route path={forgotPassword} component={ForgotPassword} />
         <Route path={resetPassword} component={ResetPassword} />
-        <ModalRoute path={`${ingredientsUrl}/:id`} title="Детали ингредиента">
-          <IngredientDetails />
-        </ModalRoute>
+        <Route path={`${ingredientsUrl}/:id`} exact>
+          <IngredientPage />
+        </Route>
       </Switch>
+
+      {background && (
+        <Route path={`${ingredientsUrl}/:id`}>
+          <Modal onClose={returnFromModal} title="Детали ингредиента">
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
 
       {order.isOpen && (
         <Modal onClose={closeOrderModal}>
