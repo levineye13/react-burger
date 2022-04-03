@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
@@ -10,14 +10,17 @@ import AuthenticationSection from '../../components/authentication-section/authe
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
 import { PAGES } from '../../utils/constants';
-import { login } from '../../services/actions';
+import { clearForm, login } from '../../services/actions';
 
 const { register, forgotPassword, root } = PAGES;
 
 function Login() {
   const { isAuth } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const { state } = useLocation();
-  const { handleChange, handleSubmit, values } = useForm('login', login);
+  const { handleChange, handleSubmit, values } = useForm('login', login, {
+    callback: () => dispatch(clearForm('login')),
+  });
 
   if (isAuth) {
     return <Redirect to={state?.from || root} />;

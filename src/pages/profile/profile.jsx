@@ -11,7 +11,12 @@ import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
 import Cookie from '../../utils/cookie';
 import { PAGES, TOKEN_TYPE } from '../../utils/constants';
-import { getUser, logout, updateUser } from '../../services/actions';
+import {
+  getUser,
+  logout,
+  setFieldValue,
+  updateUser,
+} from '../../services/actions';
 
 const { profile, orders, login } = PAGES;
 const { access } = TOKEN_TYPE;
@@ -28,6 +33,10 @@ function Profile() {
         email,
         password: '',
       },
+      callback: () =>
+        dispatch(
+          setFieldValue({ formName: 'profile', field: 'password', value: '' })
+        ),
     }
   );
 

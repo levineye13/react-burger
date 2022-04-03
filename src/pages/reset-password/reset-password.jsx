@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
@@ -10,16 +10,20 @@ import AuthenticationSection from '../../components/authentication-section/authe
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
 import { PAGES } from '../../utils/constants';
-import { resetPassword } from '../../services/actions';
+import { clearForm, resetPassword } from '../../services/actions';
 
 const { root, login, forgotPassword } = PAGES;
 
 function ResetPassword() {
   const { isAuth } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const { state } = useLocation();
   const { handleChange, handleSubmit, values } = useForm(
     'resetPassword',
-    resetPassword
+    resetPassword,
+    {
+      callback: () => dispatch(clearForm('resetPassword')),
+    }
   );
 
   if (isAuth || state?.from.pathname !== forgotPassword) {
