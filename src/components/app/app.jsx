@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -37,8 +37,8 @@ const { access } = TOKEN_TYPE;
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   const background = history.location.state?.background;
-  const { location } = history;
 
   const { list: ingredients, order } = useSelector((state) => ({
     list: state.ingredients.list,
