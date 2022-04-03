@@ -19,7 +19,17 @@ const { access } = TOKEN_TYPE;
 function Profile() {
   const dispatch = useDispatch();
   const { name, email } = useSelector((state) => state.user);
-  const { handleChange, handleSubmit, values } = useForm('profile', updateUser);
+  const { values, handleChange, handleSubmit, setInitialValues } = useForm(
+    'profile',
+    updateUser,
+    {
+      initialValues: {
+        name,
+        email,
+        password: '',
+      },
+    }
+  );
 
   useEffect(() => {
     const token = Cookie.get(access);
@@ -28,6 +38,10 @@ function Profile() {
       dispatch(getUser());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    setInitialValues();
+  }, [name, email]);
 
   function handleLogout() {
     dispatch(logout());
@@ -94,7 +108,7 @@ function Profile() {
           placeholder="Имя"
           icon="EditIcon"
           onChange={handleChange}
-          value={values.name || name}
+          value={values.name || ''}
         />
         <Input
           type="email"
@@ -102,7 +116,7 @@ function Profile() {
           placeholder="Логин"
           icon="EditIcon"
           onChange={handleChange}
-          value={values.email || email}
+          value={values.email || ''}
         />
         <Input
           type="password"
@@ -117,7 +131,12 @@ function Profile() {
             isInputsChanged() ? styles.buttons_visible : ''
           }`}
         >
-          <Button type="secondary" size="medium" htmlType="button">
+          <Button
+            type="secondary"
+            size="medium"
+            htmlType="button"
+            onClick={setInitialValues}
+          >
             Отмена
           </Button>
           <Button type="primary" size="medium" htmlType="submit">

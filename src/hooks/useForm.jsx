@@ -2,7 +2,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { setFieldValue, clearForm } from '../services/actions';
 
-function useForm(formName, submitAction, { callback } = {}) {
+function useForm(
+  formName,
+  submitAction,
+  { callback, initialValues = {} } = {}
+) {
   const dispatch = useDispatch();
   const form = useSelector((state) => state.form[formName]);
 
@@ -22,10 +26,17 @@ function useForm(formName, submitAction, { callback } = {}) {
     }
   }
 
+  function setInitialValues() {
+    for (const field in initialValues) {
+      dispatch(setFieldValue({ formName, field, value: initialValues[field] }));
+    }
+  }
+
   return {
     values: form,
     handleChange,
     handleSubmit,
+    setInitialValues,
   };
 }
 
