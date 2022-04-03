@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   Input,
@@ -18,12 +18,6 @@ function ForgotPassword() {
   const { isAuth, request, failed } = useSelector((state) => state.user);
   const { location, replace } = useHistory();
 
-  useEffect(() => {
-    if (isAuth) {
-      return <Redirect to={location.state?.from || root} />;
-    }
-  }, [isAuth, location.state]);
-
   const onSubmit = useCallback(() => {
     if (!request && !failed) {
       replace({
@@ -38,6 +32,10 @@ function ForgotPassword() {
     restorePassword,
     { callback: onSubmit }
   );
+
+  if (isAuth) {
+    return <Redirect to={location.state?.from || root} />;
+  }
 
   return (
     <AuthenticationSection title="Восстановление пароля">
