@@ -5,6 +5,7 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrop } from 'react-dnd';
+import { useHistory } from 'react-router-dom';
 
 import styles from './burger-constructor.module.css';
 import Price from '../price/price';
@@ -17,13 +18,15 @@ import {
   decrement,
   makeOrder,
 } from '../../services/actions';
-import { INGREDIENT_TYPE } from '../../utils/constants';
+import { INGREDIENT_TYPE, PAGES } from '../../utils/constants';
 
 const { bun: bunType } = INGREDIENT_TYPE;
 
 function BurgerConstructor() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
+  const { isAuth } = useSelector((state) => state.user);
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
@@ -36,6 +39,10 @@ function BurgerConstructor() {
   });
 
   async function handleButtonClick() {
+    if (!isAuth) {
+      return history.push(PAGES.login);
+    }
+
     const ingredientsId = ingredients.map((ingredient) => ingredient._id);
     dispatch(makeOrder(ingredientsId));
   }

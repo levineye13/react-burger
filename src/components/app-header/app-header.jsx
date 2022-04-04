@@ -1,7 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-
-import styles from './app-header.module.css';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
@@ -9,49 +7,56 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import styles from './app-header.module.css';
+import { PAGES } from '../../utils/constants';
+
+const { root, profile, orders } = PAGES;
+
 function AppHeader() {
+  const { pathname } = useLocation();
+
+  function setIconClassName(path, currentPath) {
+    return currentPath === path ? 'primary' : 'secondary';
+  }
+
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
       <div className={styles.content}>
         <nav className={styles.nav}>
           <ul className={styles.list}>
             <li>
-              <a
-                className={`${styles.link} pt-4 pr-5 pb-4 pl-5`}
-                href="#"
-                target="_self"
+              <NavLink
+                className={`${styles.link} text text_type_main-default text_color_inactive pt-4 pr-5 pb-4 pl-5`}
+                activeClassName={styles.link_active}
+                to={root}
+                exact
               >
-                <BurgerIcon type="primary" />
-                <span className="text text_type_main-default ml-2">
-                  Конструктор
-                </span>
-              </a>
+                <BurgerIcon type={setIconClassName(root, pathname)} />
+                <span className="ml-2">Конструктор</span>
+              </NavLink>
             </li>
             <li className="ml-2">
-              <a
-                className={`${styles.link} pt-4 pr-5 pb-4 pl-5`}
-                href="#"
-                target="_self"
+              <NavLink
+                className={`${styles.link} text text_type_main-default text_color_inactive pt-4 pr-5 pb-4 pl-5`}
+                activeClassName={styles.link_active}
+                to={orders}
               >
-                <ListIcon type="secondary" />
-                <span className="text text_type_main-default text_color_inactive ml-2">
-                  Лента заказов
-                </span>
-              </a>
+                <ListIcon type={setIconClassName(orders, pathname)} />
+                <span className="ml-2">Лента заказов</span>
+              </NavLink>
             </li>
           </ul>
         </nav>
         <Logo />
-        <a
-          className={`${styles.link} ${styles.account}`}
-          href="#"
-          target="_self"
+        <NavLink
+          className={`${styles.link} ${styles.account} text text_type_main-default text_color_inactive`}
+          activeClassName={styles.link_active}
+          to={profile}
+          exact
         >
-          <ProfileIcon type="secondary" />
-          <span className="text text_type_main-default text_color_inactive ml-2">
-            Личный кабинет
-          </span>
-        </a>
+          <ProfileIcon type={setIconClassName(profile, pathname)} />
+          <span className="ml-2">Личный кабинет</span>
+        </NavLink>
       </div>
     </header>
   );
