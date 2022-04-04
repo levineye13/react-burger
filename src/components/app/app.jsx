@@ -7,7 +7,7 @@ import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import IngredientPage from '../ingredient-page/ingredient-page';
+import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import OrderDetails from '../order-details/order-details';
 import Login from '../../pages/login/login';
 import Register from '../../pages/register/register';

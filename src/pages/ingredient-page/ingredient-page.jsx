@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './ingredient-page.module.css';
-import IngredientDetails from '../ingredient-details/ingredient-details';
+import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 
 function IngredientPage() {
   return (
