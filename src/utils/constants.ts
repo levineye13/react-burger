@@ -1,6 +1,8 @@
-export const API_BASE_URL = 'https://norma.nomoreparties.space/api';
+import { THttpPath, TCommon, THttpMethods } from './types';
 
-export const API_ENDPOINT = {
+export const API_BASE_URL: string = 'https://norma.nomoreparties.space/api';
+
+export const API_ENDPOINT: THttpPath = {
   ingredients: '/ingredients',
   orders: '/orders',
   restorePassword: '/password-reset',
@@ -10,10 +12,10 @@ export const API_ENDPOINT = {
   logout: '/auth/logout',
   refreshToken: '/auth/token',
   user: '/auth/user',
-  ingredient: (id) => `/ingredients/${id}`,
+  ingredient: (id: string) => `/ingredients/${id}`,
 };
 
-export const PAGES = {
+export const PAGES: THttpPath = {
   root: '/',
   login: '/login',
   register: '/register',
@@ -25,39 +27,49 @@ export const PAGES = {
   ingredients: '/ingredients',
 };
 
-export const HTTP_METHOD = {
+export const HTTP_METHOD: THttpMethods = {
+  head: 'HEAD',
   get: 'GET',
   post: 'POST',
   patch: 'PATCH',
+  put: 'PUT',
+  delete: 'DELETE',
+  options: 'OPTIONS',
 };
 
-export const HEADERS = {
+export const HEADERS: TCommon = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
 };
 
-export const AUTH_SCHEMA_TYPE = 'Bearer';
+export const AUTH_SCHEMA_TYPE: string = 'Bearer';
 
-export const TOKEN_TYPE = {
+export const TOKEN_TYPE: {
+  access: string;
+  refresh: string;
+} = {
   access: 'accessToken',
   refresh: 'refreshToken',
 };
 
-export const TOKEN_DURATION = {
+export const TOKEN_DURATION: { access: number; refresh: number } = {
   access: 20,
   refresh: 60 * 24 * 7,
 };
 
-export const modalContainer = document.getElementById('modal');
-export const ESC_CODE = 27;
+export const modalContainer: HTMLDivElement = document.getElementById(
+  'modal'
+) as HTMLDivElement;
 
-export const TABS = {
+export const ESC_CODE: number = 27;
+
+export const TABS: TCommon = {
   one: 'one',
   two: 'two',
   three: 'three',
 };
 
-export const INGREDIENT_TYPE = {
+export const INGREDIENT_TYPE: TCommon = {
   bun: 'bun',
   sauce: 'sauce',
   main: 'main',
