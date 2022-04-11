@@ -1,16 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, ReactElement } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './price.module.css';
 
-function Price({
+interface IPrice {
+  readonly price: number;
+  readonly type?: string;
+  readonly iconType?: string;
+  readonly externalGeometry?: string;
+}
+
+const Price: FC<IPrice> = ({
   price,
   type = 'default',
   iconType = 'default',
   externalGeometry = '',
-}) {
-  const modifier = `number_${type}`;
+}): ReactElement => {
+  const modifier: string = `number_${type}`;
 
   return (
     <div className={`${styles.price} ${styles[iconType]} ${externalGeometry}`}>
@@ -20,13 +26,6 @@ function Price({
       <CurrencyIcon type="primary" />
     </div>
   );
-}
-
-Price.propTypes = {
-  price: PropTypes.number.isRequired,
-  type: PropTypes.string,
-  iconType: PropTypes.string,
-  externalGeometry: PropTypes.string,
 };
 
 export default Price;

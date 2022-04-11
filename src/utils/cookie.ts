@@ -7,7 +7,6 @@ const Cookie: ICookie = class {
     options: { [key: string]: string | number | Date } = {}
   ): void {
     let expires = options.expires;
-    console.log(expires);
 
     if (typeof expires === 'number') {
       const date: Date = new Date();
