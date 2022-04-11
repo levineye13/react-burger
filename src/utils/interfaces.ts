@@ -1,3 +1,5 @@
+import { TResponceBody } from './types';
+
 export interface IUser {
   readonly name: string;
   readonly email: string;
@@ -20,18 +22,20 @@ export interface ICookie {
   delete(name: string): void;
 }
 
+export interface IApiArguments {
+  readonly name?: string;
+  readonly email?: string;
+  readonly password?: string;
+  readonly token?: string;
+}
+
 export interface IApi {
-  readonly baseUrl: string;
-  readonly options?: {
-    headers?: {};
-    schemaType?: string;
-  };
-  login(): Promise<IUser>;
-  register(): Promise<IUser>;
-  logout(): object;
-  getUser(): Promise<IUser>;
-  updateUser(): Promise<IUser>;
-  restorePassword(): object;
-  resetPassword(): object;
-  refreshToken(): object;
+  login(args: IApiArguments): Promise<IApiArguments | void>;
+  register(args: IApiArguments): Promise<IApiArguments | void>;
+  logout(): Promise<TResponceBody | void>;
+  getUser(args: IApiArguments): Promise<IApiArguments | boolean | void>;
+  updateUser(args: IApiArguments): Promise<IApiArguments | boolean | void>;
+  restorePassword(args: IApiArguments): Promise<IApiArguments | void>;
+  resetPassword(args: IApiArguments): Promise<IApiArguments | void>;
+  refreshToken(token: string): Promise<IApiArguments | void>;
 }
