@@ -7,6 +7,7 @@ const Cookie: ICookie = class {
     options: { [key: string]: string | number | Date } = {}
   ): void {
     let expires = options.expires;
+    console.log(expires);
 
     if (typeof expires === 'number') {
       const date: Date = new Date();
@@ -15,18 +16,12 @@ const Cookie: ICookie = class {
       options.expires = expires?.toUTCString();
     }
 
-    let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(
-      value
-    )}`;
+    let updatedCookie: string = `${encodeURIComponent(
+      name
+    )}=${encodeURIComponent(value)}`;
 
     for (const key in options) {
-      updatedCookie += `; ${key}`;
-
-      const value = options[key];
-
-      if (!!value !== true) {
-        updatedCookie += `=${value}`;
-      }
+      updatedCookie += `; ${key}=${options[key]}`;
     }
 
     document.cookie = updatedCookie;
