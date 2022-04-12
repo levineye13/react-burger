@@ -3,14 +3,14 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import styles from './price.module.css';
 
-interface IPrice {
+interface IProps {
   readonly price: number;
   readonly type?: string;
   readonly iconType?: string;
   readonly externalGeometry?: string;
 }
 
-const Price: FC<IPrice> = ({
+const Price: FC<IProps> = ({
   price,
   type = 'default',
   iconType = 'default',
