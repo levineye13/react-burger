@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 
 import style from './order-details.module.css';
 import OrderDone from '../../images/done.jpg';
 
-function OrderDetails() {
-  const { number } = useSelector((state) => state.order);
+const OrderDetails: FC = (): ReactElement => {
+  const { number } = useSelector((state: any) => state.order);
 
   return (
     <article className={`${style.article} mt-15`}>
@@ -20,6 +20,6 @@ function OrderDetails() {
       </p>
     </article>
   );
-}
+};
 
 export default OrderDetails;
