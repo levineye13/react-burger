@@ -42,7 +42,7 @@ class Api implements IApi {
     if (!data || !data.success) {
       throw new Error(`${data}`);
     }
-    console.log(data);
+
     if (data.accessToken) {
       extractToken(data, access, AUTH_SCHEMA_TYPE);
     }
