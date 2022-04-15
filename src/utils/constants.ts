@@ -1,4 +1,4 @@
-import { THttpPath, TCommon, THttpMethods } from './types';
+import { THttpPath, THttpMethods } from './types';
 
 export const API_BASE_URL: string = 'https://norma.nomoreparties.space/api';
 
@@ -12,7 +12,6 @@ export const API_ENDPOINT: THttpPath = {
   logout: '/auth/logout',
   refreshToken: '/auth/token',
   user: '/auth/user',
-  ingredient: (id: string) => `/ingredients/${id}`,
 };
 
 export const PAGES: THttpPath = {
@@ -23,7 +22,6 @@ export const PAGES: THttpPath = {
   resetPassword: '/reset-password',
   profile: '/profile',
   orders: '/profile/orders',
-  order: (id) => `/profile/orders/${id}`,
   ingredients: '/ingredients',
 };
 
@@ -37,7 +35,7 @@ export const HTTP_METHOD: THttpMethods = {
   options: 'OPTIONS',
 };
 
-export const HEADERS: TCommon = {
+export const HEADERS: { [key: string]: string } = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
 };
@@ -61,15 +59,15 @@ export const modalContainer: HTMLDivElement = document.getElementById(
   'modal'
 ) as HTMLDivElement;
 
-export const ESC_CODE: number = 27;
+export const ESC_KEY: string = 'Escape';
 
-export const TABS: TCommon = {
+export const TABS: { [key: string]: string } = {
   one: 'one',
   two: 'two',
   three: 'three',
 };
 
-export const INGREDIENT_TYPE: TCommon = {
+export const INGREDIENT_TYPE: { [key: string]: string } = {
   bun: 'bun',
   sauce: 'sauce',
   main: 'main',
