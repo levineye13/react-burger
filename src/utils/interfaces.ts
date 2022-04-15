@@ -12,8 +12,7 @@ export interface IIngredient {
   readonly image: string;
   readonly price: number;
   readonly type: string;
-  readonly onClick: () => void;
-  readonly handleDelete: () => void;
+  readonly uuid?: string;
 }
 
 export interface ICookie {
