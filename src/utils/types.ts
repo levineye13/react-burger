@@ -1,20 +1,8 @@
-import PropTypes from 'prop-types';
-
-export const ingredientPropTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  onClick: PropTypes.func,
-  handleDelete: PropTypes.func,
-  type: PropTypes.string.isRequired,
-};
+import { IIngredient } from './interfaces';
 
 export type THttpPath = {
-  [key: string]: string | ((path: string) => string);
+  [key: string]: string;
 };
-
-export type TCommon = { [key: string]: string };
 
 export type THttpMethod =
   | 'head'
@@ -39,4 +27,8 @@ export type TResponceBody<
   accessToken?: string;
   refreshToken?: string;
   message?: string;
+};
+
+export type TSortedIngredietns = {
+  [arrName: string]: IIngredient[];
 };
