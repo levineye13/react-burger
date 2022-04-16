@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
@@ -12,10 +13,10 @@ import { useForm } from '../../hooks/useForm';
 import { PAGES } from '../../utils/constants';
 import { clearForm, register } from '../../services/actions';
 
-function Register() {
-  const { isAuth } = useSelector((state) => state.user);
+const Register: FC = (): ReactElement => {
+  const { isAuth } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const { state } = useLocation();
+  const { state } = useLocation<{ from: Location }>();
 
   const { handleChange, handleSubmit, values } = useForm('register', register, {
     callback: () => dispatch(clearForm('register')),
@@ -59,6 +60,6 @@ function Register() {
       </p>
     </AuthenticationSection>
   );
-}
+};
 
 export default Register;

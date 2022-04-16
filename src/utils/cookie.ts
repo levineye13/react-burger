@@ -1,32 +1,32 @@
-class Cookie {
-  static set(name, value, options = {}) {
+import { ICookie } from './interfaces';
+
+const Cookie: ICookie = class {
+  public static set(
+    name: string,
+    value: string,
+    options: { [key: string]: string | number | Date } = {}
+  ): void {
     let expires = options.expires;
 
     if (typeof expires === 'number') {
-      const date = new Date();
+      const date: Date = new Date();
       date.setTime(date.getTime() + expires * 60 * 1000);
       expires = date;
       options.expires = expires?.toUTCString();
     }
 
-    let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(
-      value
-    )}`;
+    let updatedCookie: string = `${encodeURIComponent(
+      name
+    )}=${encodeURIComponent(value)}`;
 
     for (const key in options) {
-      updatedCookie += `; ${key}`;
-
-      const value = options[key];
-
-      if (value !== true) {
-        updatedCookie += `=${value}`;
-      }
+      updatedCookie += `; ${key}=${options[key]}`;
     }
 
     document.cookie = updatedCookie;
   }
 
-  static get(name) {
+  public static get(name: string): string | undefined {
     const cookies = document.cookie.split(';');
 
     for (let index = 0; index < cookies.length; index++) {
@@ -40,9 +40,9 @@ class Cookie {
     return undefined;
   }
 
-  static delete(name) {
+  public static delete(name: string): void {
     Cookie.set(name, '', { expires: -1 });
   }
-}
+};
 
 export default Cookie;

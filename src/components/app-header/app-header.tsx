@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Logo,
@@ -12,12 +12,15 @@ import { PAGES } from '../../utils/constants';
 
 const { root, profile, orders } = PAGES;
 
-function AppHeader() {
+const AppHeader: FC = (): ReactElement => {
   const { pathname } = useLocation();
 
-  function setIconClassName(path, currentPath) {
+  const setIconClassName = (
+    path: string,
+    currentPath: string
+  ): 'primary' | 'secondary' => {
     return currentPath === path ? 'primary' : 'secondary';
-  }
+  };
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
@@ -60,6 +63,6 @@ function AppHeader() {
       </div>
     </header>
   );
-}
+};
 
 export default AppHeader;

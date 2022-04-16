@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { FC, ReactElement, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import {
@@ -7,10 +7,21 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { moveIngredient } from '../../services/actions';
-import { ingredientPropTypes } from '../../utils/types';
+import { IIngredient } from '../../utils/interfaces';
 
-function ConstructorIngredient({ handleDelete, className, index, ...props }) {
-  const ref = useRef(null);
+interface IProps extends IIngredient {
+  readonly className: string;
+  readonly index: number;
+  readonly handleDelete: (ingredient: IIngredient) => void;
+}
+
+const ConstructorIngredient: FC<IProps> = ({
+  handleDelete,
+  className,
+  index,
+  ...props
+}): ReactElement => {
+  const ref = useRef<HTMLLIElement>(null);
   const dispatch = useDispatch();
 
   const [, ingredientRef] = useDrag({
@@ -20,13 +31,13 @@ function ConstructorIngredient({ handleDelete, className, index, ...props }) {
 
   const [, dropSort] = useDrop({
     accept: 'active',
-    drop(ingredient) {
+    drop(ingredient: IProps): void {
       if (!ref.current) {
         return;
       }
 
-      const dragIndex = ingredient.index;
-      const targetIndex = index;
+      const dragIndex: number = ingredient.index;
+      const targetIndex: number = index;
 
       if (dragIndex === targetIndex) {
         return;
@@ -47,12 +58,10 @@ function ConstructorIngredient({ handleDelete, className, index, ...props }) {
         text={props.name}
         price={props.price}
         isLocked={false}
-        handleClose={() => handleDelete(props)}
+        handleClose={(): void => handleDelete(props)}
       />
     </li>
   );
-}
-
-ConstructorIngredient.propTypes = ingredientPropTypes;
+};
 
 export default ConstructorIngredient;

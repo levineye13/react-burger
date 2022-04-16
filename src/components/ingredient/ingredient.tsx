@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { useDrag } from 'react-dnd';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './ingredient.module.css';
 import Price from '../price/price';
-import { ingredientPropTypes } from '../../utils/types';
+import { IIngredient } from '../../utils/interfaces';
 
-function Ingredient({ onClick, count, ...props }) {
+interface IProps extends IIngredient {
+  readonly onClick: (ingredient: IIngredient) => void;
+  readonly count: number;
+}
+
+const Ingredient: FC<IProps> = ({ onClick, count, ...props }): ReactElement => {
   const [, ingredientRef] = useDrag({
     type: 'ingredient',
     item: props,
   });
 
-  function handleClick() {
+  const handleClick = (): void => {
     onClick(props);
-  }
+  };
 
   return (
     <article
@@ -35,8 +40,6 @@ function Ingredient({ onClick, count, ...props }) {
       </figure>
     </article>
   );
-}
-
-Ingredient.propTypes = ingredientPropTypes;
+};
 
 export default Ingredient;

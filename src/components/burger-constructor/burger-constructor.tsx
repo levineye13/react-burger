@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { FC, ReactElement, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { History } from 'history';
 import {
   ConstructorElement,
   Button,
@@ -19,18 +20,22 @@ import {
   makeOrder,
 } from '../../services/actions';
 import { INGREDIENT_TYPE, PAGES } from '../../utils/constants';
+import { IIngredient } from '../../utils/interfaces';
 
 const { bun: bunType } = INGREDIENT_TYPE;
 
-function BurgerConstructor() {
-  const history = useHistory();
+const BurgerConstructor: FC = (): ReactElement => {
+  const history: History = useHistory();
+
   const dispatch = useDispatch();
-  const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
-  const { isAuth } = useSelector((state) => state.user);
+  const { bun, ingredients } = useSelector(
+    (state: any) => state.burgerConstructor
+  );
+  const { isAuth } = useSelector((state: any) => state.user);
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
-    drop(ingredient) {
+    drop(ingredient: IIngredient) {
       if (ingredient.type === bunType || bun._id !== undefined) {
         dispatch(addIngredient(ingredient));
         dispatch(increment(ingredient));
@@ -38,26 +43,28 @@ function BurgerConstructor() {
     },
   });
 
-  async function handleButtonClick() {
+  const handleButtonClick = async (): Promise<void> => {
     if (!isAuth) {
       return history.push(PAGES.login);
     }
 
-    const ingredientsId = ingredients.map((ingredient) => ingredient._id);
+    const ingredientsId = ingredients.map(
+      (ingredient: IIngredient) => ingredient._id
+    );
     dispatch(makeOrder(ingredientsId));
-  }
+  };
 
-  function handleDelete(item) {
+  const handleDelete = (item: IIngredient): void => {
     dispatch(deleteIngredient(item._id));
     dispatch(decrement(item));
-  }
+  };
 
-  function calculatePrice(arr, property, bun) {
-    return sumByKey(arr, property) + (bun[property] || 0) * 2;
-  }
+  const calculatePrice = (arr: IIngredient[], bun: IIngredient): number => {
+    return sumByKey(arr, 'price') + (bun.price || 0) * 2;
+  };
 
-  const sum = useMemo(() => {
-    return calculatePrice(ingredients, 'price', bun);
+  const sum = useMemo<number>(() => {
+    return calculatePrice(ingredients, bun);
   }, [bun, ingredients]);
 
   return (
@@ -75,7 +82,7 @@ function BurgerConstructor() {
               />
             </li>
             <ul className={styles.sublist}>
-              {ingredients.map((item, index) => (
+              {ingredients.map((item: IIngredient, index: number) => (
                 <ConstructorIngredient
                   key={item.uuid}
                   handleDelete={handleDelete}
@@ -120,6 +127,6 @@ function BurgerConstructor() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerConstructor;

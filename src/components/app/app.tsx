@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { FC, ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
+import { Location } from 'history';
 
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -29,6 +30,8 @@ import {
   setAuth,
   refreshToken,
 } from '../../services/actions';
+import { IIngredient } from '../../utils/interfaces';
+import { TSortedIngredietns } from '../../utils/types';
 
 const {
   root,
@@ -42,13 +45,13 @@ const {
 const { ingredients: ingredientsUrl } = API_ENDPOINT;
 const { access } = TOKEN_TYPE;
 
-function App() {
+const App: FC = (): ReactElement => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  const background = history.location.state?.background;
+  const location = useLocation<{ background: Location }>();
+  const background = location.state?.background;
 
-  const { list: ingredients, order } = useSelector((state) => ({
+  const { list: ingredients, order } = useSelector((state: any) => ({
     list: state.ingredients.list,
     currentIngredient: state.currentIngredient,
     order: state.order,
@@ -69,28 +72,33 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    function filterIngredients(arr) {
-      const sorted = { bun: [], sauce: [], main: [] };
+    const filterIngredients = (arr: IIngredient[]): TSortedIngredietns => {
+      const sorted: TSortedIngredietns = {
+        bun: [],
+        sauce: [],
+        main: [],
+      };
 
-      arr.forEach((item) => {
+      arr.forEach((item: IIngredient) => {
         sorted[item.type].push(item);
       });
 
       return sorted;
-    }
+    };
 
-    const filteredIngredients = filterIngredients(ingredients);
+    const filteredIngredients: TSortedIngredietns =
+      filterIngredients(ingredients);
 
     dispatch(setSortedIngredients(filteredIngredients));
   }, [ingredients, dispatch]);
 
-  function closeOrderModal() {
+  const closeOrderModal = (): void => {
     dispatch(closeOrder());
-  }
+  };
 
-  function returnFromModal() {
+  const returnFromModal = (): void => {
     history.goBack();
-  }
+  };
 
   return (
     <div className={styles.page}>
@@ -100,7 +108,7 @@ function App() {
         <ProtectedRoute exact path={profile}>
           <Profile />
         </ProtectedRoute>
-        <ProtectedRoute exact path={orders}></ProtectedRoute>
+        {/* <ProtectedRoute exact path={orders}></ProtectedRoute> */}
         <Route path={login} component={Login} />
         <Route path={register} component={Register} />
         <Route path={forgotPassword} component={ForgotPassword} />
@@ -126,6 +134,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;

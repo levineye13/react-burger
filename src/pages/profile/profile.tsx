@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
@@ -19,9 +19,9 @@ import {
 
 const { profile, orders, login } = PAGES;
 
-function Profile() {
+const Profile: FC = (): ReactElement => {
   const dispatch = useDispatch();
-  const { name, email } = useSelector((state) => state.user);
+  const { name, email } = useSelector((state: any) => state.user);
   const { values, handleChange, handleSubmit, setInitialValues } = useForm(
     'profile',
     updateUser,
@@ -30,6 +30,7 @@ function Profile() {
         name,
         email,
         password: '',
+        token: '',
       },
       callback: () =>
         dispatch(
@@ -46,11 +47,11 @@ function Profile() {
     setInitialValues();
   }, [name, email]);
 
-  function handleLogout() {
+  const handleLogout = (): void => {
     dispatch(logout());
-  }
+  };
 
-  function isInputsChanged() {
+  const isInputsChanged = (): boolean => {
     if (
       (name !== values.name && values.name !== undefined) ||
       (email !== values.email && values.email !== undefined) ||
@@ -60,7 +61,7 @@ function Profile() {
     }
 
     return false;
-  }
+  };
 
   return (
     <section className={`${styles.section} mt-30`}>
@@ -149,6 +150,6 @@ function Profile() {
       </Form>
     </section>
   );
-}
+};
 
 export default Profile;
