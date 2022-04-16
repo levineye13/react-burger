@@ -32,3 +32,10 @@ export type TResponceBody<
 export type TSortedIngredietns = {
   [arrName: string]: IIngredient[];
 };
+
+export type TFormField = {
+  email: string;
+  password: string;
+  name: string;
+  token: string;
+};
