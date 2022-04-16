@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { FC, ReactElement, useCallback } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
@@ -14,13 +15,14 @@ import { clearForm, restorePassword } from '../../services/actions';
 
 const { root, login, resetPassword } = PAGES;
 
-function ForgotPassword() {
-  const { isAuth, request, failed } = useSelector((state) => state.user);
+const ForgotPassword: FC = (): ReactElement => {
+  const { isAuth, request, failed } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const { location, replace } = useHistory();
+  const { location, replace } = useHistory<{ from: Location }>();
 
   const onSubmit = useCallback(() => {
     dispatch(clearForm('forgotPassword'));
+
     if (!request && !failed) {
       replace({
         pathname: resetPassword,
@@ -58,6 +60,6 @@ function ForgotPassword() {
       </p>
     </AuthenticationSection>
   );
-}
+};
 
 export default ForgotPassword;
