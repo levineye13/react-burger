@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
@@ -14,10 +15,10 @@ import { clearForm, login } from '../../services/actions';
 
 const { register, forgotPassword, root } = PAGES;
 
-function Login() {
-  const { isAuth } = useSelector((state) => state.user);
+const Login: FC = (): ReactElement => {
+  const { isAuth } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const { state } = useLocation();
+  const { state } = useLocation<{ from: Location }>();
   const { handleChange, handleSubmit, values } = useForm('login', login, {
     callback: () => dispatch(clearForm('login')),
   });
@@ -59,6 +60,6 @@ function Login() {
       </p>
     </AuthenticationSection>
   );
-}
+};
 
 export default Login;
