@@ -4,13 +4,13 @@ import styles from './form.module.css';
 
 interface IProps {
   readonly name: string;
-  readonly onSubmit: () => void;
+  readonly onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 const Form: FC<IProps> = ({ children, name, onSubmit }): ReactElement => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    onSubmit();
+    onSubmit(e);
   };
 
   return (
