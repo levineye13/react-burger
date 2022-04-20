@@ -1,24 +1,18 @@
-import React, { FC, ReactElement, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { FC, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import style from './ingredient-details.module.css';
-import { setIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
 
 const IngredientDetails: FC = (): ReactElement => {
-  const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
+  const { ingredients } = useSelector((state: any) => state);
 
-  const { ingredients, currentIngredient } = useSelector((state: any) => state);
-
-  useEffect(() => {
-    if (!currentIngredient._id && ingredients.list.length > 0) {
-      const item =
-        ingredients.list.find((item: IIngredient) => item._id === id) || {};
-      dispatch(setIngredient(item));
-    }
-  }, [dispatch, id, ingredients.list.length, currentIngredient._id]);
+  const currentIngredient = useMemo(
+    () => ingredients.list.find((item: IIngredient) => item._id === id) || {},
+    [id, ingredients]
+  );
 
   return (
     <article className={style.article}>

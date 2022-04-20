@@ -36,7 +36,6 @@ const App: FC = (): ReactElement => {
 
   const { list: ingredients, order } = useSelector((state: any) => ({
     list: state.ingredients.list,
-    currentIngredient: state.currentIngredient,
     order: state.order,
   }));
 

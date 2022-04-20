@@ -17,9 +17,6 @@ import { Tabs, ApiEndpoints } from '../../utils/constants';
 import { setIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
 
-// const { ingredients } = API_ENDPOINT;
-// const { one, two, three } = TABS;
-
 const BurgerIngredients: FC = (): ReactElement => {
   const [currentTab, setCurrentTab] = useState<string>(Tabs.One);
   const dispatch = useDispatch();
