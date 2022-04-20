@@ -37,4 +37,12 @@ export interface IApi {
   restorePassword(args: IApiArguments): Promise<IApiArguments | void>;
   resetPassword(args: IApiArguments): Promise<IApiArguments | void>;
   refreshToken(token: string): Promise<IApiArguments | void>;
+  getIngredients(): Promise<IIngredient[] | void>;
+  makeOrder(
+    ingredientId: Array<string | number>
+  ): Promise<TResponceBody | void>;
+}
+
+export interface IOrder {
+  number: number;
 }

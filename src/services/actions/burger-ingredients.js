@@ -5,24 +5,13 @@ import {
   DECREMENT,
   CLEAR_COUNTERS,
 } from '../action-types';
-import { HTTP_METHOD, HEADERS } from '../../utils/constants';
+import { api } from '../../utils/api';
 
-export const setIngredients = (url) => async (dispatch) => {
-  try {
-    const res = await fetch(url, {
-      method: HTTP_METHOD.get,
-      headers: HEADERS,
-    });
+export const setIngredients = () => async (dispatch) => {
+  const ingredients = await api.getIngredients();
 
-    if (!res.ok) {
-      throw res;
-    }
-
-    const { data } = await res.json();
-
-    dispatch({ type: SET_INGREDIENTS, payload: data });
-  } catch (e) {
-    console.error(e);
+  if (ingredients && Array.isArray(ingredients)) {
+    dispatch({ type: SET_INGREDIENTS, payload: ingredients });
   }
 };
 
