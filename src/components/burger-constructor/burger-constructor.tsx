@@ -19,10 +19,8 @@ import {
   decrement,
   makeOrder,
 } from '../../services/actions';
-import { INGREDIENT_TYPE, PAGES } from '../../utils/constants';
+import { IngredientType, Pages } from '../../utils/constants';
 import { IIngredient } from '../../utils/interfaces';
-
-const { bun: bunType } = INGREDIENT_TYPE;
 
 const BurgerConstructor: FC = (): ReactElement => {
   const history: History = useHistory();
@@ -36,7 +34,7 @@ const BurgerConstructor: FC = (): ReactElement => {
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
     drop(ingredient: IIngredient) {
-      if (ingredient.type === bunType || bun._id !== undefined) {
+      if (ingredient.type === IngredientType.Bun || bun._id !== undefined) {
         dispatch(addIngredient(ingredient));
         dispatch(increment(ingredient));
       }
@@ -45,7 +43,7 @@ const BurgerConstructor: FC = (): ReactElement => {
 
   const handleButtonClick = async (): Promise<void> => {
     if (!isAuth) {
-      return history.push(PAGES.login);
+      return history.push(Pages.Login);
     }
 
     const ingredientsId = ingredients.map(

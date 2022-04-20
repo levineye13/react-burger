@@ -9,15 +9,13 @@ import {
 import styles from './profile.module.css';
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
-import { PAGES } from '../../utils/constants';
+import { Pages } from '../../utils/constants';
 import {
   getUser,
   logout,
   setFieldValue,
   updateUser,
 } from '../../services/actions';
-
-const { profile, orders, login } = PAGES;
 
 const Profile: FC = (): ReactElement => {
   const dispatch = useDispatch();
@@ -70,7 +68,7 @@ const Profile: FC = (): ReactElement => {
           <ul className={styles.list}>
             <li className={styles.item}>
               <NavLink
-                to={profile}
+                to={Pages.Profile}
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
                 exact
@@ -80,7 +78,7 @@ const Profile: FC = (): ReactElement => {
             </li>
             <li className={styles.item}>
               <NavLink
-                to={orders}
+                to={Pages.Orders}
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
               >
@@ -89,7 +87,7 @@ const Profile: FC = (): ReactElement => {
             </li>
             <li className={styles.item}>
               <NavLink
-                to={login}
+                to={Pages.Login}
                 className={`${styles.link} text text_type_main-medium text_color_inactive`}
                 activeClassName={styles.link_active}
                 onClick={handleLogout}

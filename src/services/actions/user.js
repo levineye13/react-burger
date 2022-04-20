@@ -16,7 +16,7 @@ import {
 
 import { api } from '../../utils/api';
 import Cookie from '../../utils/cookie';
-import { TOKEN_TYPE } from '../../utils/constants';
+import { TokenType } from '../../utils/constants';
 
 export const setAuth = () => ({ type: SET_AUTH });
 
@@ -38,7 +38,7 @@ export const logout = () => async (dispatch) => {
 export const refreshToken = () => async (dispatch) => {
   dispatch({ type: USER_REQUEST_SENT });
 
-  const data = await api.refreshToken(Cookie.get(TOKEN_TYPE.refresh));
+  const data = await api.refreshToken(Cookie.get(TokenType.Refresh));
 
   if (data) {
     dispatch({ type: REFRESH_TOKEN });
@@ -85,7 +85,7 @@ export const getUser = () => async (dispatch) => {
   const user = await api.getUser();
 
   if (user === false) {
-    const data = await api.refreshToken(Cookie.get(TOKEN_TYPE.refresh));
+    const data = await api.refreshToken(Cookie.get(TokenType.Refresh));
 
     if (!data) {
       dispatch({ type: USER_REQUEST_FAILED });
@@ -113,7 +113,7 @@ export const updateUser =
     const user = await api.updateUser({ email, name, password });
 
     if (user === false) {
-      const data = await api.refreshToken(Cookie.get(TOKEN_TYPE.refresh));
+      const data = await api.refreshToken(Cookie.get(TokenType.Refresh));
 
       if (!data) {
         dispatch({ type: USER_REQUEST_FAILED });

@@ -1,9 +1,5 @@
 import { IIngredient } from './interfaces';
 
-export type THttpPath = {
-  [key: string]: string;
-};
-
 export type THttpMethod =
   | 'head'
   | 'get'
@@ -12,10 +8,6 @@ export type THttpMethod =
   | 'put'
   | 'delete'
   | 'options';
-
-export type THttpMethods = {
-  [method in THttpMethod]: string;
-};
 
 export type TResponceBody<
   TKey extends string = '',
@@ -27,6 +19,8 @@ export type TResponceBody<
   accessToken?: string;
   refreshToken?: string;
   message?: string;
+  data?: IIngredient[];
+  name?: string;
 };
 
 export type TSortedIngredietns = {

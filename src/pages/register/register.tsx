@@ -10,7 +10,7 @@ import { Location } from 'history';
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
-import { PAGES } from '../../utils/constants';
+import { Pages } from '../../utils/constants';
 import { clearForm, register } from '../../services/actions';
 
 const Register: FC = (): ReactElement => {
@@ -23,7 +23,7 @@ const Register: FC = (): ReactElement => {
   });
 
   if (isAuth) {
-    return <Redirect to={state?.from || PAGES.root} />;
+    return <Redirect to={state?.from || Pages.Root} />;
   }
 
   return (
@@ -56,7 +56,7 @@ const Register: FC = (): ReactElement => {
         </Button>
       </Form>
       <p className="text text_type_main-default text_color_inactive mt-20">
-        Уже зарегистрированы?&ensp;<Link to={PAGES.login}>Войти</Link>
+        Уже зарегистрированы?&ensp;<Link to={Pages.Login}>Войти</Link>
       </p>
     </AuthenticationSection>
   );

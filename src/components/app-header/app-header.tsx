@@ -8,9 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './app-header.module.css';
-import { PAGES } from '../../utils/constants';
-
-const { root, profile, orders } = PAGES;
+import { Pages } from '../../utils/constants';
 
 const AppHeader: FC = (): ReactElement => {
   const { pathname } = useLocation();
@@ -31,10 +29,10 @@ const AppHeader: FC = (): ReactElement => {
               <NavLink
                 className={`${styles.link} text text_type_main-default text_color_inactive pt-4 pr-5 pb-4 pl-5`}
                 activeClassName={styles.link_active}
-                to={root}
+                to={Pages.Root}
                 exact
               >
-                <BurgerIcon type={setIconClassName(root, pathname)} />
+                <BurgerIcon type={setIconClassName(Pages.Root, pathname)} />
                 <span className="ml-2">Конструктор</span>
               </NavLink>
             </li>
@@ -42,9 +40,9 @@ const AppHeader: FC = (): ReactElement => {
               <NavLink
                 className={`${styles.link} text text_type_main-default text_color_inactive pt-4 pr-5 pb-4 pl-5`}
                 activeClassName={styles.link_active}
-                to={orders}
+                to={Pages.Orders}
               >
-                <ListIcon type={setIconClassName(orders, pathname)} />
+                <ListIcon type={setIconClassName(Pages.Orders, pathname)} />
                 <span className="ml-2">Лента заказов</span>
               </NavLink>
             </li>
@@ -54,10 +52,10 @@ const AppHeader: FC = (): ReactElement => {
         <NavLink
           className={`${styles.link} ${styles.account} text text_type_main-default text_color_inactive`}
           activeClassName={styles.link_active}
-          to={profile}
+          to={Pages.Profile}
           exact
         >
-          <ProfileIcon type={setIconClassName(profile, pathname)} />
+          <ProfileIcon type={setIconClassName(Pages.Profile, pathname)} />
           <span className="ml-2">Личный кабинет</span>
         </NavLink>
       </div>

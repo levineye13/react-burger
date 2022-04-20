@@ -10,10 +10,8 @@ import { Location } from 'history';
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
-import { PAGES } from '../../utils/constants';
+import { Pages } from '../../utils/constants';
 import { clearForm, restorePassword } from '../../services/actions';
-
-const { root, login, resetPassword } = PAGES;
 
 const ForgotPassword: FC = (): ReactElement => {
   const { isAuth, request, failed } = useSelector((state: any) => state.user);
@@ -25,7 +23,7 @@ const ForgotPassword: FC = (): ReactElement => {
 
     if (!request && !failed) {
       replace({
-        pathname: resetPassword,
+        pathname: Pages.ResetPassword,
         state: { from: location },
       });
     }
@@ -38,7 +36,7 @@ const ForgotPassword: FC = (): ReactElement => {
   );
 
   if (isAuth) {
-    return <Redirect to={location.state?.from || root} />;
+    return <Redirect to={location.state?.from || Pages.Root} />;
   }
 
   return (
@@ -56,7 +54,7 @@ const ForgotPassword: FC = (): ReactElement => {
         </Button>
       </Form>
       <p className="text text_type_main-default text_color_inactive mt-20">
-        Вспомнили пароль?&ensp;<Link to={login}>Войти</Link>
+        Вспомнили пароль?&ensp;<Link to={Pages.Login}>Войти</Link>
       </p>
     </AuthenticationSection>
   );

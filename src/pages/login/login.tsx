@@ -10,10 +10,8 @@ import { Location } from 'history';
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
 import { useForm } from '../../hooks/useForm';
-import { PAGES } from '../../utils/constants';
+import { Pages } from '../../utils/constants';
 import { clearForm, login } from '../../services/actions';
-
-const { register, forgotPassword, root } = PAGES;
 
 const Login: FC = (): ReactElement => {
   const { isAuth } = useSelector((state: any) => state.user);
@@ -24,7 +22,7 @@ const Login: FC = (): ReactElement => {
   });
 
   if (isAuth) {
-    return <Redirect to={state?.from || root} />;
+    return <Redirect to={state?.from || Pages.Root} />;
   }
 
   return (
@@ -52,11 +50,11 @@ const Login: FC = (): ReactElement => {
       </Form>
       <p className="text text_type_main-default text_color_inactive mt-20">
         Вы — новый пользователь?&ensp;
-        <Link to={register}>Зарегистрироваться</Link>
+        <Link to={Pages.Register}>Зарегистрироваться</Link>
       </p>
       <p className="text text_type_main-default text_color_inactive mt-4">
         Забыли пароль?&ensp;
-        <Link to={forgotPassword}>Восстановить пароль</Link>
+        <Link to={Pages.ForgotPassword}>Восстановить пароль</Link>
       </p>
     </AuthenticationSection>
   );

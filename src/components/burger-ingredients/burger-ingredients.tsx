@@ -13,15 +13,15 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import { TABS, API_ENDPOINT } from '../../utils/constants';
+import { Tabs, ApiEndpoints } from '../../utils/constants';
 import { setIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
 
-const { ingredients } = API_ENDPOINT;
-const { one, two, three } = TABS;
+// const { ingredients } = API_ENDPOINT;
+// const { one, two, three } = TABS;
 
 const BurgerIngredients: FC = (): ReactElement => {
-  const [currentTab, setCurrentTab] = useState<string>(TABS.one);
+  const [currentTab, setCurrentTab] = useState<string>(Tabs.One);
   const dispatch = useDispatch();
   const history: History = useHistory();
 
@@ -60,11 +60,11 @@ const BurgerIngredients: FC = (): ReactElement => {
         ).getBoundingClientRect();
 
         if (buns.top < sauce.top && buns.top > 0) {
-          setCurrentTab(one);
+          setCurrentTab(Tabs.One);
         } else if (sauce.top < main.top && sauce.top > 0) {
-          setCurrentTab(two);
+          setCurrentTab(Tabs.Two);
         } else {
-          setCurrentTab(three);
+          setCurrentTab(Tabs.Three);
         }
       }
     };
@@ -77,18 +77,18 @@ const BurgerIngredients: FC = (): ReactElement => {
   const handleTabClick = (tab: string): void => {
     setCurrentTab(tab);
 
-    if (tab === one) {
+    if (tab === Tabs.One) {
       tabRefs.one?.scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === two) {
+    } else if (tab === Tabs.Two) {
       tabRefs.two?.scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === three) {
+    } else if (tab === Tabs.Three) {
       tabRefs.three?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const handleIngredientClick = (ingredient: IIngredient): void => {
     history.push({
-      pathname: `${ingredients}/${ingredient._id}`,
+      pathname: `${ApiEndpoints.Ingredients}/${ingredient._id}`,
       state: { background: history.location },
     });
 
@@ -102,8 +102,8 @@ const BurgerIngredients: FC = (): ReactElement => {
         <ul className={`${styles.menu} ${styles.reset}`}>
           <li>
             <Tab
-              value={one}
-              active={currentTab === one}
+              value={Tabs.One}
+              active={currentTab === Tabs.One}
               onClick={handleTabClick}
             >
               Булки
@@ -111,8 +111,8 @@ const BurgerIngredients: FC = (): ReactElement => {
           </li>
           <li>
             <Tab
-              value={two}
-              active={currentTab === two}
+              value={Tabs.Two}
+              active={currentTab === Tabs.Two}
               onClick={handleTabClick}
             >
               Соусы
@@ -120,8 +120,8 @@ const BurgerIngredients: FC = (): ReactElement => {
           </li>
           <li>
             <Tab
-              value={three}
-              active={currentTab === three}
+              value={Tabs.Three}
+              active={currentTab === Tabs.Three}
               onClick={handleTabClick}
             >
               Начинка

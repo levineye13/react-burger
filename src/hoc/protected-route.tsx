@@ -3,9 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RouteProps } from 'react-router-dom';
 
-import { PAGES } from '../utils/constants';
-
-const { login } = PAGES;
+import { Pages } from '../utils/constants';
 
 const ProtectedRoute: FC<RouteProps> = ({
   children,
@@ -22,7 +20,7 @@ const ProtectedRoute: FC<RouteProps> = ({
         ) : (
           <Redirect
             to={{
-              pathname: login,
+              pathname: Pages.Login,
               state: { from: location },
             }}
           />

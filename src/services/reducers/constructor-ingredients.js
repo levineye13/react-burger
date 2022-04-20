@@ -7,9 +7,7 @@ import {
   CLEAR_INGREDIENTS,
 } from '../action-types';
 
-import { INGREDIENT_TYPE } from '../../utils/constants';
-
-const { bun } = INGREDIENT_TYPE;
+import { IngredientType } from '../../utils/constants';
 
 const initialSelectedIngredients = {
   bun: {},
@@ -30,9 +28,12 @@ export const burgerConstructorReducer = (
     case ADD_INGREDIENT: {
       return {
         ...state,
-        bun: action.payload.type === bun ? action.payload : state.bun,
+        bun:
+          action.payload.type === IngredientType.Bun
+            ? action.payload
+            : state.bun,
         ingredients:
-          action.payload.type !== bun
+          action.payload.type !== IngredientType.Bun
             ? [...state.ingredients, action.payload]
             : state.ingredients,
       };
