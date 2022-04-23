@@ -1,13 +1,13 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Dispatch } from 'redux';
+import { ActionCreator } from 'redux';
 
 import { setFieldValue } from '../services/actions';
-import { TFormField } from '../utils/types';
+import { TAppActions, TAppThunk, TFormField } from '../utils/types';
 
 const useForm = (
   formName: string,
-  submitAction: (formData: TFormField) => (dispatch: Dispatch) => Promise<void>,
+  submitAction: TAppThunk | ActionCreator<TAppActions>,
   options?: {
     callback?: () => void;
     initialValues?: TFormField;
