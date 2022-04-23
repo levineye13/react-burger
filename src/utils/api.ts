@@ -293,7 +293,7 @@ class Api implements IApi {
 
   async makeOrder(
     ingredientsId: Array<string | number>
-  ): Promise<TResponceBody | void> {
+  ): Promise<TResponceBody<'order', IOrder> | void> {
     try {
       const res: Response = await fetch(
         `${this.baseUrl}${ApiEndpoints.Orders}`,
