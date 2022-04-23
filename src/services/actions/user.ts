@@ -1,3 +1,5 @@
+import { IApiArguments } from './../../utils/interfaces';
+import { TAppThunk, TAppDispatch } from './../../utils/types';
 import {
   LOGIN,
   LOGOUT,
@@ -18,11 +20,85 @@ import { api } from '../../utils/api';
 import Cookie from '../../utils/cookie';
 import { TokenType } from '../../utils/constants';
 
-export const setAuth = () => ({ type: SET_AUTH });
+// ======= Actions =======
 
-export const setUnauth = () => ({ type: SET_UNAUTH });
+export interface ISetAuth {
+  readonly type: typeof SET_AUTH;
+}
 
-export const logout = () => async (dispatch) => {
+export interface ISetUnauth {
+  readonly type: typeof SET_UNAUTH;
+}
+
+export interface ILogout {
+  readonly type: typeof LOGOUT;
+}
+
+export interface IUserRequestSuccess {
+  readonly type: typeof USER_REQUEST_SUCCESS;
+}
+
+export interface IUserRequestSent {
+  readonly type: typeof USER_REQUEST_SENT;
+}
+
+export interface IUserRequestFailed {
+  readonly type: typeof USER_REQUEST_FAILED;
+}
+
+export interface IRefreshToken {
+  readonly type: typeof REFRESH_TOKEN;
+}
+
+export interface ILogin {
+  readonly type: typeof LOGIN;
+  readonly payload: IApiArguments;
+}
+
+export interface IRegister {
+  readonly type: typeof REGISTER;
+  readonly payload: IApiArguments;
+}
+
+export interface IGetUser {
+  readonly type: typeof GET_USER;
+  readonly payload: IApiArguments;
+}
+
+export interface IUpdateUser {
+  readonly type: typeof UPDATE_USER;
+  readonly payload: IApiArguments;
+}
+
+export interface IRestorePassword {
+  readonly type: typeof RESTORE_PASSWORD;
+}
+
+export interface IResetPassword {
+  readonly type: typeof RESET_PASSWORD;
+}
+
+export type TUser =
+  | ISetAuth
+  | ISetUnauth
+  | ILogout
+  | ILogin
+  | IRegister
+  | IUpdateUser
+  | IUserRequestSuccess
+  | IUserRequestSent
+  | IUserRequestFailed
+  | IRefreshToken
+  | IRestorePassword
+  | IResetPassword;
+
+// ======= Action Creators =======
+
+export const setAuth = (): ISetAuth => ({ type: SET_AUTH });
+
+export const setUnauth = (): ISetUnauth => ({ type: SET_UNAUTH });
+
+export const logout: TAppThunk = () => async (dispatch: TAppDispatch) => {
   dispatch({ type: USER_REQUEST_SENT });
 
   const data = await api.logout();
@@ -35,10 +111,10 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-export const refreshToken = () => async (dispatch) => {
+export const refreshToken: TAppThunk = () => async (dispatch: TAppDispatch) => {
   dispatch({ type: USER_REQUEST_SENT });
 
-  const data = await api.refreshToken(Cookie.get(TokenType.Refresh));
+  const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
 
   if (data) {
     dispatch({ type: REFRESH_TOKEN });
@@ -49,9 +125,9 @@ export const refreshToken = () => async (dispatch) => {
   }
 };
 
-export const login =
+export const login: TAppThunk =
   ({ email, password }) =>
-  async (dispatch) => {
+  async (dispatch: TAppDispatch) => {
     dispatch({ type: USER_REQUEST_SENT });
 
     const user = await api.login({ email, password });
@@ -64,9 +140,9 @@ export const login =
     }
   };
 
-export const register =
+export const register: TAppThunk =
   ({ email, password, name }) =>
-  async (dispatch) => {
+  async (dispatch: TAppDispatch) => {
     dispatch({ type: USER_REQUEST_SENT });
 
     const user = await api.register({ email, password, name });
@@ -79,63 +155,63 @@ export const register =
     }
   };
 
-export const getUser = () => async (dispatch) => {
+export const getUser: TAppThunk = () => async (dispatch: TAppDispatch) => {
   dispatch({ type: USER_REQUEST_SENT });
 
   const user = await api.getUser();
 
   if (user === false) {
-    const data = await api.refreshToken(Cookie.get(TokenType.Refresh));
+    const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
 
     if (!data) {
       dispatch({ type: USER_REQUEST_FAILED });
     } else {
       const user = await api.getUser();
 
-      if (user) {
+      if (typeof user === 'object') {
         dispatch({ type: UPDATE_USER, payload: user });
         dispatch({ type: USER_REQUEST_SUCCESS });
       } else {
         dispatch({ type: USER_REQUEST_FAILED });
       }
     }
-  } else {
+  } else if (typeof user === 'object') {
     dispatch({ type: UPDATE_USER, payload: user });
     dispatch({ type: USER_REQUEST_SUCCESS });
   }
 };
 
-export const updateUser =
+export const updateUser: TAppThunk =
   ({ email, name, password }) =>
-  async (dispatch) => {
+  async (dispatch: TAppDispatch) => {
     dispatch({ type: USER_REQUEST_SENT });
 
     const user = await api.updateUser({ email, name, password });
 
     if (user === false) {
-      const data = await api.refreshToken(Cookie.get(TokenType.Refresh));
+      const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
 
       if (!data) {
         dispatch({ type: USER_REQUEST_FAILED });
       } else {
         const user = await api.updateUser({ email, name, password });
 
-        if (user) {
+        if (typeof user === 'object') {
           dispatch({ type: UPDATE_USER, payload: user });
           dispatch({ type: USER_REQUEST_SUCCESS });
         } else {
           dispatch({ type: USER_REQUEST_FAILED });
         }
       }
-    } else {
+    } else if (typeof user === 'object') {
       dispatch({ type: UPDATE_USER, payload: user });
       dispatch({ type: USER_REQUEST_SUCCESS });
     }
   };
 
-export const restorePassword =
+export const restorePassword: TAppThunk =
   ({ email }) =>
-  async (dispatch) => {
+  async (dispatch: TAppDispatch) => {
     dispatch({ type: USER_REQUEST_SENT });
 
     const data = await api.restorePassword({ email });
@@ -148,9 +224,9 @@ export const restorePassword =
     }
   };
 
-export const resetPassword =
+export const resetPassword: TAppThunk =
   ({ password, token }) =>
-  async (dispatch) => {
+  async (dispatch: TAppDispatch) => {
     dispatch({ type: USER_REQUEST_SENT });
 
     const data = await api.resetPassword({ password, token });
