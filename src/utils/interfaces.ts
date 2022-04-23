@@ -1,4 +1,4 @@
-import { TResponceBody } from './types';
+import { TResponceBody, TIngredientType } from './types';
 
 export interface IUser {
   readonly name: string;
@@ -11,7 +11,7 @@ export interface IIngredient {
   readonly name: string;
   readonly image: string;
   readonly price: number;
-  readonly type: string;
+  readonly type: TIngredientType;
   readonly uuid?: string;
 }
 
