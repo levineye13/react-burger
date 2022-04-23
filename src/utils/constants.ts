@@ -54,23 +54,11 @@ export enum TokenDuration {
   Refresh = 60 * 24 * 7,
 }
 
-// export const TABS: { [key: string]: string } = {
-//   one: 'one',
-//   two: 'two',
-//   three: 'three',
-// };
-
 export enum Tabs {
   One = 'one',
   Two = 'two',
   Three = 'three',
 }
-
-// export const INGREDIENT_TYPE: { [key: string]: string } = {
-//   bun: 'bun',
-//   sauce: 'sauce',
-//   main: 'main',
-// };
 
 export enum IngredientType {
   Bun = 'bun',
