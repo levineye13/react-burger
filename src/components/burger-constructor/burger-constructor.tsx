@@ -1,5 +1,4 @@
 import React, { FC, ReactElement, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import {
   ConstructorElement,
@@ -11,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './burger-constructor.module.css';
 import Price from '../price/price';
 import ConstructorIngredient from '../constructor-ingredient/constructor-ingredient';
+import { useDispatch, useSelector } from '../../hooks';
 import { sumByKey } from '../../utils/utils';
 import {
   addIngredient,
@@ -24,17 +24,18 @@ import { IIngredient } from '../../utils/interfaces';
 
 const BurgerConstructor: FC = (): ReactElement => {
   const history: History = useHistory();
-
   const dispatch = useDispatch();
-  const { bun, ingredients } = useSelector(
-    (state: any) => state.burgerConstructor
-  );
-  const { isAuth } = useSelector((state: any) => state.user);
+
+  const { isAuth, bun, ingredients } = useSelector((state) => ({
+    isAuth: state.user.isAuth,
+    bun: state.burgerConstructor.bun,
+    ingredients: state.burgerConstructor.ingredients,
+  }));
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
     drop(ingredient: IIngredient) {
-      if (ingredient.type === IngredientType.Bun || bun._id !== undefined) {
+      if (ingredient.type === IngredientType.Bun || bun !== null) {
         dispatch(addIngredient(ingredient));
         dispatch(increment(ingredient));
       }
@@ -49,6 +50,7 @@ const BurgerConstructor: FC = (): ReactElement => {
     const ingredientsId = ingredients.map(
       (ingredient: IIngredient) => ingredient._id
     );
+
     dispatch(makeOrder(ingredientsId));
   };
 
@@ -57,18 +59,25 @@ const BurgerConstructor: FC = (): ReactElement => {
     dispatch(decrement(item));
   };
 
-  const calculatePrice = (arr: IIngredient[], bun: IIngredient): number => {
+  const calculatePrice = (
+    arr: readonly IIngredient[],
+    bun: IIngredient
+  ): number => {
     return sumByKey(arr, 'price') + (bun.price || 0) * 2;
   };
 
   const sum = useMemo<number>(() => {
-    return calculatePrice(ingredients, bun);
+    if (bun !== null) {
+      return calculatePrice(ingredients, bun);
+    }
+
+    return 0;
   }, [bun, ingredients]);
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
       <ul className={styles.list} ref={dropTarget}>
-        {bun.image ? (
+        {bun ? (
           <>
             <li className={`${styles.item} mr-4`}>
               <ConstructorElement
@@ -118,7 +127,7 @@ const BurgerConstructor: FC = (): ReactElement => {
           size="large"
           htmlType="submit"
           onClick={handleButtonClick}
-          disabled={!bun.image}
+          disabled={!bun}
         >
           Оформить заказ
         </Button>

@@ -1,4 +1,7 @@
-export function sumByKey(arr: Array<any>, property: string): number {
+export function sumByKey(
+  arr: ReadonlyArray<any> | Array<any>,
+  property: string
+): number {
   return arr.reduce((sum: number, item: any) => sum + (item[property] || 0), 0);
 }
 
