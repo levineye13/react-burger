@@ -63,3 +63,10 @@ export type TFormField = {
   name: string;
   token: string;
 };
+
+export type TFormName =
+  | 'login'
+  | 'register'
+  | 'resetPassword'
+  | 'forgotPassword'
+  | 'profile';

@@ -65,3 +65,11 @@ export enum IngredientType {
   Sauce = 'sauce',
   Main = 'main',
 }
+
+export enum Forms {
+  login = 'login',
+  register = 'register',
+  profile = 'profile',
+  forgotPassword = 'forgotPassword',
+  resetPassword = 'resetPassword',
+}
