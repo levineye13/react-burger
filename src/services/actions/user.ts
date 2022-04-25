@@ -84,6 +84,7 @@ export type TUser =
   | ILogout
   | ILogin
   | IRegister
+  | IGetUser
   | IUpdateUser
   | IUserRequestSuccess
   | IUserRequestSent
@@ -169,14 +170,14 @@ export const getUser: TAppThunk = () => async (dispatch: TAppDispatch) => {
       const user = await api.getUser();
 
       if (typeof user === 'object') {
-        dispatch({ type: UPDATE_USER, payload: user });
+        dispatch({ type: GET_USER, payload: user });
         dispatch({ type: USER_REQUEST_SUCCESS });
       } else {
         dispatch({ type: USER_REQUEST_FAILED });
       }
     }
   } else if (typeof user === 'object') {
-    dispatch({ type: UPDATE_USER, payload: user });
+    dispatch({ type: GET_USER, payload: user });
     dispatch({ type: USER_REQUEST_SUCCESS });
   }
 };
