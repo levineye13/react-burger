@@ -1,3 +1,7 @@
+import { TBurgerIngredients } from './../actions/burger-ingredients';
+import { IIngredient } from '../../utils/interfaces';
+import { TSortedIngredietns } from '../../utils/types';
+import { IngredientType } from '../../utils/constants';
 import {
   SET_INGREDIENTS,
   SET_SORTED_INGREDIENTS,
@@ -6,13 +10,22 @@ import {
   CLEAR_COUNTERS,
 } from '../action-types';
 
-const initialIngredients = {
+type TIngredientsState = {
+  readonly list: ReadonlyArray<IIngredient>;
+  readonly sortedIngredients: TSortedIngredietns;
+  readonly ingredientsCount: { [key: string]: number | {} };
+};
+
+const initialIngredients: TIngredientsState = {
   list: [],
   sortedIngredients: { bun: [], sauce: [], main: [] },
   ingredientsCount: { bun: {} },
 };
 
-export const ingredientsReducer = (state = initialIngredients, action) => {
+export const ingredientsReducer = (
+  state = initialIngredients,
+  action: TBurgerIngredients
+): TIngredientsState => {
   switch (action.type) {
     case SET_INGREDIENTS:
       return { ...state, list: action.payload };
@@ -23,7 +36,7 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
     case INCREMENT: {
       const ingredientCount = state.ingredientsCount[action.payload._id];
 
-      if (action.payload.type === 'bun') {
+      if (action.payload.type === IngredientType.Bun) {
         return {
           ...state,
           ingredientsCount: {
@@ -39,10 +52,8 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         ...state,
         ingredientsCount: {
           ...state.ingredientsCount,
-          bun: {
-            ...state.ingredientsCount.bun,
-          },
-          [action.payload._id]: ingredientCount ? ingredientCount + 1 : 1,
+          [action.payload._id]:
+            typeof ingredientCount === 'number' ? ingredientCount + 1 : 1,
         },
       };
     }
@@ -65,7 +76,9 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         ingredientsCount: {
           ...state.ingredientsCount,
           [action.payload._id]:
-            ingredientCount > 0 ? ingredientCount - 1 : ingredientCount,
+            typeof ingredientCount === 'number' && ingredientCount > 0
+              ? ingredientCount - 1
+              : ingredientCount,
         },
       };
     }
