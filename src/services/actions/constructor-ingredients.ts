@@ -20,7 +20,7 @@ export interface ISetSelectedIngredients {
 
 export interface ISetCurrentBun {
   readonly type: typeof SET_CURRENT_BUN;
-  readonly payload: keyof typeof IngredientType;
+  readonly payload: IIngredient;
 }
 
 export interface IAddIngredient {
@@ -62,9 +62,7 @@ export const setSelectedIngredients = (
   payload,
 });
 
-export const setCurrentBun = (
-  payload: keyof typeof IngredientType
-): ISetCurrentBun => ({
+export const setCurrentBun = (payload: IIngredient): ISetCurrentBun => ({
   type: SET_CURRENT_BUN,
   payload,
 });
