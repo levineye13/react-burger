@@ -13,8 +13,17 @@ import {
   SET_AUTH,
   SET_UNAUTH,
 } from '../action-types';
+import { TUser } from '../actions/user';
 
-const initialUser = {
+type TUserState = {
+  readonly isAuth: boolean;
+  readonly email: string;
+  readonly name: string;
+  readonly request: boolean;
+  readonly failed: boolean;
+};
+
+const initialUser: TUserState = {
   isAuth: false,
   email: '',
   name: '',
@@ -22,7 +31,7 @@ const initialUser = {
   failed: false,
 };
 
-export const userReducer = (state = initialUser, action) => {
+export const userReducer = (state = initialUser, action: TUser): TUserState => {
   switch (action.type) {
     case SET_AUTH:
       return { ...state, isAuth: true };
