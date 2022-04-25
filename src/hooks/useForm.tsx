@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ActionCreator } from 'redux';
 
 import { setFieldValue } from '../services/actions';
-import { TAppActions, TAppThunk, TFormField } from '../utils/types';
+import { TAppActions, TAppThunk, TFormField, TFormName } from '../utils/types';
 
 const useForm = (
-  formName: string,
+  formName: TFormName,
   submitAction: TAppThunk | ActionCreator<TAppActions>,
   options?: {
     callback?: () => void;
