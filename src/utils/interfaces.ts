@@ -12,6 +12,11 @@ export interface IIngredient {
   readonly image: string;
   readonly price: number;
   readonly type: TIngredientType;
+  readonly calories: number;
+  readonly proteins: number;
+  readonly fat: number;
+  readonly carbohydrates: number;
+
   readonly uuid?: string;
 }
 

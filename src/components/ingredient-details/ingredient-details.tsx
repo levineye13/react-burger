@@ -1,18 +1,22 @@
 import React, { FC, ReactElement, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import style from './ingredient-details.module.css';
 import { IIngredient } from '../../utils/interfaces';
+import { useSelector } from '../../hooks/useSelector';
 
-const IngredientDetails: FC = (): ReactElement => {
+const IngredientDetails: FC = (): ReactElement | null => {
   const { id } = useParams<{ id: string }>();
-  const { ingredients } = useSelector((state: any) => state);
+  const { ingredients } = useSelector((state) => state);
 
   const currentIngredient = useMemo(
-    () => ingredients.list.find((item: IIngredient) => item._id === id) || {},
+    () => ingredients.list.find((item: IIngredient) => item._id === id),
     [id, ingredients]
   );
+
+  if (!currentIngredient) {
+    return null;
+  }
 
   return (
     <article className={style.article}>
