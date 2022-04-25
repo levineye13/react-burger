@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import style from './ingredient-details.module.css';
 import { IIngredient } from '../../utils/interfaces';
-import { useSelector } from '../../hooks/useSelector';
+import { useSelector } from '../../hooks';
 
 const IngredientDetails: FC = (): ReactElement | null => {
   const { id } = useParams<{ id: string }>();

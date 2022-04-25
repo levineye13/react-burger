@@ -7,7 +7,7 @@ import {
 
 import { moveIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
-import { useDispatch } from '../../hooks/useDispatch';
+import { useDispatch } from '../../hooks';
 
 interface IProps extends IIngredient {
   readonly className: string;
