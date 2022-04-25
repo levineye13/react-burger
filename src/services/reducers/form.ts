@@ -1,6 +1,12 @@
 import { SET_FIELD_VALUE, CLEAR_FORM } from '../action-types';
+import { TForm } from '../actions/form';
+import { TFormName } from '../../utils/types';
 
-const initialForm = {
+type TFormState = {
+  [formName in TFormName]: {};
+};
+
+const initialForm: TFormState = {
   login: {},
   register: {},
   forgotPassword: {},
@@ -8,7 +14,7 @@ const initialForm = {
   profile: {},
 };
 
-export const formReducer = (state = initialForm, action) => {
+export const formReducer = (state = initialForm, action: TForm): TFormState => {
   switch (action.type) {
     case SET_FIELD_VALUE: {
       const { formName, field, value } = action.payload;
