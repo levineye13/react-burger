@@ -1,5 +1,4 @@
 import React, { FC, ReactElement, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { Location } from 'history';
 
@@ -17,6 +16,7 @@ import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 import ProtectedRoute from '../../hoc/protected-route';
 import Cookie from '../../utils/cookie';
+import { useDispatch, useSelector } from '../../hooks';
 import { ApiEndpoints, Pages, TokenType } from '../../utils/constants';
 import {
   setIngredients,
@@ -34,7 +34,7 @@ const App: FC = (): ReactElement => {
   const location = useLocation<{ background: Location }>();
   const background = location.state?.background;
 
-  const { list: ingredients, order } = useSelector((state: any) => ({
+  const { list: ingredients, order } = useSelector((state) => ({
     list: state.ingredients.list,
     order: state.order,
   }));
@@ -54,7 +54,9 @@ const App: FC = (): ReactElement => {
   }, [dispatch]);
 
   useEffect(() => {
-    const filterIngredients = (arr: IIngredient[]): TSortedIngredietns => {
+    const filterIngredients = (
+      arr: ReadonlyArray<IIngredient>
+    ): TSortedIngredietns => {
       const sorted: TSortedIngredietns = {
         bun: [],
         sauce: [],
