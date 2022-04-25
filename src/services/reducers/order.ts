@@ -1,10 +1,18 @@
 import { OPEN_ORDER, CLOSE_ORDER } from '../action-types';
+import { TOrder } from '../actions/order';
 
-const initialOrder = {
+type TOrderState = {
+  readonly isOpen: boolean;
+};
+
+const initialOrder: TOrderState = {
   isOpen: false,
 };
 
-export const orderReducer = (state = initialOrder, action) => {
+export const orderReducer = (
+  state = initialOrder,
+  action: TOrder
+): TOrderState => {
   switch (action.type) {
     case OPEN_ORDER:
       return { ...action.payload, isOpen: true };
