@@ -13,7 +13,9 @@ import {
 type TIngredientsState = {
   readonly list: ReadonlyArray<IIngredient>;
   readonly sortedIngredients: TSortedIngredietns;
-  readonly ingredientsCount: { [key: string]: number | {} };
+  readonly ingredientsCount: {
+    [key: string]: string | number | { [key: string]: number };
+  };
 };
 
 const initialIngredients: TIngredientsState = {

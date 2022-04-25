@@ -8,7 +8,7 @@ import { IIngredient } from '../../utils/interfaces';
 
 interface IProps extends IIngredient {
   readonly onClick: (ingredient: IIngredient) => void;
-  readonly count: number;
+  readonly count: number | null;
 }
 
 const Ingredient: FC<IProps> = ({ onClick, count, ...props }): ReactElement => {

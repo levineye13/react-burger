@@ -7,7 +7,6 @@ import React, {
   useMemo,
 } from 'react';
 import { History } from 'history';
-import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -16,6 +15,7 @@ import Ingredient from '../ingredient/ingredient';
 import { Tabs, ApiEndpoints } from '../../utils/constants';
 import { setIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
+import { useDispatch, useSelector } from '../../hooks';
 
 const BurgerIngredients: FC = (): ReactElement => {
   const [currentTab, setCurrentTab] = useState<string>(Tabs.One);
@@ -37,9 +37,9 @@ const BurgerIngredients: FC = (): ReactElement => {
   );
 
   const { bun, sauce, main } = useSelector(
-    (state: any) => state.ingredients.sortedIngredients
+    (state) => state.ingredients.sortedIngredients
   );
-  const { ingredientsCount } = useSelector((state: any) => state.ingredients);
+  const { ingredientsCount } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
     const list: HTMLUListElement = listRef.current!;
@@ -134,7 +134,12 @@ const BurgerIngredients: FC = (): ReactElement => {
               <li key={item._id}>
                 <Ingredient
                   onClick={handleIngredientClick}
-                  count={ingredientsCount.bun[item._id]}
+                  count={
+                    typeof ingredientsCount.bun === 'object' &&
+                    !Number.isNaN(Number(ingredientsCount.bun[item._id]))
+                      ? Number(ingredientsCount.bun[item._id])
+                      : null
+                  }
                   {...item}
                 />
               </li>
@@ -148,7 +153,7 @@ const BurgerIngredients: FC = (): ReactElement => {
               <li key={item._id}>
                 <Ingredient
                   onClick={handleIngredientClick}
-                  count={ingredientsCount[item._id]}
+                  count={Number(ingredientsCount[item._id]) || null}
                   {...item}
                 />
               </li>
@@ -162,7 +167,7 @@ const BurgerIngredients: FC = (): ReactElement => {
               <li key={item._id}>
                 <Ingredient
                   onClick={handleIngredientClick}
-                  count={ingredientsCount[item._id]}
+                  count={Number(ingredientsCount[item._id]) || null}
                   {...item}
                 />
               </li>
