@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { ActionCreator } from 'redux';
 
+import { useDispatch, useSelector } from './';
 import { setFieldValue } from '../services/actions';
 import { TAppActions, TAppThunk, TFormField, TFormName } from '../utils/types';
 
@@ -14,7 +14,7 @@ const useForm = (
   }
 ) => {
   const dispatch = useDispatch();
-  const form = useSelector((state: any) => state.form[formName]);
+  const form = useSelector((state) => state.form[formName]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.currentTarget;
