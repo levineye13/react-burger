@@ -8,16 +8,23 @@ import {
 } from '../action-types';
 
 import { IngredientType } from '../../utils/constants';
+import { IIngredient } from '../../utils/interfaces';
+import { TConstructorIngredients } from '../actions/constructor-ingredients';
 
-const initialSelectedIngredients = {
-  bun: {},
+type TSelectedIngredientState = {
+  readonly bun: IIngredient | null;
+  readonly ingredients: ReadonlyArray<IIngredient>;
+};
+
+const initialSelectedIngredients: TSelectedIngredientState = {
+  bun: null,
   ingredients: [],
 };
 
 export const burgerConstructorReducer = (
   state = initialSelectedIngredients,
-  action
-) => {
+  action: TConstructorIngredients
+): TSelectedIngredientState => {
   switch (action.type) {
     case SET_CURRENT_BUN:
       return { ...state, bun: action.payload };
@@ -66,9 +73,7 @@ export const burgerConstructorReducer = (
 
       return {
         ...state,
-        bun: {
-          ...state.bun,
-        },
+        bun: state.bun,
         ingredients: newIngredients,
       };
     }
