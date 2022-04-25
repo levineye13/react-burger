@@ -3,6 +3,8 @@ import { TOrder } from '../actions/order';
 
 type TOrderState = {
   readonly isOpen: boolean;
+  readonly name?: string;
+  readonly number?: number;
 };
 
 const initialOrder: TOrderState = {
