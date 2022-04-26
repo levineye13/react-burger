@@ -1,6 +1,5 @@
 import React, { FC, ReactElement, useCallback } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
@@ -9,17 +8,17 @@ import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
-import { useForm } from '../../hooks/useForm';
-import { Pages } from '../../utils/constants';
+import { useForm, useDispatch, useSelector } from '../../hooks';
+import { Pages, Forms, Fields } from '../../utils/constants';
 import { clearForm, restorePassword } from '../../services/actions';
 
 const ForgotPassword: FC = (): ReactElement => {
-  const { isAuth, request, failed } = useSelector((state: any) => state.user);
+  const { isAuth, request, failed } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { location, replace } = useHistory<{ from: Location }>();
 
   const onSubmit = useCallback(() => {
-    dispatch(clearForm('forgotPassword'));
+    dispatch(clearForm(Forms.ForgotPassword));
 
     if (!request && !failed) {
       replace({
@@ -27,12 +26,14 @@ const ForgotPassword: FC = (): ReactElement => {
         state: { from: location },
       });
     }
-  }, [request, failed, location, replace]);
+  }, [request, failed, location, replace, dispatch]);
 
-  const { handleChange, handleSubmit, values } = useForm(
-    'forgotPassword',
+  const { handleChange, handleSubmit, values } = useForm<Fields.Email>(
+    Forms.ForgotPassword,
     restorePassword,
-    { callback: onSubmit }
+    {
+      callback: onSubmit,
+    }
   );
 
   if (isAuth) {
@@ -41,10 +42,10 @@ const ForgotPassword: FC = (): ReactElement => {
 
   return (
     <AuthenticationSection title="Восстановление пароля">
-      <Form name="forgotPassword" onSubmit={handleSubmit}>
+      <Form name={Forms.ForgotPassword} onSubmit={handleSubmit}>
         <Input
-          type="email"
-          name="email"
+          type={Fields.Email}
+          name={Fields.Email}
           placeholder="Укажите e-mail"
           onChange={handleChange}
           value={values.email || ''}
