@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
@@ -9,18 +8,24 @@ import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
-import { useForm } from '../../hooks/useForm';
-import { Pages } from '../../utils/constants';
+import { useForm, useDispatch, useSelector } from '../../hooks';
+import { Pages, Forms, Fields } from '../../utils/constants';
 import { clearForm, register } from '../../services/actions';
 
+type TFields = Fields.Name | Fields.Email | Fields.Password;
+
 const Register: FC = (): ReactElement => {
-  const { isAuth } = useSelector((state: any) => state.user);
+  const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { state } = useLocation<{ from: Location }>();
 
-  const { handleChange, handleSubmit, values } = useForm('register', register, {
-    callback: () => dispatch(clearForm('register')),
-  });
+  const { handleChange, handleSubmit, values } = useForm<TFields>(
+    Forms.Register,
+    register,
+    {
+      callback: () => dispatch(clearForm(Forms.Register)),
+    }
+  );
 
   if (isAuth) {
     return <Redirect to={state?.from || Pages.Root} />;
@@ -28,24 +33,24 @@ const Register: FC = (): ReactElement => {
 
   return (
     <AuthenticationSection title="Регистрация">
-      <Form name="register" onSubmit={handleSubmit}>
+      <Form name={Forms.Register} onSubmit={handleSubmit}>
         <Input
           type="text"
-          name="name"
+          name={Fields.Name}
           placeholder="Имя"
           onChange={handleChange}
           value={values.name || ''}
         />
         <Input
-          type="email"
-          name="email"
+          type={Fields.Email}
+          name={Fields.Email}
           placeholder="E-mail"
           onChange={handleChange}
           value={values.email || ''}
         />
         <Input
-          type="password"
-          name="password"
+          type={Fields.Password}
+          name={Fields.Password}
           placeholder="Пароль"
           icon="ShowIcon"
           onChange={handleChange}
