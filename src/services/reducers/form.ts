@@ -3,7 +3,7 @@ import { TForm } from '../actions/form';
 import { TFormName } from '../../utils/types';
 
 type TFormState = {
-  [formName in TFormName]: {};
+  [formName in TFormName]: { [field: string]: string };
 };
 
 const initialForm: TFormState = {

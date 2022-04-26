@@ -30,7 +30,7 @@ export const setFieldValue = (payload: {
   payload,
 });
 
-export const clearForm = (formName: string): IClearForm => ({
+export const clearForm = (formName: TFormName): IClearForm => ({
   type: CLEAR_FORM,
   payload: { formName },
 });
