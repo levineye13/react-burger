@@ -67,9 +67,16 @@ export enum IngredientType {
 }
 
 export enum Forms {
-  login = 'login',
-  register = 'register',
-  profile = 'profile',
-  forgotPassword = 'forgotPassword',
-  resetPassword = 'resetPassword',
+  Login = 'login',
+  Register = 'register',
+  Profile = 'profile',
+  ForgotPassword = 'forgotPassword',
+  ResetPassword = 'resetPassword',
+}
+
+export enum Fields {
+  Email = 'email',
+  Name = 'name',
+  Password = 'password',
+  Code = 'code',
 }
