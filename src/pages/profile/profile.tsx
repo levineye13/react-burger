@@ -1,5 +1,4 @@
 import React, { FC, ReactElement, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
   Input,
@@ -8,8 +7,8 @@ import {
 
 import styles from './profile.module.css';
 import Form from '../../components/form/form';
-import { useForm } from '../../hooks/useForm';
-import { Pages } from '../../utils/constants';
+import { useForm, useDispatch, useSelector } from '../../hooks';
+import { Pages, Forms, Fields } from '../../utils/constants';
 import {
   getUser,
   logout,
@@ -17,25 +16,28 @@ import {
   updateUser,
 } from '../../services/actions';
 
+type TFields = Fields.Name | Fields.Email | Fields.Password;
+
 const Profile: FC = (): ReactElement => {
   const dispatch = useDispatch();
-  const { name, email } = useSelector((state: any) => state.user);
-  const { values, handleChange, handleSubmit, setInitialValues } = useForm(
-    'profile',
-    updateUser,
-    {
+  const { name, email } = useSelector((state) => state.user);
+
+  const { values, handleChange, handleSubmit, setInitialValues } =
+    useForm<TFields>(Forms.Profile, updateUser, {
       initialValues: {
         name,
         email,
         password: '',
-        token: '',
       },
       callback: () =>
         dispatch(
-          setFieldValue({ formName: 'profile', field: 'password', value: '' })
+          setFieldValue({
+            formName: Forms.Profile,
+            field: Fields.Password,
+            value: '',
+          })
         ),
-    }
-  );
+    });
 
   useEffect(() => {
     dispatch(getUser());
@@ -103,26 +105,26 @@ const Profile: FC = (): ReactElement => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <Form name="profile" onSubmit={handleSubmit}>
+      <Form name={Forms.Profile} onSubmit={handleSubmit}>
         <Input
           type="text"
-          name="name"
+          name={Fields.Name}
           placeholder="Имя"
           icon="EditIcon"
           onChange={handleChange}
           value={values.name || ''}
         />
         <Input
-          type="email"
-          name="email"
+          type={Fields.Email}
+          name={Fields.Email}
           placeholder="Логин"
           icon="EditIcon"
           onChange={handleChange}
           value={values.email || ''}
         />
         <Input
-          type="password"
-          name="password"
+          type={Fields.Password}
+          name={Fields.Password}
           placeholder="Пароль"
           icon="EditIcon"
           onChange={handleChange}
