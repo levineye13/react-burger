@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
@@ -9,19 +8,21 @@ import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
-import { useForm } from '../../hooks/useForm';
-import { Pages } from '../../utils/constants';
+import { useForm, useDispatch, useSelector } from '../../hooks';
+import { Pages, Forms, Fields } from '../../utils/constants';
 import { clearForm, resetPassword } from '../../services/actions';
 
+type TFields = Fields.Password | Fields.Code;
+
 const ResetPassword: FC = (): ReactElement => {
-  const { isAuth } = useSelector((state: any) => state.user);
+  const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { state } = useLocation<{ from: Location }>();
-  const { handleChange, handleSubmit, values } = useForm(
-    'resetPassword',
+  const { handleChange, handleSubmit, values } = useForm<TFields>(
+    Forms.ResetPassword,
     resetPassword,
     {
-      callback: () => dispatch(clearForm('resetPassword')),
+      callback: () => dispatch(clearForm(Forms.ResetPassword)),
     }
   );
 
@@ -31,10 +32,10 @@ const ResetPassword: FC = (): ReactElement => {
 
   return (
     <AuthenticationSection title="Восстановление пароля">
-      <Form name="resetPassword" onSubmit={handleSubmit}>
+      <Form name={Forms.ResetPassword} onSubmit={handleSubmit}>
         <Input
-          type="password"
-          name="password"
+          type={Fields.Password}
+          name={Fields.Password}
           placeholder="Введите новый пароль"
           icon="ShowIcon"
           onChange={handleChange}
@@ -42,7 +43,7 @@ const ResetPassword: FC = (): ReactElement => {
         />
         <Input
           type="text"
-          name="code"
+          name={Fields.Code}
           placeholder="Введите код из письма"
           onChange={handleChange}
           value={values.code || ''}
