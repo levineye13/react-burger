@@ -5,8 +5,8 @@ import styles from './price.module.css';
 
 interface IProps {
   readonly price: number;
-  readonly type?: string;
-  readonly iconType?: string;
+  readonly type?: 'default' | 'large';
+  readonly iconType?: 'default' | 'large';
   readonly externalGeometry?: string;
 }
 
