@@ -40,9 +40,9 @@ const AppHeader: FC = (): ReactElement => {
               <NavLink
                 className={`${styles.link} text text_type_main-default text_color_inactive pt-4 pr-5 pb-4 pl-5`}
                 activeClassName={styles.link_active}
-                to={Pages.Orders}
+                to={Pages.Feed}
               >
-                <ListIcon type={setIconClassName(Pages.Orders, pathname)} />
+                <ListIcon type={setIconClassName(Pages.Feed, pathname)} />
                 <span className="ml-2">Лента заказов</span>
               </NavLink>
             </li>
