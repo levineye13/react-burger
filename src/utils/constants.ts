@@ -27,6 +27,7 @@ export enum Pages {
   Profile = '/profile',
   Orders = '/profile/orders',
   Ingredients = '/ingredients',
+  Feed = '/feed',
 }
 
 export enum HttpMethods {
