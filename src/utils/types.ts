@@ -9,8 +9,9 @@ import {
   TForm,
   TOrder,
   TUser,
+  TWebSocket,
 } from '../services/actions';
-import { store } from '../services/store';
+import { rootReducer } from '../services/reducers';
 
 export type TAppActions =
   | TBurgerIngredients
@@ -18,9 +19,10 @@ export type TAppActions =
   | TCurrentIngredient
   | TForm
   | TOrder
-  | TUser;
+  | TUser
+  | TWebSocket;
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type TAppDispatch = Dispatch<TAppActions>;
 
@@ -70,3 +72,20 @@ export type TFormName =
   | 'resetPassword'
   | 'forgotPassword'
   | 'profile';
+
+export type TOrderResponce = {
+  ingredients: ReadonlyArray<string>;
+  _id: string;
+  status: string;
+  name: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TWSResponce = {
+  success: boolean;
+  orders: ReadonlyArray<TOrderResponce>;
+  total: number;
+  totalToday: number;
+};
