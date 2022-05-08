@@ -4,7 +4,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './price.module.css';
 
 interface IProps {
-  readonly price: number;
+  readonly price: number | string;
   readonly type?: 'default' | 'large';
   readonly iconType?: 'default' | 'large';
   readonly externalGeometry?: string;
