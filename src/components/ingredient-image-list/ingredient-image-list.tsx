@@ -20,7 +20,7 @@ const IngredientImageList: FC<IProps> = ({
       {ingredients.slice(0, numberToDisplay).map((item, index) => (
         <li
           className={styles.item}
-          key={item.uuid}
+          key={index}
           style={{ zIndex: numberToDisplay - index }}
         >
           <img className={styles.img} src={item.image} alt={item.name} />
