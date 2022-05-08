@@ -2,6 +2,11 @@ export const API_BASE_URL: string = 'https://norma.nomoreparties.space/api';
 export const ESC_KEY: 'Escape' = 'Escape';
 export const AUTH_SCHEMA_TYPE: 'Bearer' = 'Bearer';
 
+export enum WsApi {
+  OrdersAll = 'wss://norma.nomoreparties.space/orders/all',
+  OrdersHistory = 'wss://norma.nomoreparties.space/orders',
+}
+
 export const modalContainer: HTMLDivElement = document.getElementById(
   'modal'
 ) as HTMLDivElement;
@@ -80,4 +85,10 @@ export enum Fields {
   Name = 'name',
   Password = 'password',
   Code = 'code',
+}
+
+export enum OrderStatus {
+  Done = 'done',
+  Pending = 'pending',
+  Created = 'created',
 }
