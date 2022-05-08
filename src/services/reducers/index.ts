@@ -6,6 +6,7 @@ import { burgerConstructorReducer } from './constructor-ingredients';
 import { currentIngredientReducer } from './current-ingredient';
 import { orderReducer } from './order';
 import { formReducer } from './form';
+import { webSocketReducer } from './web-socket';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -14,4 +15,5 @@ export const rootReducer = combineReducers({
   currentIngredient: currentIngredientReducer,
   order: orderReducer,
   form: formReducer,
+  webSocket: webSocketReducer,
 });

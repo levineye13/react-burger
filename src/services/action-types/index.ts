@@ -4,3 +4,4 @@ export * from './current-ingredient';
 export * from './order';
 export * from './user';
 export * from './form';
+export * from './web-socket';

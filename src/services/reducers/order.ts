@@ -1,4 +1,4 @@
-import { OPEN_ORDER, CLOSE_ORDER } from '../action-types';
+import { OPEN_ORDER, CLOSE_ORDER, SET_ORDER } from '../action-types';
 import { TOrder } from '../actions/order';
 
 type TOrderState = {
@@ -21,6 +21,9 @@ export const orderReducer = (
 
     case CLOSE_ORDER:
       return { isOpen: false };
+
+    case SET_ORDER:
+      return { ...action.payload, isOpen: false };
 
     default:
       return state;

@@ -1,5 +1,5 @@
 import { TAppThunk, TAppDispatch } from './../../utils/types';
-import { OPEN_ORDER, CLOSE_ORDER } from '../action-types';
+import { OPEN_ORDER, CLOSE_ORDER, SET_ORDER } from '../action-types';
 import { clearIngredients, clearCounters } from '.';
 import { api } from '../../utils/api';
 
@@ -14,7 +14,12 @@ export interface ICloseOrder {
   readonly type: typeof CLOSE_ORDER;
 }
 
-export type TOrder = IOpenOrder | ICloseOrder;
+export interface ISetOrder {
+  readonly type: typeof SET_ORDER;
+  readonly payload: {};
+}
+
+export type TOrder = IOpenOrder | ICloseOrder | ISetOrder;
 
 // ======= Action Creators =======
 
@@ -24,6 +29,11 @@ export const openOrder = (payload: {}): IOpenOrder => ({
 });
 
 export const closeOrder = (): ICloseOrder => ({ type: CLOSE_ORDER });
+
+export const setOrder = (payload: {}): ISetOrder => ({
+  type: SET_ORDER,
+  payload,
+});
 
 export const makeOrder: TAppThunk =
   (ingredientsId: string[]) => async (dispatch: TAppDispatch) => {
