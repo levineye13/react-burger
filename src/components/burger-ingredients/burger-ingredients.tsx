@@ -12,7 +12,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import { Tabs, ApiEndpoints } from '../../utils/constants';
+import { Tabs, Pages } from '../../utils/constants';
 import { setIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
 import { useDispatch, useSelector } from '../../hooks';
@@ -85,7 +85,7 @@ const BurgerIngredients: FC = (): ReactElement => {
 
   const handleIngredientClick = (ingredient: IIngredient): void => {
     history.push({
-      pathname: `${ApiEndpoints.Ingredients}/${ingredient._id}`,
+      pathname: `${Pages.Ingredients}/${ingredient._id}`,
       state: { background: history.location },
     });
 
