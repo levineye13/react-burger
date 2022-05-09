@@ -7,11 +7,31 @@
   align-content: flex-start;
 }
 
-.list {
+.list,
+.sublist {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 50%;
+}
+
+.sublist {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.capture {
+  width: 100%;
+}
+
+.item {
 }
 
 .success {
