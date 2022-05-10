@@ -12,3 +12,12 @@ export function extractToken(
 ): void {
   obj[field] = obj[field].replace(`${schemaType} `, '');
 }
+
+export const dateFormat = (date: string): string =>
+  new Date(date).toLocaleDateString('ru-RU', {
+    formatMatcher: 'best fit',
+    weekday: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  });
