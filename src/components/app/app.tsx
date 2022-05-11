@@ -14,10 +14,12 @@ import Register from '../../pages/register/register';
 import Profile from '../../pages/profile/profile';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
+import Orders from '../../pages/orders/orders';
+import Order from '../../pages/order/order';
 import ProtectedRoute from '../../hoc/protected-route';
 import Cookie from '../../utils/cookie';
 import { useDispatch, useSelector } from '../../hooks';
-import { ApiEndpoints, Pages, TokenType } from '../../utils/constants';
+import { Pages, TokenType } from '../../utils/constants';
 import {
   setIngredients,
   setSortedIngredients,
@@ -89,24 +91,33 @@ const App: FC = (): ReactElement => {
       <AppHeader />
       <Switch location={background || location}>
         <Route path={Pages.Root} exact component={Main} />
-        <ProtectedRoute exact path={Pages.Profile}>
-          <Profile />
-        </ProtectedRoute>
-        {/* <ProtectedRoute exact path={orders}></ProtectedRoute> */}
+        <ProtectedRoute path={Pages.Profile} children={<Profile />} />
         <Route path={Pages.Login} component={Login} />
         <Route path={Pages.Register} component={Register} />
         <Route path={Pages.ForgotPassword} component={ForgotPassword} />
         <Route path={Pages.ResetPassword} component={ResetPassword} />
-        <Route path={`${ApiEndpoints.Ingredients}/:id`} exact>
+        <Route path={Pages.Feed} component={Orders} exact />
+        <Route path={`${Pages.Feed}/:id`}>
+          <Order titleStyles={{ paddingTop: '120px' }} />
+        </Route>
+        <Route path={`${Pages.Ingredients}/:id`} exact>
           <IngredientPage />
         </Route>
         <Route>404</Route>
       </Switch>
 
       {background && (
-        <Route path={`${ApiEndpoints.Ingredients}/:id`}>
+        <Route path={`${Pages.Ingredients}/:id`}>
           <Modal onClose={returnFromModal} title="Детали ингредиента">
             <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+
+      {background && (
+        <Route path={`${Pages.Feed}/:id`}>
+          <Modal onClose={returnFromModal}>
+            <Order titleStyles={{ textAlign: 'left' }} />
           </Modal>
         </Route>
       )}
