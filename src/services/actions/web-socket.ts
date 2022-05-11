@@ -9,6 +9,7 @@ import {
   WS_HISTORY_CONNECTION_SUCCESS,
   WS_GET_ALL_ORDERS,
   WS_GET_HISTORY_ORDERS,
+  WS_SEND_MESSAGE,
 } from '../action-types';
 
 import { TWSResponce } from '../../utils/types';
@@ -57,6 +58,10 @@ export interface IWsGetHistoryOrders {
   readonly payload: TWSResponce;
 }
 
+export interface IWsSendMessage {
+  readonly type: typeof WS_SEND_MESSAGE;
+}
+
 export type TWebSocket =
   | IWsFeedConnectionStart
   | IWsFeedConnectionClosed
@@ -67,7 +72,8 @@ export type TWebSocket =
   | IWsHistoryConnectionSuccess
   | IWsHistoryConnectionError
   | IWsGetAllOrders
-  | IWsGetHistoryOrders;
+  | IWsGetHistoryOrders
+  | IWsSendMessage;
 
 // ======= Action Creators =======
 
@@ -113,4 +119,8 @@ export const wsGetHistoryOrders = (
 ): IWsGetHistoryOrders => ({
   type: WS_GET_HISTORY_ORDERS,
   payload,
+});
+
+export const wsSendMessage = (): IWsSendMessage => ({
+  type: WS_SEND_MESSAGE,
 });
