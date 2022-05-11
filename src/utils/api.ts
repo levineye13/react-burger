@@ -299,7 +299,12 @@ class Api implements IApi {
         `${this.baseUrl}${ApiEndpoints.Orders}`,
         {
           method: HttpMethods.Post,
-          headers: Headers,
+          headers: {
+            ...this.options.headers,
+            authorization: `${this.options.schemaType} ${Cookie.get(
+              TokenType.Access
+            )}`,
+          },
           body: JSON.stringify({
             ingredients: ingredientsId,
           }),
