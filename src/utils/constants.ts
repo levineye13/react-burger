@@ -92,3 +92,9 @@ export enum OrderStatus {
   Pending = 'pending',
   Created = 'created',
 }
+
+export enum OrderStatusRu {
+  Done = 'Выполнен',
+  Pending = 'Готовится',
+  Created = 'Создан',
+}
