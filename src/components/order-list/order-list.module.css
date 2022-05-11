@@ -1,5 +1,7 @@
 .section {
   box-sizing: border-box;
+  max-width: 608px;
+  min-width: 608px;
 }
 
 .list {

@@ -1,30 +1,31 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useEffect } from 'react';
 
 import styles from './order-list.module.css';
 import OrderItem from '../order-item/order-item';
-import { useSelector } from '../../hooks';
+import { useDispatch, useSelector } from '../../hooks';
+import { dateFormat } from '../../utils/utils';
+import {
+  wsFeedConnectionClosed,
+  wsFeedConnectionStart,
+} from '../../services/actions/web-socket';
 
-interface IProps {
-  readonly maxWidth?: number | string;
-}
+const OrderList: FC = (): ReactElement => {
+  const dispatch = useDispatch();
+  const { list } = useSelector((state) => state.webSocket.feedOrders);
 
-const OrderList: FC<IProps> = ({ maxWidth = 'none' }): ReactElement => {
-  const { allOrders } = useSelector((state) => state.webSocket);
+  useEffect(() => {
+    dispatch(wsFeedConnectionStart());
+
+    return () => {
+      dispatch(wsFeedConnectionClosed());
+    };
+  }, [dispatch]);
 
   return (
-    <section className={`${styles.section} pl-2`} style={{ maxWidth }}>
+    <section className={`${styles.section} pl-2`}>
       <ul className={styles.list}>
-        {allOrders.map((order) => {
-          const timestamp = new Date(order.createdAt).toLocaleDateString(
-            'ru-RU',
-            {
-              formatMatcher: 'best fit',
-              weekday: 'long',
-              hour: '2-digit',
-              minute: '2-digit',
-              timeZoneName: 'short',
-            }
-          );
+        {list.map((order) => {
+          const timestamp = dateFormat(order.createdAt);
 
           return (
             <li className={styles.item} key={order._id}>
