@@ -7,8 +7,9 @@ import IngredientImageList from '../ingredient-image-list/ingredient-image-list'
 import Price from '../price/price';
 import { useSelector } from '../../hooks';
 import { IIngredient } from '../../utils/interfaces';
-import { Pages } from '../../utils/constants';
+import { OrderStatus, Pages } from '../../utils/constants';
 import { TFilterIngredients } from '../../utils/types';
+import { getStatusOrder } from '../../utils/utils';
 
 interface IProps {
   readonly number: number;
@@ -16,6 +17,7 @@ interface IProps {
   readonly status: string;
   readonly timestamp: Date | string;
   readonly ingredients: ReadonlyArray<string>;
+  readonly withStatus?: boolean;
 }
 
 const OrderItem: FC<IProps> = ({
@@ -24,6 +26,7 @@ const OrderItem: FC<IProps> = ({
   status,
   timestamp,
   ingredients,
+  withStatus = false,
 }): ReactElement => {
   const history: History = useHistory();
 
@@ -58,6 +61,8 @@ const OrderItem: FC<IProps> = ({
     [ingredients, list]
   );
 
+  const style: string = styles[getStatusOrder(status, 'En')];
+
   return (
     <article className={`${styles.card} p-6`} onClick={handleClick}>
       <p className={styles.info}>
@@ -73,6 +78,13 @@ const OrderItem: FC<IProps> = ({
       <h2 className={`${styles.title} text text_type_main-medium mt-6`}>
         {title}
       </h2>
+      {withStatus && (
+        <p
+          className={`${styles.status} ${style} text text_type_main-default mt-2`}
+        >
+          {getStatusOrder(status, 'Ru')}
+        </p>
+      )}
       <div className={`${styles.main} mt-6`}>
         <IngredientImageList
           ingredients={filteredIngredients.filtered}

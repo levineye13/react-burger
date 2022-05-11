@@ -30,6 +30,11 @@
   text-overflow: ellipsis;
 }
 
-.timestamp {
+.timestamp,
+.status {
   text-transform: capitalize;
+}
+
+.done {
+  color: #00cccc;
 }
