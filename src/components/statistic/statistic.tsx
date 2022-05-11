@@ -25,7 +25,7 @@ const Statistic: FC = (): ReactElement => {
     for (let index = 0; index < allOrders.length; index++) {
       const current = allOrders[index];
 
-      if (current.status === OrderStatus.Done) {
+      if (current.status === OrderStatus.Done.En) {
         if (lastReadyArr.length >= 10) {
           res.ready.push([...lastReadyArr]);
           lastReadyArr.length = 0;
