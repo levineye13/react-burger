@@ -9,6 +9,7 @@ import {
   WS_HISTORY_CONNECTION_SUCCESS,
   WS_GET_ALL_ORDERS,
   WS_GET_HISTORY_ORDERS,
+  WS_SEND_MESSAGE,
 } from './../services/action-types/web-socket';
 import { ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
@@ -117,4 +118,5 @@ export type TWsActions = {
     | typeof WS_FEED_CONNECTION_SUCCESS
     | typeof WS_HISTORY_CONNECTION_SUCCESS;
   wsMessage: typeof WS_GET_ALL_ORDERS | typeof WS_GET_HISTORY_ORDERS;
+  wsSendMessage: typeof WS_SEND_MESSAGE;
 };

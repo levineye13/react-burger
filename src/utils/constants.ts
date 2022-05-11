@@ -87,14 +87,8 @@ export enum Fields {
   Code = 'code',
 }
 
-export enum OrderStatus {
-  Done = 'done',
-  Pending = 'pending',
-  Created = 'created',
-}
-
-export enum OrderStatusRu {
-  Done = 'Выполнен',
-  Pending = 'Готовится',
-  Created = 'Создан',
-}
+export const OrderStatus = {
+  Done: { En: 'done', Ru: 'выполнен' },
+  Pending: { En: 'pending', Ru: 'готовится' },
+  Created: { En: 'created', Ru: 'создан' },
+};
