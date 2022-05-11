@@ -1,3 +1,15 @@
+import {
+  WS_FEED_CONNECTION_START,
+  WS_HISTORY_CONNECTION_START,
+  WS_FEED_CONNECTION_CLOSED,
+  WS_HISTORY_CONNECTION_CLOSED,
+  WS_FEED_CONNECTION_ERROR,
+  WS_HISTORY_CONNECTION_ERROR,
+  WS_FEED_CONNECTION_SUCCESS,
+  WS_HISTORY_CONNECTION_SUCCESS,
+  WS_GET_ALL_ORDERS,
+  WS_GET_HISTORY_ORDERS,
+} from './../services/action-types/web-socket';
 import { ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
@@ -88,4 +100,21 @@ export type TWSResponce = {
   orders: ReadonlyArray<TOrderResponce>;
   total: number;
   totalToday: number;
+};
+
+export type TFilterIngredients = {
+  price: number;
+  filtered: IIngredient[];
+};
+
+export type TWsActions = {
+  wsStart: typeof WS_FEED_CONNECTION_START | typeof WS_HISTORY_CONNECTION_START;
+  wsClosed:
+    | typeof WS_FEED_CONNECTION_CLOSED
+    | typeof WS_HISTORY_CONNECTION_CLOSED;
+  wsError: typeof WS_FEED_CONNECTION_ERROR | typeof WS_HISTORY_CONNECTION_ERROR;
+  wsSuccess:
+    | typeof WS_FEED_CONNECTION_SUCCESS
+    | typeof WS_HISTORY_CONNECTION_SUCCESS;
+  wsMessage: typeof WS_GET_ALL_ORDERS | typeof WS_GET_HISTORY_ORDERS;
 };
