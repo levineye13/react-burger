@@ -14,6 +14,8 @@ type TProps = TOrderResponce & {
 };
 
 const Order: FC<TProps> = (props): ReactElement => {
+  const styleStatus = styles[getStatusOrder(props.status, 'En')];
+
   return (
     <article className={styles.order}>
       <p
@@ -25,7 +27,9 @@ const Order: FC<TProps> = (props): ReactElement => {
       <h2 className={`${styles.title} text text_type_main-medium mt-10`}>
         {props.name}
       </h2>
-      <p className={`${styles.status} text text_type_main-default mt-3`}>
+      <p
+        className={`${styles.status} ${styleStatus} text text_type_main-default mt-3`}
+      >
         {getStatusOrder(props.status, 'Ru')}
       </p>
       <p className={`${styles.compound} text text_type_main-medium mt-15 mb-6`}>
