@@ -11,9 +11,11 @@ type TSortedOrders = {
 };
 
 const Statistic: FC = (): ReactElement => {
-  const { total, totalToday, allOrders } = useSelector(
-    (state) => state.webSocket
-  );
+  const {
+    total,
+    totalToday,
+    list: allOrders,
+  } = useSelector((state) => state.webSocket.feedOrders);
 
   const orders: TSortedOrders = useMemo(() => {
     const res: TSortedOrders = { ready: [], notReady: [] };

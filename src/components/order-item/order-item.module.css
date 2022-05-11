@@ -29,3 +29,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.timestamp {
+  text-transform: capitalize;
+}

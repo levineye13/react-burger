@@ -8,6 +8,7 @@ import Price from '../price/price';
 import { useSelector } from '../../hooks';
 import { IIngredient } from '../../utils/interfaces';
 import { Pages } from '../../utils/constants';
+import { TFilterIngredients } from '../../utils/types';
 
 interface IProps {
   readonly number: number;
@@ -17,11 +18,6 @@ interface IProps {
   readonly ingredients: ReadonlyArray<string>;
 }
 
-type TFilterIngredients = {
-  price: number;
-  filtered: IIngredient[];
-};
-
 const OrderItem: FC<IProps> = ({
   number,
   title,
@@ -30,6 +26,7 @@ const OrderItem: FC<IProps> = ({
   ingredients,
 }): ReactElement => {
   const history: History = useHistory();
+
   const { list } = useSelector((state) => state.ingredients);
 
   const handleClick = () => {
@@ -42,7 +39,7 @@ const OrderItem: FC<IProps> = ({
   const filteredIngredients: TFilterIngredients = useMemo(
     () =>
       ingredients.reduce(
-        (acc: TFilterIngredients, id) => {
+        (acc: TFilterIngredients, id: string) => {
           const ingredient: IIngredient | undefined = list.find(
             (ingredient) => ingredient._id === id
           );
