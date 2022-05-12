@@ -36,20 +36,19 @@ const Order: FC<TProps> = (props): ReactElement => {
         Состав:
       </p>
       <ul className={`${styles.list}`}>
-        {props.filtered &&
-          props.filtered.map((item, index) => (
-            <li className={`${styles.item}`} key={index}>
-              <div className={styles.circle}>
-                <img className={styles.img} src={item.image} alt={item.name} />
-              </div>
-              <p
-                className={`${styles.description} text text_type_main-default pl-4 pr-4`}
-              >
-                {item.name}
-              </p>
-              <Price price={item.price || ''} />
-            </li>
-          ))}
+        {props.filtered.map((item, index) => (
+          <li className={`${styles.item}`} key={index}>
+            <div className={styles.circle}>
+              <img className={styles.img} src={item.image} alt={item.name} />
+            </div>
+            <p
+              className={`${styles.description} text text_type_main-default pl-4 pr-4`}
+            >
+              {item.name}
+            </p>
+            <Price price={`${item.qty} x ${item.price}`} />
+          </li>
+        ))}
       </ul>
       <div className={`${styles.info} mt-10`}>
         <p

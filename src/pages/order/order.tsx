@@ -46,8 +46,21 @@ const Order: FC<IProps> = ({ titleStyles }): ReactElement => {
         );
 
         if (ingredient) {
+          const index = acc.filtered.findIndex(
+            (item) => item._id === ingredient._id
+          );
+
+          if (index === -1) {
+            return {
+              filtered: [...acc.filtered, { ...ingredient, qty: 1 }],
+              price: acc.price + ingredient.price,
+            };
+          }
+
+          (acc.filtered[index].qty as number)++;
+
           return {
-            filtered: [...acc.filtered, ingredient],
+            filtered: acc.filtered,
             price: acc.price + ingredient.price,
           };
         }
@@ -57,6 +70,7 @@ const Order: FC<IProps> = ({ titleStyles }): ReactElement => {
       { price: 0, filtered: [] }
     );
   }, [list, order]);
+  console.log(filteredIngredients);
 
   return (
     <section>
