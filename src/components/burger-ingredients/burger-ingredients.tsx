@@ -130,7 +130,7 @@ const BurgerIngredients: FC = (): ReactElement => {
         <li ref={bunRef}>
           <h2 className="text text_type_main-medium">Булки</h2>
           <ul className={`${styles.sublist} ${styles.reset}`}>
-            {bun.map((item: IIngredient) => (
+            {bun.map((item) => (
               <li key={item._id}>
                 <Ingredient
                   onClick={handleIngredientClick}
@@ -149,7 +149,7 @@ const BurgerIngredients: FC = (): ReactElement => {
         <li className="mt-10" ref={sauceRef}>
           <h2 className="text text_type_main-medium">Соусы</h2>
           <ul className={`${styles.sublist} ${styles.reset}`}>
-            {sauce.map((item: IIngredient) => (
+            {sauce.map((item) => (
               <li key={item._id}>
                 <Ingredient
                   onClick={handleIngredientClick}
@@ -163,7 +163,7 @@ const BurgerIngredients: FC = (): ReactElement => {
         <li className="mt-10" ref={mainRef}>
           <h2 className="text text_type_main-medium">Начинка</h2>
           <ul className={`${styles.sublist} ${styles.reset}`}>
-            {main.map((item: IIngredient) => (
+            {main.map((item) => (
               <li key={item._id}>
                 <Ingredient
                   onClick={handleIngredientClick}

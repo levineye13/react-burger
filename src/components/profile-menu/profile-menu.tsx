@@ -6,8 +6,6 @@ import { Pages } from '../../utils/constants';
 import { useDispatch } from '../../hooks';
 import { logout } from '../../services/actions';
 
-// interface IProps {}
-
 const ProfileMenu: FC = (): ReactElement => {
   const dispatch = useDispatch();
 

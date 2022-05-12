@@ -70,7 +70,6 @@ const Order: FC<IProps> = ({ titleStyles }): ReactElement => {
       { price: 0, filtered: [] }
     );
   }, [list, order]);
-  console.log(filteredIngredients);
 
   return (
     <section>

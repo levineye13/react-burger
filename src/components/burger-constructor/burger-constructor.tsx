@@ -94,7 +94,7 @@ const BurgerConstructor: FC = (): ReactElement => {
               />
             </li>
             <ul className={styles.sublist}>
-              {ingredients.map((item: IIngredient, index: number) => (
+              {ingredients.map((item, index) => (
                 <ConstructorIngredient
                   key={item.uuid}
                   handleDelete={handleDelete}
