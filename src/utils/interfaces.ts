@@ -18,6 +18,7 @@ export interface IIngredient {
   readonly carbohydrates: number;
 
   readonly uuid?: string;
+  qty?: number;
 }
 
 export interface ICookie {
