@@ -49,18 +49,23 @@ export const setOrder = (
 
 export const makeOrder: TAppThunk =
   (ingredientsId: string[]) => async (dispatch: TAppDispatch) => {
-    const data = await api.makeOrder(ingredientsId);
+    try {
+      const data = await api.makeOrder(ingredientsId);
 
-    if (data && data.success) {
-      dispatch(
-        openOrder({
-          name: data.name || '',
-          number: data.order?.number || 0,
-        })
-      );
-      dispatch(clearIngredients());
-      dispatch(clearCounters());
-    } else {
+      if (data && data.success) {
+        dispatch(
+          openOrder({
+            name: data.name || '',
+            number: data.order?.number || 0,
+          })
+        );
+        dispatch(clearIngredients());
+        dispatch(clearCounters());
+      } else {
+        dispatch(closeOrder());
+      }
+    } catch (e) {
       dispatch(closeOrder());
+      console.error(e);
     }
   };

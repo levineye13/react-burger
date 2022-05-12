@@ -50,10 +50,14 @@ export type TBurgerIngredients =
 
 export const setIngredients: TAppThunk =
   () => async (dispatch: TAppDispatch) => {
-    const ingredients = await api.getIngredients();
+    try {
+      const ingredients = await api.getIngredients();
 
-    if (ingredients && Array.isArray(ingredients)) {
-      dispatch({ type: SET_INGREDIENTS, payload: ingredients });
+      if (ingredients && Array.isArray(ingredients)) {
+        dispatch({ type: SET_INGREDIENTS, payload: ingredients });
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 

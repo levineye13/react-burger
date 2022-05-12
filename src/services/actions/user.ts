@@ -100,94 +100,87 @@ export const setAuth = (): ISetAuth => ({ type: SET_AUTH });
 export const setUnauth = (): ISetUnauth => ({ type: SET_UNAUTH });
 
 export const logout: TAppThunk = () => async (dispatch: TAppDispatch) => {
-  dispatch({ type: USER_REQUEST_SENT });
+  try {
+    dispatch({ type: USER_REQUEST_SENT });
 
-  const data = await api.logout();
+    const data = await api.logout();
 
-  if (data) {
-    dispatch({ type: LOGOUT });
-    dispatch({ type: USER_REQUEST_SUCCESS });
-  } else {
+    if (data) {
+      dispatch({ type: LOGOUT });
+      dispatch({ type: USER_REQUEST_SUCCESS });
+    } else {
+      dispatch({ type: USER_REQUEST_FAILED });
+    }
+  } catch (e) {
     dispatch({ type: USER_REQUEST_FAILED });
+    console.error(e);
   }
 };
 
 export const refreshToken: TAppThunk = () => async (dispatch: TAppDispatch) => {
-  dispatch({ type: USER_REQUEST_SENT });
+  try {
+    dispatch({ type: USER_REQUEST_SENT });
 
-  const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
+    const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
 
-  if (data) {
-    dispatch({ type: REFRESH_TOKEN });
-    dispatch({ type: USER_REQUEST_SUCCESS });
-    dispatch({ type: SET_AUTH });
-  } else {
+    if (data) {
+      dispatch({ type: REFRESH_TOKEN });
+      dispatch({ type: USER_REQUEST_SUCCESS });
+      dispatch({ type: SET_AUTH });
+    } else {
+      dispatch({ type: USER_REQUEST_FAILED });
+    }
+  } catch (e) {
     dispatch({ type: USER_REQUEST_FAILED });
+    console.error(e);
   }
 };
 
 export const login: TAppThunk =
   ({ email, password }) =>
   async (dispatch: TAppDispatch) => {
-    dispatch({ type: USER_REQUEST_SENT });
+    try {
+      dispatch({ type: USER_REQUEST_SENT });
 
-    const user = await api.login({ email, password });
+      const user = await api.login({ email, password });
 
-    if (user) {
-      dispatch({ type: LOGIN, payload: user });
-      dispatch({ type: USER_REQUEST_SUCCESS });
-    } else {
+      if (user) {
+        dispatch({ type: LOGIN, payload: user });
+        dispatch({ type: USER_REQUEST_SUCCESS });
+      } else {
+        dispatch({ type: USER_REQUEST_FAILED });
+      }
+    } catch (e) {
       dispatch({ type: USER_REQUEST_FAILED });
+      console.error(e);
     }
   };
 
 export const register: TAppThunk =
   ({ email, password, name }) =>
   async (dispatch: TAppDispatch) => {
-    dispatch({ type: USER_REQUEST_SENT });
+    try {
+      dispatch({ type: USER_REQUEST_SENT });
 
-    const user = await api.register({ email, password, name });
+      const user = await api.register({ email, password, name });
 
-    if (user) {
-      dispatch({ type: REGISTER, payload: user });
-      dispatch({ type: USER_REQUEST_SUCCESS });
-    } else {
-      dispatch({ type: USER_REQUEST_FAILED });
-    }
-  };
-
-export const getUser: TAppThunk = () => async (dispatch: TAppDispatch) => {
-  dispatch({ type: USER_REQUEST_SENT });
-
-  const user = await api.getUser();
-
-  if (user === false) {
-    const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
-
-    if (!data) {
-      dispatch({ type: USER_REQUEST_FAILED });
-    } else {
-      const user = await api.getUser();
-
-      if (typeof user === 'object') {
-        dispatch({ type: GET_USER, payload: user });
+      if (user) {
+        dispatch({ type: REGISTER, payload: user });
         dispatch({ type: USER_REQUEST_SUCCESS });
       } else {
         dispatch({ type: USER_REQUEST_FAILED });
       }
+    } catch (e) {
+      dispatch({ type: USER_REQUEST_FAILED });
+      console.error(e);
     }
-  } else if (typeof user === 'object') {
-    dispatch({ type: GET_USER, payload: user });
-    dispatch({ type: USER_REQUEST_SUCCESS });
-  }
-};
+  };
 
-export const updateUser: TAppThunk =
-  ({ email, name, password }) =>
-  async (dispatch: TAppDispatch) => {
+export const getUser: TAppThunk = () => async (dispatch: TAppDispatch) => {
+  try {
     dispatch({ type: USER_REQUEST_SENT });
 
-    const user = await api.updateUser({ email, name, password });
+    const user = await api.getUser();
 
     if (user === false) {
       const data = await api.refreshToken(Cookie.get(TokenType.Refresh) || '');
@@ -195,47 +188,96 @@ export const updateUser: TAppThunk =
       if (!data) {
         dispatch({ type: USER_REQUEST_FAILED });
       } else {
-        const user = await api.updateUser({ email, name, password });
+        const user = await api.getUser();
 
         if (typeof user === 'object') {
-          dispatch({ type: UPDATE_USER, payload: user });
+          dispatch({ type: GET_USER, payload: user });
           dispatch({ type: USER_REQUEST_SUCCESS });
         } else {
           dispatch({ type: USER_REQUEST_FAILED });
         }
       }
     } else if (typeof user === 'object') {
-      dispatch({ type: UPDATE_USER, payload: user });
+      dispatch({ type: GET_USER, payload: user });
       dispatch({ type: USER_REQUEST_SUCCESS });
+    }
+  } catch (e) {
+    dispatch({ type: USER_REQUEST_FAILED });
+    console.error(e);
+  }
+};
+
+export const updateUser: TAppThunk =
+  ({ email, name, password }) =>
+  async (dispatch: TAppDispatch) => {
+    try {
+      dispatch({ type: USER_REQUEST_SENT });
+
+      const user = await api.updateUser({ email, name, password });
+
+      if (user === false) {
+        const data = await api.refreshToken(
+          Cookie.get(TokenType.Refresh) || ''
+        );
+
+        if (!data) {
+          dispatch({ type: USER_REQUEST_FAILED });
+        } else {
+          const user = await api.updateUser({ email, name, password });
+
+          if (typeof user === 'object') {
+            dispatch({ type: UPDATE_USER, payload: user });
+            dispatch({ type: USER_REQUEST_SUCCESS });
+          } else {
+            dispatch({ type: USER_REQUEST_FAILED });
+          }
+        }
+      } else if (typeof user === 'object') {
+        dispatch({ type: UPDATE_USER, payload: user });
+        dispatch({ type: USER_REQUEST_SUCCESS });
+      }
+    } catch (e) {
+      dispatch({ type: USER_REQUEST_FAILED });
+      console.error(e);
     }
   };
 
 export const restorePassword: TAppThunk =
   ({ email }) =>
   async (dispatch: TAppDispatch) => {
-    dispatch({ type: USER_REQUEST_SENT });
+    try {
+      dispatch({ type: USER_REQUEST_SENT });
 
-    const data = await api.restorePassword({ email });
+      const data = await api.restorePassword({ email });
 
-    if (data) {
-      dispatch({ type: RESTORE_PASSWORD });
-      dispatch({ type: USER_REQUEST_SUCCESS });
-    } else {
+      if (data) {
+        dispatch({ type: RESTORE_PASSWORD });
+        dispatch({ type: USER_REQUEST_SUCCESS });
+      } else {
+        dispatch({ type: USER_REQUEST_FAILED });
+      }
+    } catch (e) {
       dispatch({ type: USER_REQUEST_FAILED });
+      console.error(e);
     }
   };
 
 export const resetPassword: TAppThunk =
   ({ password, token }) =>
   async (dispatch: TAppDispatch) => {
-    dispatch({ type: USER_REQUEST_SENT });
+    try {
+      dispatch({ type: USER_REQUEST_SENT });
 
-    const data = await api.resetPassword({ password, token });
+      const data = await api.resetPassword({ password, token });
 
-    if (data) {
-      dispatch({ type: RESET_PASSWORD });
-      dispatch({ type: USER_REQUEST_SUCCESS });
-    } else {
+      if (data) {
+        dispatch({ type: RESET_PASSWORD });
+        dispatch({ type: USER_REQUEST_SUCCESS });
+      } else {
+        dispatch({ type: USER_REQUEST_FAILED });
+      }
+    } catch (e) {
       dispatch({ type: USER_REQUEST_FAILED });
+      console.error(e);
     }
   };
