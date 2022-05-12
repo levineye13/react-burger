@@ -24,7 +24,7 @@ const OrderList: FC = (): ReactElement => {
   return (
     <section className={`${styles.section} pl-2`}>
       <ul className={styles.list}>
-        {list.map((order) => {
+        {[...list].reverse().map((order) => {
           const timestamp = dateFormat(order.createdAt);
 
           return (
