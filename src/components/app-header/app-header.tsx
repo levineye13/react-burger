@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
@@ -48,7 +48,9 @@ const AppHeader: FC = (): ReactElement => {
             </li>
           </ul>
         </nav>
-        <Logo />
+        <Link to={Pages.Root}>
+          <Logo />
+        </Link>
         <NavLink
           className={`${styles.link} ${styles.account} text text_type_main-default text_color_inactive`}
           activeClassName={styles.link_active}
