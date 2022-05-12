@@ -47,11 +47,16 @@ const BurgerConstructor: FC = (): ReactElement => {
       return history.push(Pages.Login);
     }
 
-    const ingredientsId = ingredients.map(
-      (ingredient: IIngredient) => ingredient._id
-    );
+    if (bun !== null) {
+      const ingredientsId: string[] = ingredients.map(
+        (ingredient: IIngredient) => ingredient._id
+      );
 
-    dispatch(makeOrder(ingredientsId));
+      ingredientsId.push(bun._id);
+      ingredientsId.push(bun._id);
+
+      dispatch(makeOrder(ingredientsId));
+    }
   };
 
   const handleDelete = (item: IIngredient): void => {
