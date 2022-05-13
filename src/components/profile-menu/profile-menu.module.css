@@ -1,0 +1,29 @@
+.menu {
+  flex: 320px 0 1;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  flex-basis: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link_active {
+  color: #f2f2f3;
+}
+
+.paragraph {
+  opacity: 0.4;
+}

@@ -1,51 +1,5 @@
 .section {
-  max-width: 860px;
-  width: 100%;
   display: flex;
   flex-direction: row;
-}
-
-.menu {
-  flex: 320px 0 1;
-}
-
-.list {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.item {
-  flex-basis: 64px;
-  display: flex;
-  align-items: center;
-}
-
-.link {
-  text-decoration: none;
-}
-
-.link_active {
-  color: #f2f2f3;
-}
-
-.paragraph {
-  opacity: 0.4;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0.3s, opacity 0.3s;
-}
-
-.buttons_visible {
-  visibility: visible;
-  opacity: 1;
+  justify-content: center;
 }

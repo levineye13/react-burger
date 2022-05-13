@@ -1,5 +1,4 @@
 import React, { FC, ReactElement, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import {
   ConstructorElement,
@@ -11,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './burger-constructor.module.css';
 import Price from '../price/price';
 import ConstructorIngredient from '../constructor-ingredient/constructor-ingredient';
+import { useDispatch, useSelector } from '../../hooks';
 import { sumByKey } from '../../utils/utils';
 import {
   addIngredient,
@@ -19,24 +19,23 @@ import {
   decrement,
   makeOrder,
 } from '../../services/actions';
-import { INGREDIENT_TYPE, PAGES } from '../../utils/constants';
+import { IngredientType, Pages } from '../../utils/constants';
 import { IIngredient } from '../../utils/interfaces';
-
-const { bun: bunType } = INGREDIENT_TYPE;
 
 const BurgerConstructor: FC = (): ReactElement => {
   const history: History = useHistory();
-
   const dispatch = useDispatch();
-  const { bun, ingredients } = useSelector(
-    (state: any) => state.burgerConstructor
-  );
-  const { isAuth } = useSelector((state: any) => state.user);
+
+  const { isAuth, bun, ingredients } = useSelector((state) => ({
+    isAuth: state.user.isAuth,
+    bun: state.burgerConstructor.bun,
+    ingredients: state.burgerConstructor.ingredients,
+  }));
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
     drop(ingredient: IIngredient) {
-      if (ingredient.type === bunType || bun._id !== undefined) {
+      if (ingredient.type === IngredientType.Bun || bun !== null) {
         dispatch(addIngredient(ingredient));
         dispatch(increment(ingredient));
       }
@@ -45,13 +44,19 @@ const BurgerConstructor: FC = (): ReactElement => {
 
   const handleButtonClick = async (): Promise<void> => {
     if (!isAuth) {
-      return history.push(PAGES.login);
+      return history.push(Pages.Login);
     }
 
-    const ingredientsId = ingredients.map(
-      (ingredient: IIngredient) => ingredient._id
-    );
-    dispatch(makeOrder(ingredientsId));
+    if (bun !== null) {
+      const ingredientsId: string[] = ingredients.map(
+        (ingredient: IIngredient) => ingredient._id
+      );
+
+      ingredientsId.push(bun._id);
+      ingredientsId.push(bun._id);
+
+      dispatch(makeOrder(ingredientsId));
+    }
   };
 
   const handleDelete = (item: IIngredient): void => {
@@ -59,18 +64,25 @@ const BurgerConstructor: FC = (): ReactElement => {
     dispatch(decrement(item));
   };
 
-  const calculatePrice = (arr: IIngredient[], bun: IIngredient): number => {
+  const calculatePrice = (
+    arr: readonly IIngredient[],
+    bun: IIngredient
+  ): number => {
     return sumByKey(arr, 'price') + (bun.price || 0) * 2;
   };
 
   const sum = useMemo<number>(() => {
-    return calculatePrice(ingredients, bun);
+    if (bun !== null) {
+      return calculatePrice(ingredients, bun);
+    }
+
+    return 0;
   }, [bun, ingredients]);
 
   return (
     <section className={`${styles.section} pt-25 ml-10 pl-4`}>
       <ul className={styles.list} ref={dropTarget}>
-        {bun.image ? (
+        {bun ? (
           <>
             <li className={`${styles.item} mr-4`}>
               <ConstructorElement
@@ -82,7 +94,7 @@ const BurgerConstructor: FC = (): ReactElement => {
               />
             </li>
             <ul className={styles.sublist}>
-              {ingredients.map((item: IIngredient, index: number) => (
+              {ingredients.map((item, index) => (
                 <ConstructorIngredient
                   key={item.uuid}
                   handleDelete={handleDelete}
@@ -120,7 +132,7 @@ const BurgerConstructor: FC = (): ReactElement => {
           size="large"
           htmlType="submit"
           onClick={handleButtonClick}
-          disabled={!bun.image}
+          disabled={!bun}
         >
           Оформить заказ
         </Button>

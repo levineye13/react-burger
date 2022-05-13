@@ -1,4 +1,4 @@
-import { TResponceBody } from './types';
+import { TResponceBody, TIngredientType } from './types';
 
 export interface IUser {
   readonly name: string;
@@ -11,8 +11,14 @@ export interface IIngredient {
   readonly name: string;
   readonly image: string;
   readonly price: number;
-  readonly type: string;
+  readonly type: TIngredientType;
+  readonly calories: number;
+  readonly proteins: number;
+  readonly fat: number;
+  readonly carbohydrates: number;
+
   readonly uuid?: string;
+  qty?: number;
 }
 
 export interface ICookie {
@@ -37,4 +43,12 @@ export interface IApi {
   restorePassword(args: IApiArguments): Promise<IApiArguments | void>;
   resetPassword(args: IApiArguments): Promise<IApiArguments | void>;
   refreshToken(token: string): Promise<IApiArguments | void>;
+  getIngredients(): Promise<IIngredient[] | void>;
+  makeOrder(
+    ingredientId: Array<string | number>
+  ): Promise<TResponceBody | void>;
+}
+
+export interface IOrder {
+  number: number;
 }

@@ -1,0 +1,32 @@
+.section {
+  box-sizing: border-box;
+  max-width: 608px;
+  min-width: 608px;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 852px;
+  padding-right: 8px;
+  overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+}
+
+.list::-webkit-scrollbar-thumb {
+  max-height: 292px;
+  height: 100%;
+  background-color: #8585ad;
+}
+
+.item:not(:first-child) {
+  margin-top: 16px;
+}

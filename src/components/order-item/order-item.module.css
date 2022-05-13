@@ -1,0 +1,40 @@
+.card {
+  box-sizing: border-box;
+  max-width: 844px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  background-color: #1c1c21;
+  cursor: pointer;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+}
+
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timestamp,
+.status {
+  text-transform: capitalize;
+}
+
+.done {
+  color: #00cccc;
+}

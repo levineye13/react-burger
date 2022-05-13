@@ -1,74 +1,94 @@
-import { THttpPath, THttpMethods } from './types';
-
 export const API_BASE_URL: string = 'https://norma.nomoreparties.space/api';
+export const ESC_KEY: 'Escape' = 'Escape';
+export const AUTH_SCHEMA_TYPE: 'Bearer' = 'Bearer';
 
-export const API_ENDPOINT: THttpPath = {
-  ingredients: '/ingredients',
-  orders: '/orders',
-  restorePassword: '/password-reset',
-  resetPassword: '/password-reset/reset',
-  login: '/auth/login',
-  register: '/auth/register',
-  logout: '/auth/logout',
-  refreshToken: '/auth/token',
-  user: '/auth/user',
-};
-
-export const PAGES: THttpPath = {
-  root: '/',
-  login: '/login',
-  register: '/register',
-  forgotPassword: '/forgot-password',
-  resetPassword: '/reset-password',
-  profile: '/profile',
-  orders: '/profile/orders',
-  ingredients: '/ingredients',
-};
-
-export const HTTP_METHOD: THttpMethods = {
-  head: 'HEAD',
-  get: 'GET',
-  post: 'POST',
-  patch: 'PATCH',
-  put: 'PUT',
-  delete: 'DELETE',
-  options: 'OPTIONS',
-};
-
-export const HEADERS: { [key: string]: string } = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
-};
-
-export const AUTH_SCHEMA_TYPE: string = 'Bearer';
-
-export const TOKEN_TYPE: {
-  access: string;
-  refresh: string;
-} = {
-  access: 'accessToken',
-  refresh: 'refreshToken',
-};
-
-export const TOKEN_DURATION: { access: number; refresh: number } = {
-  access: 20,
-  refresh: 60 * 24 * 7,
-};
+export enum WsApi {
+  OrdersAll = 'wss://norma.nomoreparties.space/orders/all',
+  OrdersHistory = 'wss://norma.nomoreparties.space/orders',
+}
 
 export const modalContainer: HTMLDivElement = document.getElementById(
   'modal'
 ) as HTMLDivElement;
 
-export const ESC_KEY: string = 'Escape';
+export enum ApiEndpoints {
+  Ingredients = '/ingredients',
+  Orders = '/orders',
+  RestorePassword = '/password-reset',
+  ResetPassword = '/password-reset/reset',
+  Login = '/auth/login',
+  Register = '/auth/register',
+  Logout = '/auth/logout',
+  RefreshToken = '/auth/token',
+  User = '/auth/user',
+}
 
-export const TABS: { [key: string]: string } = {
-  one: 'one',
-  two: 'two',
-  three: 'three',
-};
+export enum Pages {
+  Root = '/',
+  Login = '/login',
+  Register = '/register',
+  ForgotPassword = '/forgot-password',
+  ResetPassword = '/reset-password',
+  Profile = '/profile',
+  Orders = '/profile/orders',
+  Ingredients = '/ingredients',
+  Feed = '/feed',
+}
 
-export const INGREDIENT_TYPE: { [key: string]: string } = {
-  bun: 'bun',
-  sauce: 'sauce',
-  main: 'main',
+export enum HttpMethods {
+  Head = 'HEAD',
+  Get = 'GET',
+  Post = 'POST',
+  Patch = 'PATCH',
+  Put = 'PUT',
+  Delete = 'DELETE',
+  Options = 'OPTIONS',
+}
+
+export enum Headers {
+  Accept = 'application/json',
+  'Content-Type' = 'application/json',
+}
+
+export enum TokenType {
+  Access = 'accessToken',
+  Refresh = 'refreshToken',
+}
+
+export enum TokenDuration {
+  Access = 20,
+  Refresh = 60 * 24 * 7,
+}
+
+export enum Tabs {
+  One = 'one',
+  Two = 'two',
+  Three = 'three',
+}
+
+export enum IngredientType {
+  Bun = 'bun',
+  Sauce = 'sauce',
+  Main = 'main',
+}
+
+export enum Forms {
+  Login = 'login',
+  Register = 'register',
+  Profile = 'profile',
+  ForgotPassword = 'forgotPassword',
+  ResetPassword = 'resetPassword',
+}
+
+export enum Fields {
+  Email = 'email',
+  Name = 'name',
+  Password = 'password',
+  Code = 'code',
+}
+
+export const OrderStatus = {
+  Done: { En: 'done', Ru: 'выполнен' },
+  Pending: { En: 'pending', Ru: 'готовится' },
+  Created: { En: 'created', Ru: 'создан' },
 };

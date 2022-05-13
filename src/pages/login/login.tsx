@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   Input,
   Button,
@@ -9,37 +8,41 @@ import { Location } from 'history';
 
 import AuthenticationSection from '../../components/authentication-section/authentication-section';
 import Form from '../../components/form/form';
-import { useForm } from '../../hooks/useForm';
-import { PAGES } from '../../utils/constants';
+import { useForm, useDispatch, useSelector } from '../../hooks';
+import { Pages, Forms, Fields } from '../../utils/constants';
 import { clearForm, login } from '../../services/actions';
 
-const { register, forgotPassword, root } = PAGES;
+type TFields = Fields.Email | Fields.Password;
 
 const Login: FC = (): ReactElement => {
-  const { isAuth } = useSelector((state: any) => state.user);
+  const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { state } = useLocation<{ from: Location }>();
-  const { handleChange, handleSubmit, values } = useForm('login', login, {
-    callback: () => dispatch(clearForm('login')),
-  });
+  const { handleChange, handleSubmit, values } = useForm<TFields>(
+    Forms.Login,
+    login,
+    {
+      callback: () => dispatch(clearForm(Forms.Login)),
+    }
+  );
 
   if (isAuth) {
-    return <Redirect to={state?.from || root} />;
+    return <Redirect to={state?.from || Pages.Root} />;
   }
 
   return (
     <AuthenticationSection title="Вход">
-      <Form name="login" onSubmit={handleSubmit}>
+      <Form name={Forms.Login} onSubmit={handleSubmit}>
         <Input
-          type="email"
-          name="email"
+          type={Fields.Email}
+          name={Fields.Email}
           placeholder="E-mail"
           onChange={handleChange}
           value={values.email || ''}
         />
         <Input
-          type="password"
-          name="password"
+          type={Fields.Password}
+          name={Fields.Password}
           placeholder="Пароль"
           icon="ShowIcon"
           onChange={handleChange}
@@ -52,11 +55,11 @@ const Login: FC = (): ReactElement => {
       </Form>
       <p className="text text_type_main-default text_color_inactive mt-20">
         Вы — новый пользователь?&ensp;
-        <Link to={register}>Зарегистрироваться</Link>
+        <Link to={Pages.Register}>Зарегистрироваться</Link>
       </p>
       <p className="text text_type_main-default text_color_inactive mt-4">
         Забыли пароль?&ensp;
-        <Link to={forgotPassword}>Восстановить пароль</Link>
+        <Link to={Pages.ForgotPassword}>Восстановить пароль</Link>
       </p>
     </AuthenticationSection>
   );

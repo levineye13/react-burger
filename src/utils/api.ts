@@ -1,28 +1,16 @@
-import { IApi, IApiArguments } from './interfaces';
+import { IApi, IApiArguments, IIngredient, IOrder } from './interfaces';
 import { TResponceBody } from './types';
 import Cookie from './cookie';
 import { extractToken } from './utils';
 import {
   API_BASE_URL,
-  API_ENDPOINT,
-  HTTP_METHOD,
-  HEADERS,
+  ApiEndpoints,
+  HttpMethods,
+  Headers,
   AUTH_SCHEMA_TYPE,
-  TOKEN_TYPE,
-  TOKEN_DURATION,
+  TokenType,
+  TokenDuration,
 } from './constants';
-
-const {
-  restorePassword,
-  resetPassword,
-  register,
-  login,
-  logout,
-  refreshToken,
-  user,
-} = API_ENDPOINT;
-
-const { access, refresh } = TOKEN_TYPE;
 
 class Api implements IApi {
   public constructor(
@@ -44,7 +32,7 @@ class Api implements IApi {
     }
 
     if (data.accessToken) {
-      extractToken(data, access, AUTH_SCHEMA_TYPE);
+      extractToken(data, TokenType.Access, AUTH_SCHEMA_TYPE);
     }
 
     return data;
@@ -63,7 +51,7 @@ class Api implements IApi {
       throw new Error(`${res.status} - ${res.statusText}`);
     } else {
       if (data.accessToken) {
-        extractToken(data, access, AUTH_SCHEMA_TYPE);
+        extractToken(data, TokenType.Access, AUTH_SCHEMA_TYPE);
       }
 
       return data;
@@ -72,161 +60,147 @@ class Api implements IApi {
 
   async restorePassword({
     email,
-  }: IApiArguments): Promise<IApiArguments | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${restorePassword}`, {
-        method: HTTP_METHOD.post,
+  }: IApiArguments): Promise<IApiArguments | never> {
+    const res: Response = await fetch(
+      `${this.baseUrl}${ApiEndpoints.RestorePassword}`,
+      {
+        method: HttpMethods.Post,
         headers: this.options.headers,
         body: JSON.stringify({ email }),
-      });
+      }
+    );
 
-      return this._getDataFromResponce(res);
-    } catch (e) {
-      console.error(e);
-    }
+    return this._getDataFromResponce(res);
   }
 
   async resetPassword({
     password,
     token,
-  }: IApiArguments): Promise<IApiArguments | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${resetPassword}`, {
-        method: HTTP_METHOD.post,
+  }: IApiArguments): Promise<IApiArguments | never> {
+    const res: Response = await fetch(
+      `${this.baseUrl}${ApiEndpoints.ResetPassword}`,
+      {
+        method: HttpMethods.Post,
         headers: this.options.headers,
         body: JSON.stringify({ password, token }),
-      });
+      }
+    );
 
-      return this._getDataFromResponce<'token', string>(res);
-    } catch (e) {
-      console.error(e);
-    }
+    return this._getDataFromResponce<'token', string>(res);
   }
 
   async register({
     email,
     password,
     name,
-  }: IApiArguments): Promise<IApiArguments | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${register}`, {
-        method: HTTP_METHOD.post,
+  }: IApiArguments): Promise<IApiArguments | never | void> {
+    const res: Response = await fetch(
+      `${this.baseUrl}${ApiEndpoints.Register}`,
+      {
+        method: HttpMethods.Post,
         headers: this.options.headers,
         body: JSON.stringify({ email, password, name }),
-      });
-
-      const data = await this._getDataFromResponce<'user', IApiArguments>(res);
-
-      if (data.success) {
-        Cookie.set(access, data.accessToken || '', {
-          expires: TOKEN_DURATION.access,
-        });
-        Cookie.set(refresh, data.refreshToken || '', {
-          expires: TOKEN_DURATION.refresh,
-        });
       }
+    );
 
-      return data.user;
-    } catch (e) {
-      console.error(e);
+    const data = await this._getDataFromResponce<'user', IApiArguments>(res);
+
+    if (data.success) {
+      Cookie.set(TokenType.Access, data.accessToken || '', {
+        expires: TokenDuration.Access,
+      });
+      Cookie.set(TokenType.Refresh, data.refreshToken || '', {
+        expires: TokenDuration.Refresh,
+      });
     }
+
+    return data.user;
   }
 
   async login({
     email,
     password,
-  }: IApiArguments): Promise<IApiArguments | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${login}`, {
-        method: HTTP_METHOD.post,
-        headers: this.options.headers,
-        body: JSON.stringify({ email, password }),
+  }: IApiArguments): Promise<IApiArguments | void | never> {
+    const res: Response = await fetch(`${this.baseUrl}${ApiEndpoints.Login}`, {
+      method: HttpMethods.Post,
+      headers: this.options.headers,
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await this._getDataFromResponce<'user', IApiArguments>(res);
+
+    if (data.success) {
+      Cookie.set(TokenType.Access, data.accessToken || '', {
+        expires: TokenDuration.Access,
       });
-
-      const data = await this._getDataFromResponce<'user', IApiArguments>(res);
-
-      if (data.success) {
-        Cookie.set(access, data.accessToken || '', {
-          expires: TOKEN_DURATION.access,
-        });
-        Cookie.set(refresh, data.refreshToken || '', {
-          expires: TOKEN_DURATION.refresh,
-        });
-      }
-
-      return data.user;
-    } catch (e) {
-      console.error(e);
+      Cookie.set(TokenType.Refresh, data.refreshToken || '', {
+        expires: TokenDuration.Refresh,
+      });
     }
+
+    return data.user;
   }
 
-  async refreshToken(token: string): Promise<IApiArguments | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${refreshToken}`, {
-        method: HTTP_METHOD.post,
+  async refreshToken(token: string): Promise<IApiArguments | void | never> {
+    const res: Response = await fetch(
+      `${this.baseUrl}${ApiEndpoints.RefreshToken}`,
+      {
+        method: HttpMethods.Post,
         headers: this.options.headers,
         body: JSON.stringify({ token }),
-      });
-
-      const data = await this._getDataFromResponce<'token', string>(res);
-
-      if (data.success) {
-        Cookie.set(access, data.accessToken || '', {
-          expires: TOKEN_DURATION.access,
-        });
-        Cookie.set(refresh, data.refreshToken || '', {
-          expires: TOKEN_DURATION.refresh,
-        });
       }
+    );
 
-      return data;
-    } catch (e) {
-      console.error(e);
+    const data = await this._getDataFromResponce<'token', string>(res);
+
+    if (data.success) {
+      Cookie.set(TokenType.Access, data.accessToken || '', {
+        expires: TokenDuration.Access,
+      });
+      Cookie.set(TokenType.Refresh, data.refreshToken || '', {
+        expires: TokenDuration.Refresh,
+      });
     }
+
+    return data;
   }
 
-  async logout(): Promise<TResponceBody | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${logout}`, {
-        method: HTTP_METHOD.post,
-        headers: this.options.headers,
-        body: JSON.stringify({ token: Cookie.get(refresh) }),
-      });
+  async logout(): Promise<TResponceBody | void | never> {
+    const res: Response = await fetch(`${this.baseUrl}${ApiEndpoints.Logout}`, {
+      method: HttpMethods.Post,
+      headers: this.options.headers,
+      body: JSON.stringify({ token: Cookie.get(TokenType.Refresh) }),
+    });
 
-      const data = await this._getDataFromResponce(res);
+    const data = await this._getDataFromResponce(res);
 
-      if (data.success) {
-        Cookie.delete(access);
-        Cookie.delete(refresh);
-      }
-
-      return data;
-    } catch (e) {
-      console.error(e);
+    if (data.success) {
+      Cookie.delete(TokenType.Access);
+      Cookie.delete(TokenType.Refresh);
     }
+
+    return data;
   }
 
-  async getUser(): Promise<IApiArguments | boolean | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${user}`, {
-        method: HTTP_METHOD.get,
-        headers: {
-          ...this.options.headers,
-          authorization: `${this.options.schemaType} ${Cookie.get(access)}`,
-        },
-      });
+  async getUser(): Promise<IApiArguments | boolean | void | never> {
+    const res: Response = await fetch(`${this.baseUrl}${ApiEndpoints.User}`, {
+      method: HttpMethods.Get,
+      headers: {
+        ...this.options.headers,
+        authorization: `${this.options.schemaType} ${Cookie.get(
+          TokenType.Access
+        )}`,
+      },
+    });
 
-      const data = await this._checkResponce<'user', IApiArguments>(res);
+    const data = await this._checkResponce<'user', IApiArguments>(res);
 
-      if (data === false) {
-        return false;
-      }
+    if (data === false) {
+      return false;
+    }
 
-      if (typeof data === 'object' && data.user) {
-        return data.user;
-      }
-    } catch (e) {
-      console.error(e);
+    if (typeof data === 'object' && data.user) {
+      return data.user;
     }
   }
 
@@ -234,37 +208,68 @@ class Api implements IApi {
     email,
     name,
     password,
-  }: IApiArguments): Promise<IApiArguments | boolean | void> {
-    try {
-      const res: Response = await fetch(`${this.baseUrl}${user}`, {
-        method: HTTP_METHOD.patch,
-        headers: {
-          ...this.options.headers,
-          authorization: `${this.options.schemaType} ${Cookie.get(access)}`,
-        },
-        body: JSON.stringify({
-          email,
-          name,
-          password,
-        }),
-      });
+  }: IApiArguments): Promise<IApiArguments | boolean | void | never> {
+    const res: Response = await fetch(`${this.baseUrl}${ApiEndpoints.User}`, {
+      method: HttpMethods.Patch,
+      headers: {
+        ...this.options.headers,
+        authorization: `${this.options.schemaType} ${Cookie.get(
+          TokenType.Access
+        )}`,
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        password,
+      }),
+    });
 
-      const data = await this._checkResponce<'user', IApiArguments>(res);
+    const data = await this._checkResponce<'user', IApiArguments>(res);
 
-      if (data === false) {
-        return false;
-      }
-
-      if (typeof data === 'object' && data.user) {
-        return data.user;
-      }
-    } catch (e) {
-      console.error(e);
+    if (data === false) {
+      return false;
     }
+
+    if (typeof data === 'object' && data.user) {
+      return data.user;
+    }
+  }
+
+  async getIngredients(): Promise<IIngredient[] | void | never> {
+    const res: Response = await fetch(
+      `${this.baseUrl}${ApiEndpoints.Ingredients}`,
+      {
+        method: HttpMethods.Get,
+        headers: this.options.headers,
+      }
+    );
+
+    const { data } = await this._getDataFromResponce(res);
+
+    return data;
+  }
+
+  async makeOrder(
+    ingredientsId: Array<string | number>
+  ): Promise<TResponceBody<'order', IOrder> | never> {
+    const res: Response = await fetch(`${this.baseUrl}${ApiEndpoints.Orders}`, {
+      method: HttpMethods.Post,
+      headers: {
+        ...this.options.headers,
+        authorization: `${this.options.schemaType} ${Cookie.get(
+          TokenType.Access
+        )}`,
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsId,
+      }),
+    });
+
+    return this._getDataFromResponce<'order', IOrder>(res);
   }
 }
 
 export const api = new Api(API_BASE_URL, {
-  headers: HEADERS,
+  headers: Headers,
   schemaType: AUTH_SCHEMA_TYPE,
 });

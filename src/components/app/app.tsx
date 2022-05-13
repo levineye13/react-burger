@@ -1,5 +1,4 @@
 import React, { FC, ReactElement, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { Location } from 'history';
 
@@ -15,14 +14,12 @@ import Register from '../../pages/register/register';
 import Profile from '../../pages/profile/profile';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
+import Orders from '../../pages/orders/orders';
+import Order from '../../pages/order/order';
 import ProtectedRoute from '../../hoc/protected-route';
 import Cookie from '../../utils/cookie';
-import {
-  API_BASE_URL,
-  API_ENDPOINT,
-  PAGES,
-  TOKEN_TYPE,
-} from '../../utils/constants';
+import { useDispatch, useSelector } from '../../hooks';
+import { Pages, TokenType } from '../../utils/constants';
 import {
   setIngredients,
   setSortedIngredients,
@@ -33,32 +30,19 @@ import {
 import { IIngredient } from '../../utils/interfaces';
 import { TSortedIngredietns } from '../../utils/types';
 
-const {
-  root,
-  login,
-  register,
-  profile,
-  forgotPassword,
-  resetPassword,
-  orders,
-} = PAGES;
-const { ingredients: ingredientsUrl } = API_ENDPOINT;
-const { access } = TOKEN_TYPE;
-
 const App: FC = (): ReactElement => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation<{ background: Location }>();
   const background = location.state?.background;
 
-  const { list: ingredients, order } = useSelector((state: any) => ({
+  const { list: ingredients, order } = useSelector((state) => ({
     list: state.ingredients.list,
-    currentIngredient: state.currentIngredient,
     order: state.order,
   }));
 
   useEffect(() => {
-    const token = Cookie.get(access);
+    const token = Cookie.get(TokenType.Access);
 
     if (!token) {
       dispatch(refreshToken());
@@ -68,11 +52,13 @@ const App: FC = (): ReactElement => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setIngredients(`${API_BASE_URL}${ingredientsUrl}`));
+    dispatch(setIngredients());
   }, [dispatch]);
 
   useEffect(() => {
-    const filterIngredients = (arr: IIngredient[]): TSortedIngredietns => {
+    const filterIngredients = (
+      arr: ReadonlyArray<IIngredient>
+    ): TSortedIngredietns => {
       const sorted: TSortedIngredietns = {
         bun: [],
         sauce: [],
@@ -104,25 +90,34 @@ const App: FC = (): ReactElement => {
     <div className={styles.page}>
       <AppHeader />
       <Switch location={background || location}>
-        <Route path={root} exact component={Main} />
-        <ProtectedRoute exact path={profile}>
-          <Profile />
-        </ProtectedRoute>
-        {/* <ProtectedRoute exact path={orders}></ProtectedRoute> */}
-        <Route path={login} component={Login} />
-        <Route path={register} component={Register} />
-        <Route path={forgotPassword} component={ForgotPassword} />
-        <Route path={resetPassword} component={ResetPassword} />
-        <Route path={`${ingredientsUrl}/:id`} exact>
+        <Route path={Pages.Root} exact component={Main} />
+        <ProtectedRoute path={Pages.Profile} children={<Profile />} />
+        <Route path={Pages.Login} component={Login} />
+        <Route path={Pages.Register} component={Register} />
+        <Route path={Pages.ForgotPassword} component={ForgotPassword} />
+        <Route path={Pages.ResetPassword} component={ResetPassword} />
+        <Route path={Pages.Feed} component={Orders} exact />
+        <Route path={`${Pages.Feed}/:id`}>
+          <Order titleStyles={{ paddingTop: '120px' }} />
+        </Route>
+        <Route path={`${Pages.Ingredients}/:id`} exact>
           <IngredientPage />
         </Route>
         <Route>404</Route>
       </Switch>
 
       {background && (
-        <Route path={`${ingredientsUrl}/:id`}>
+        <Route path={`${Pages.Ingredients}/:id`}>
           <Modal onClose={returnFromModal} title="Детали ингредиента">
             <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+
+      {background && (
+        <Route path={`${Pages.Feed}/:id`}>
+          <Modal onClose={returnFromModal}>
+            <Order titleStyles={{ textAlign: 'left' }} />
           </Modal>
         </Route>
       )}

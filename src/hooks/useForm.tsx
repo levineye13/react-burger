@@ -1,20 +1,25 @@
 import React, { ChangeEvent, FormEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Dispatch } from 'redux';
+import { ActionCreator } from 'redux';
 
+import { useDispatch, useSelector } from './';
 import { setFieldValue } from '../services/actions';
-import { TFormField } from '../utils/types';
+import { TAppActions, TAppThunk, TFormName } from '../utils/types';
 
-const useForm = (
-  formName: string,
-  submitAction: (formData: TFormField) => (dispatch: Dispatch) => Promise<void>,
+const useForm = <T extends string>(
+  formName: TFormName,
+  submitAction: TAppThunk | ActionCreator<TAppActions>,
   options?: {
     callback?: () => void;
-    initialValues?: TFormField;
+    initialValues?: { [key in T]: string };
   }
-) => {
+): {
+  values: { [key in T]: string };
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  setInitialValues: () => void;
+} => {
   const dispatch = useDispatch();
-  const form = useSelector((state: any) => state.form[formName]);
+  const form = useSelector((state) => state.form[formName]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.currentTarget;
@@ -33,14 +38,14 @@ const useForm = (
     }
   };
 
-  const setInitialValues = () => {
+  const setInitialValues = (): void => {
     if (options?.initialValues) {
       for (const field in options.initialValues) {
         dispatch(
           setFieldValue({
             formName,
             field,
-            value: options.initialValues[field as keyof TFormField],
+            value: options.initialValues[field],
           })
         );
       }
@@ -48,7 +53,7 @@ const useForm = (
   };
 
   return {
-    values: form,
+    values: form as { [key in T]: string },
     handleChange,
     handleSubmit,
     setInitialValues,
