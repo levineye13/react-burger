@@ -1,12 +1,12 @@
-import { SET_FIELD_VALUE, CLEAR_FORM } from '../action-types';
-import { TForm } from '../actions/form';
-import { TFormName } from '../../utils/types';
+import { SET_FIELD_VALUE, CLEAR_FORM } from '../../action-types';
+import { TForm } from '../../actions/form';
+import { TFormName } from '../../../utils/types';
 
 type TFormState = {
   [formName in TFormName]: { [field: string]: string };
 };
 
-const initialForm: TFormState = {
+export const initialForm: TFormState = {
   login: {},
   register: {},
   forgotPassword: {},
@@ -31,7 +31,7 @@ export const formReducer = (state = initialForm, action: TForm): TFormState => {
     case CLEAR_FORM:
       return {
         ...state,
-        [action.payload.formName]: initialForm.login,
+        [action.payload.formName]: {},
       };
 
     default:
