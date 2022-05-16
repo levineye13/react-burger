@@ -1,4 +1,4 @@
-import { TOrderResponce } from './../../utils/types';
+import { TOrderResponce } from '../../../utils/types';
 import {
   WS_FEED_CONNECTION_START,
   WS_FEED_CONNECTION_CLOSED,
@@ -10,8 +10,8 @@ import {
   WS_HISTORY_CONNECTION_SUCCESS,
   WS_GET_ALL_ORDERS,
   WS_GET_HISTORY_ORDERS,
-} from '../action-types';
-import { TWebSocket } from '../actions';
+} from '../../action-types';
+import { TWebSocket } from '../../actions';
 
 type TInitialWebSocket = {
   feedOrders: {
@@ -28,7 +28,7 @@ type TInitialWebSocket = {
   };
 };
 
-const initialWebSocket: TInitialWebSocket = {
+export const initialWebSocket: TInitialWebSocket = {
   feedOrders: {
     list: [],
     wsConnected: false,
