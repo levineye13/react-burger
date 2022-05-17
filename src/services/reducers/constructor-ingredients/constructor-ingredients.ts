@@ -5,18 +5,18 @@ import {
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
   CLEAR_INGREDIENTS,
-} from '../action-types';
+} from '../../action-types';
 
-import { IngredientType } from '../../utils/constants';
-import { IIngredient } from '../../utils/interfaces';
-import { TConstructorIngredients } from '../actions/constructor-ingredients';
+import { IngredientType } from '../../../utils/constants';
+import { IIngredient } from '../../../utils/interfaces';
+import { TConstructorIngredients } from '../../actions/constructor-ingredients';
 
 type TSelectedIngredientState = {
   readonly bun: IIngredient | null;
   readonly ingredients: ReadonlyArray<IIngredient>;
 };
 
-const initialSelectedIngredients: TSelectedIngredientState = {
+export const initialSelectedIngredients: TSelectedIngredientState = {
   bun: null,
   ingredients: [],
 };

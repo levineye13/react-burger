@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IngredientType } from '../../utils/constants';
 import { IIngredient } from '../../utils/interfaces';
 
 import {
