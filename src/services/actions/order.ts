@@ -8,7 +8,6 @@ import { IIngredient } from '../../utils/interfaces';
 
 export interface IOpenOrder {
   readonly type: typeof OPEN_ORDER;
-  readonly payload: { name: string; number: number };
 }
 
 export interface ICloseOrder {
@@ -17,7 +16,7 @@ export interface ICloseOrder {
 
 export interface ISetOrder {
   readonly type: typeof SET_ORDER;
-  readonly payload: TOrderResponce & {
+  readonly payload: { [key in keyof TOrderResponce]?: TOrderResponce[key] } & {
     price?: number;
     filtered?: IIngredient[];
   };
@@ -27,18 +26,12 @@ export type TOrder = IOpenOrder | ICloseOrder | ISetOrder;
 
 // ======= Action Creators =======
 
-export const openOrder = (payload: {
-  name: string;
-  number: number;
-}): IOpenOrder => ({
-  type: OPEN_ORDER,
-  payload,
-});
+export const openOrder = (): IOpenOrder => ({ type: OPEN_ORDER });
 
 export const closeOrder = (): ICloseOrder => ({ type: CLOSE_ORDER });
 
 export const setOrder = (
-  payload: TOrderResponce & {
+  payload: { [key in keyof TOrderResponce]?: TOrderResponce[key] } & {
     price?: number;
     filtered?: IIngredient[];
   }
@@ -50,15 +43,12 @@ export const setOrder = (
 export const makeOrder: TAppThunk =
   (ingredientsId: string[]) => async (dispatch: TAppDispatch) => {
     try {
+      dispatch(openOrder());
+
       const data = await api.makeOrder(ingredientsId);
 
       if (data && data.success) {
-        dispatch(
-          openOrder({
-            name: data.name || '',
-            number: data.order?.number || 0,
-          })
-        );
+        dispatch(setOrder({ ...data.order }));
         dispatch(clearIngredients());
         dispatch(clearCounters());
       } else {

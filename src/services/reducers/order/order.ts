@@ -17,13 +17,13 @@ export const orderReducer = (
 ): TOrderState => {
   switch (action.type) {
     case OPEN_ORDER:
-      return { order: { ...state.order, ...action.payload }, isOpen: true };
+      return { ...state, isOpen: true };
 
     case CLOSE_ORDER:
       return { ...state, isOpen: false };
 
     case SET_ORDER:
-      return { order: action.payload, isOpen: false };
+      return { ...state, order: action.payload };
 
     default:
       return state;

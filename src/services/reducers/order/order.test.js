@@ -11,11 +11,8 @@ describe('order reducer', () => {
   });
 
   it(`should handle ${OPEN_ORDER}`, () => {
-    expect(
-      orderReducer(initialOrder, openOrder({ name: 'order name', number: 1 }))
-    ).toEqual({
+    expect(orderReducer(initialOrder, openOrder())).toEqual({
       ...initialOrder,
-      order: { name: 'order name', number: 1 },
       isOpen: true,
     });
   });
