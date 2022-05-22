@@ -1,10 +1,10 @@
-import { IIngredient } from '../../utils/interfaces';
-import { SET_INGREDIENT } from '../action-types';
-import { TCurrentIngredient } from '../actions/current-ingredient';
+import { IIngredient } from '../../../utils/interfaces';
+import { SET_INGREDIENT } from '../../action-types';
+import { TCurrentIngredient } from '../../actions/current-ingredient';
 
 type CurrentIngredientState = IIngredient | null;
 
-const initialCurrentIngredient: CurrentIngredientState = null;
+export const initialCurrentIngredient: CurrentIngredientState = null;
 
 export const currentIngredientReducer = (
   state = initialCurrentIngredient,

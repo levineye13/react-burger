@@ -1,14 +1,14 @@
-import { TBurgerIngredients } from './../actions/burger-ingredients';
-import { IIngredient } from '../../utils/interfaces';
-import { TSortedIngredietns } from '../../utils/types';
-import { IngredientType } from '../../utils/constants';
+import { TBurgerIngredients } from '../../actions/burger-ingredients';
+import { IIngredient } from '../../../utils/interfaces';
+import { TSortedIngredietns } from '../../../utils/types';
+import { IngredientType } from '../../../utils/constants';
 import {
   SET_INGREDIENTS,
   SET_SORTED_INGREDIENTS,
   INCREMENT,
   DECREMENT,
   CLEAR_COUNTERS,
-} from '../action-types';
+} from '../../action-types';
 
 type TIngredientsState = {
   readonly list: ReadonlyArray<IIngredient>;
@@ -18,7 +18,7 @@ type TIngredientsState = {
   };
 };
 
-const initialIngredients: TIngredientsState = {
+export const initialIngredients: TIngredientsState = {
   list: [],
   sortedIngredients: { bun: [], sauce: [], main: [] },
   ingredientsCount: { bun: {} },

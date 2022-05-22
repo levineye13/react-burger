@@ -1,5 +1,5 @@
 import { IApi, IApiArguments, IIngredient, IOrder } from './interfaces';
-import { TResponceBody } from './types';
+import { TOrderResponce, TResponceBody } from './types';
 import Cookie from './cookie';
 import { extractToken } from './utils';
 import {
@@ -251,7 +251,7 @@ class Api implements IApi {
 
   async makeOrder(
     ingredientsId: Array<string | number>
-  ): Promise<TResponceBody<'order', IOrder> | never> {
+  ): Promise<TResponceBody<'order', TOrderResponce> | never> {
     const res: Response = await fetch(`${this.baseUrl}${ApiEndpoints.Orders}`, {
       method: HttpMethods.Post,
       headers: {
@@ -265,7 +265,7 @@ class Api implements IApi {
       }),
     });
 
-    return this._getDataFromResponce<'order', IOrder>(res);
+    return this._getDataFromResponce<'order', TOrderResponce>(res);
   }
 }
 

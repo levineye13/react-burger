@@ -12,8 +12,8 @@ import {
   USER_REQUEST_FAILED,
   SET_AUTH,
   SET_UNAUTH,
-} from '../action-types';
-import { TUser } from '../actions/user';
+} from '../../action-types';
+import { TUser } from '../../actions/user';
 
 type TUserState = {
   readonly isAuth: boolean;
@@ -23,7 +23,7 @@ type TUserState = {
   readonly failed: boolean;
 };
 
-const initialUser: TUserState = {
+export const initialUser: TUserState = {
   isAuth: false,
   email: '',
   name: '',
