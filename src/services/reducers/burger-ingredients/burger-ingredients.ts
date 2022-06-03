@@ -8,6 +8,9 @@ import {
   INCREMENT,
   DECREMENT,
   CLEAR_COUNTERS,
+  INGREDIENTS_CONNECTION_START,
+  INGREDIENTS_CONNECTION_SUCCESS,
+  INGREDIENTS_CONNECTION_FAILED,
 } from '../../action-types';
 
 type TIngredientsState = {
@@ -16,12 +19,18 @@ type TIngredientsState = {
   readonly ingredientsCount: {
     [key: string]: string | number | { [key: string]: number };
   };
+  ingredientsSuccess: boolean;
+  ingredientsFailed: boolean;
+  ingredientsStart: boolean;
 };
 
 export const initialIngredients: TIngredientsState = {
   list: [],
   sortedIngredients: { bun: [], sauce: [], main: [] },
   ingredientsCount: { bun: {} },
+  ingredientsSuccess: false,
+  ingredientsFailed: false,
+  ingredientsStart: false,
 };
 
 export const ingredientsReducer = (
@@ -89,6 +98,30 @@ export const ingredientsReducer = (
       return {
         ...state,
         ingredientsCount: initialIngredients.ingredientsCount,
+      };
+
+    case INGREDIENTS_CONNECTION_START:
+      return {
+        ...state,
+        ingredientsStart: true,
+        ingredientsSuccess: false,
+        ingredientsFailed: false,
+      };
+
+    case INGREDIENTS_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        ingredientsStart: false,
+        ingredientsSuccess: true,
+        ingredientsFailed: false,
+      };
+
+    case INGREDIENTS_CONNECTION_FAILED:
+      return {
+        ...state,
+        ingredientsStart: false,
+        ingredientsSuccess: false,
+        ingredientsFailed: true,
       };
 
     default:

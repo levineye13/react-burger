@@ -9,6 +9,9 @@ import {
   INCREMENT,
   DECREMENT,
   CLEAR_COUNTERS,
+  INGREDIENTS_CONNECTION_START,
+  INGREDIENTS_CONNECTION_FAILED,
+  INGREDIENTS_CONNECTION_SUCCESS,
 } from '../action-types';
 import { api } from '../../utils/api';
 import { IIngredient } from '../../utils/interfaces';
@@ -39,24 +42,43 @@ export interface IClearCounters {
   readonly type: typeof CLEAR_COUNTERS;
 }
 
+export interface IIngredientsConectionStart {
+  readonly type: typeof INGREDIENTS_CONNECTION_START;
+}
+
+export interface IIngredientsConectionSuccess {
+  readonly type: typeof INGREDIENTS_CONNECTION_SUCCESS;
+}
+
+export interface IIngredientsConectionFailed {
+  readonly type: typeof INGREDIENTS_CONNECTION_FAILED;
+}
+
 export type TBurgerIngredients =
   | ISetIngredients
   | ISetSortedIngredients
   | IIncrement
   | IDecrement
-  | IClearCounters;
+  | IClearCounters
+  | IIngredientsConectionStart
+  | IIngredientsConectionSuccess
+  | IIngredientsConectionFailed;
 
 // ======= Action Creators =======
 
 export const setIngredients: TAppThunk =
   () => async (dispatch: TAppDispatch) => {
+    dispatch(ingredientsStart());
+
     try {
       const ingredients = await api.getIngredients();
 
       if (ingredients && Array.isArray(ingredients)) {
         dispatch({ type: SET_INGREDIENTS, payload: ingredients });
+        dispatch(ingredientsSuccess());
       }
     } catch (e) {
+      dispatch(ingredientsFailed());
       console.error(e);
     }
   };
@@ -79,3 +101,15 @@ export const decrement = (payload: IIngredient): IDecrement => ({
 });
 
 export const clearCounters = (): IClearCounters => ({ type: CLEAR_COUNTERS });
+
+export const ingredientsSuccess = (): IIngredientsConectionSuccess => ({
+  type: INGREDIENTS_CONNECTION_SUCCESS,
+});
+
+export const ingredientsStart = (): IIngredientsConectionStart => ({
+  type: INGREDIENTS_CONNECTION_START,
+});
+
+export const ingredientsFailed = (): IIngredientsConectionFailed => ({
+  type: INGREDIENTS_CONNECTION_FAILED,
+});
