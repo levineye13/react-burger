@@ -12,6 +12,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
+import Loader from '../loader/loader';
 import { Tabs, Pages } from '../../utils/constants';
 import { setIngredient } from '../../services/actions';
 import { IIngredient } from '../../utils/interfaces';
@@ -21,6 +22,13 @@ const BurgerIngredients: FC = (): ReactElement => {
   const [currentTab, setCurrentTab] = useState<string>(Tabs.One);
   const dispatch = useDispatch();
   const history: History = useHistory();
+
+  const { bun, sauce, main } = useSelector(
+    (state) => state.ingredients.sortedIngredients
+  );
+  const { ingredientsCount, ingredientsSuccess } = useSelector(
+    (state) => state.ingredients
+  );
 
   const listRef = useRef<HTMLUListElement>(null);
   const bunRef = useRef<HTMLLIElement>(null);
@@ -35,11 +43,6 @@ const BurgerIngredients: FC = (): ReactElement => {
     }),
     [bunRef.current, sauceRef.current, mainRef.current]
   );
-
-  const { bun, sauce, main } = useSelector(
-    (state) => state.ingredients.sortedIngredients
-  );
-  const { ingredientsCount } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
     const list: HTMLUListElement = listRef.current!;
@@ -127,53 +130,59 @@ const BurgerIngredients: FC = (): ReactElement => {
         </ul>
       </nav>
       <ul className={`${styles.list} ${styles.reset}`} ref={listRef}>
-        <li ref={bunRef}>
-          <h2 className="text text_type_main-medium">Булки</h2>
-          <ul className={`${styles.sublist} ${styles.reset}`}>
-            {bun.map((item) => (
-              <li key={item._id}>
-                <Ingredient
-                  onClick={handleIngredientClick}
-                  count={
-                    typeof ingredientsCount.bun === 'object' &&
-                    !Number.isNaN(Number(ingredientsCount.bun[item._id]))
-                      ? Number(ingredientsCount.bun[item._id])
-                      : null
-                  }
-                  {...item}
-                />
-              </li>
-            ))}
-          </ul>
-        </li>
-        <li className="mt-10" ref={sauceRef}>
-          <h2 className="text text_type_main-medium">Соусы</h2>
-          <ul className={`${styles.sublist} ${styles.reset}`}>
-            {sauce.map((item) => (
-              <li key={item._id}>
-                <Ingredient
-                  onClick={handleIngredientClick}
-                  count={Number(ingredientsCount[item._id]) || null}
-                  {...item}
-                />
-              </li>
-            ))}
-          </ul>
-        </li>
-        <li className="mt-10" ref={mainRef}>
-          <h2 className="text text_type_main-medium">Начинка</h2>
-          <ul className={`${styles.sublist} ${styles.reset}`}>
-            {main.map((item) => (
-              <li key={item._id}>
-                <Ingredient
-                  onClick={handleIngredientClick}
-                  count={Number(ingredientsCount[item._id]) || null}
-                  {...item}
-                />
-              </li>
-            ))}
-          </ul>
-        </li>
+        {ingredientsSuccess ? (
+          <>
+            <li ref={bunRef}>
+              <h2 className="text text_type_main-medium">Булки</h2>
+              <ul className={`${styles.sublist} ${styles.reset}`}>
+                {bun.map((item) => (
+                  <li key={item._id}>
+                    <Ingredient
+                      onClick={handleIngredientClick}
+                      count={
+                        typeof ingredientsCount.bun === 'object' &&
+                        !Number.isNaN(Number(ingredientsCount.bun[item._id]))
+                          ? Number(ingredientsCount.bun[item._id])
+                          : null
+                      }
+                      {...item}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </li>
+            <li className="mt-10" ref={sauceRef}>
+              <h2 className="text text_type_main-medium">Соусы</h2>
+              <ul className={`${styles.sublist} ${styles.reset}`}>
+                {sauce.map((item) => (
+                  <li key={item._id}>
+                    <Ingredient
+                      onClick={handleIngredientClick}
+                      count={Number(ingredientsCount[item._id]) || null}
+                      {...item}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </li>
+            <li className="mt-10" ref={mainRef}>
+              <h2 className="text text_type_main-medium">Начинка</h2>
+              <ul className={`${styles.sublist} ${styles.reset}`}>
+                {main.map((item) => (
+                  <li key={item._id}>
+                    <Ingredient
+                      onClick={handleIngredientClick}
+                      count={Number(ingredientsCount[item._id]) || null}
+                      {...item}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </li>
+          </>
+        ) : (
+          <Loader />
+        )}
       </ul>
     </section>
   );
