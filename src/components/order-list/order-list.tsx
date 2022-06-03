@@ -1,25 +1,12 @@
-import React, { FC, ReactElement, useEffect } from 'react';
+import React, { FC, ReactElement } from 'react';
 
 import styles from './order-list.module.css';
 import OrderItem from '../order-item/order-item';
-import { useDispatch, useSelector } from '../../hooks';
+import { useSelector } from '../../hooks';
 import { dateFormat } from '../../utils/utils';
-import {
-  wsFeedConnectionClosed,
-  wsFeedConnectionStart,
-} from '../../services/actions/web-socket';
 
 const OrderList: FC = (): ReactElement => {
-  const dispatch = useDispatch();
   const { list } = useSelector((state) => state.webSocket.feedOrders);
-
-  useEffect(() => {
-    dispatch(wsFeedConnectionStart());
-
-    return () => {
-      dispatch(wsFeedConnectionClosed());
-    };
-  }, [dispatch]);
 
   return (
     <section className={`${styles.section} pl-2`}>
