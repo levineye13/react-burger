@@ -1,8 +1,8 @@
 import React, { FC, ReactElement, useEffect, useMemo } from 'react';
-
-import OrderComponent from '../../components/order/order';
-import { useDispatch, useSelector } from '../../hooks';
 import { useParams } from 'react-router-dom';
+
+import Order from '../../components/order/order';
+import { useDispatch, useSelector } from '../../hooks';
 import { TOrderResponce, TFilterIngredients } from '../../utils/types';
 import { IIngredient } from '../../utils/interfaces';
 import {
@@ -11,10 +11,10 @@ import {
 } from '../../services/actions/web-socket';
 
 interface IProps {
-  titleStyles?: { [style: string]: string | number };
+  readonly titleStyles?: { [style: string]: string | number };
 }
 
-const Order: FC<IProps> = ({ titleStyles }): ReactElement => {
+const OrderFeed: FC<IProps> = ({ titleStyles }): ReactElement => {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
   const { list: allOrders } = useSelector(
@@ -74,7 +74,7 @@ const Order: FC<IProps> = ({ titleStyles }): ReactElement => {
   return (
     <section>
       {order && (
-        <OrderComponent
+        <Order
           filtered={filteredIngredients.filtered}
           price={filteredIngredients.price}
           titleStyles={titleStyles}
@@ -85,4 +85,4 @@ const Order: FC<IProps> = ({ titleStyles }): ReactElement => {
   );
 };
 
-export default Order;
+export default OrderFeed;
