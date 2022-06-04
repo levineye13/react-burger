@@ -15,7 +15,8 @@ import Profile from '../../pages/profile/profile';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 import Orders from '../../pages/orders/orders';
-import Order from '../../pages/order/order';
+import OrderFeed from '../../pages/order-feed/order-feed';
+import OrderHistory from '../../pages/order-history/order-history';
 import ProtectedRoute from '../../hoc/protected-route';
 import Cookie from '../../utils/cookie';
 import { useDispatch, useSelector } from '../../hooks';
@@ -90,16 +91,19 @@ const App: FC = (): ReactElement => {
     <div className={styles.page}>
       <AppHeader />
       <Switch location={background || location}>
-        <Route path={Pages.Root} exact component={Main} />
-        <ProtectedRoute path={Pages.Profile} children={<Profile />} />
+        <Route path={Pages.Root} component={Main} exact />
         <Route path={Pages.Login} component={Login} />
         <Route path={Pages.Register} component={Register} />
         <Route path={Pages.ForgotPassword} component={ForgotPassword} />
         <Route path={Pages.ResetPassword} component={ResetPassword} />
         <Route path={Pages.Feed} component={Orders} exact />
         <Route path={`${Pages.Feed}/:id`}>
-          <Order titleStyles={{ paddingTop: '120px' }} />
+          <OrderFeed titleStyles={{ paddingTop: '120px' }} />
         </Route>
+        <ProtectedRoute path={`${Pages.Orders}/:id`}>
+          <OrderHistory titleStyles={{ paddingTop: '120px' }} />
+        </ProtectedRoute>
+        <ProtectedRoute path={Pages.Profile} children={<Profile />} />
         <Route path={`${Pages.Ingredients}/:id`} exact>
           <IngredientPage />
         </Route>
@@ -107,19 +111,23 @@ const App: FC = (): ReactElement => {
       </Switch>
 
       {background && (
-        <Route path={`${Pages.Ingredients}/:id`}>
-          <Modal onClose={returnFromModal} title="Детали ингредиента">
-            <IngredientDetails />
-          </Modal>
-        </Route>
-      )}
-
-      {background && (
-        <Route path={`${Pages.Feed}/:id`}>
-          <Modal onClose={returnFromModal}>
-            <Order titleStyles={{ textAlign: 'left' }} />
-          </Modal>
-        </Route>
+        <>
+          <Route path={`${Pages.Ingredients}/:id`}>
+            <Modal onClose={returnFromModal} title="Детали ингредиента">
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route path={`${Pages.Feed}/:id`}>
+            <Modal onClose={returnFromModal}>
+              <OrderFeed titleStyles={{ textAlign: 'left' }} />
+            </Modal>
+          </Route>
+          <ProtectedRoute path={`${Pages.Orders}/:id`}>
+            <Modal onClose={returnFromModal}>
+              <OrderHistory titleStyles={{ textAlign: 'left' }} />
+            </Modal>
+          </ProtectedRoute>
+        </>
       )}
 
       {order.isOpen && (
