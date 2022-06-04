@@ -9,7 +9,7 @@ import {
   wsHistoryConnectionClosed,
 } from '../../services/actions/web-socket';
 
-const OrderList: FC = (): ReactElement => {
+const OrderListHistory: FC = (): ReactElement => {
   const dispatch = useDispatch();
   const { list } = useSelector((state) => state.webSocket.historyOrders);
 
@@ -30,7 +30,7 @@ const OrderList: FC = (): ReactElement => {
           return (
             <li className={styles.item} key={order._id}>
               <OrderItem
-                withStatus={true}
+                withStatus
                 number={order.number}
                 title={order.name}
                 timestamp={timestamp}
@@ -45,4 +45,4 @@ const OrderList: FC = (): ReactElement => {
   );
 };
 
-export default OrderList;
+export default OrderListHistory;

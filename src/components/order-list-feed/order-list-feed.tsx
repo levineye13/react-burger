@@ -1,11 +1,11 @@
 import React, { FC, ReactElement } from 'react';
 
-import styles from './order-list.module.css';
+import styles from './order-list-feed.module.css';
 import OrderItem from '../order-item/order-item';
 import { useSelector } from '../../hooks';
 import { dateFormat } from '../../utils/utils';
 
-const OrderList: FC = (): ReactElement => {
+const OrderListFeed: FC = (): ReactElement => {
   const { list } = useSelector((state) => state.webSocket.feedOrders);
 
   return (
@@ -31,4 +31,4 @@ const OrderList: FC = (): ReactElement => {
   );
 };
 
-export default OrderList;
+export default OrderListFeed;
