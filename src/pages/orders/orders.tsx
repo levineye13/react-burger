@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useEffect } from 'react';
 
 import styles from './orders.module.css';
-import OrderList from '../../components/order-list/order-list';
+import OrderList from '../../components/order-list-feed/order-list-feed';
 import Statistic from '../../components/statistic/statistic';
 import { useDispatch, useSelector } from '../../hooks';
 import {

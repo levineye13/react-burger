@@ -7,7 +7,6 @@ import IngredientImageList from '../ingredient-image-list/ingredient-image-list'
 import Price from '../price/price';
 import { useSelector } from '../../hooks';
 import { IIngredient } from '../../utils/interfaces';
-import { OrderStatus, Pages } from '../../utils/constants';
 import { TFilterIngredients } from '../../utils/types';
 import { getStatusOrder } from '../../utils/utils';
 
@@ -29,12 +28,11 @@ const OrderItem: FC<IProps> = ({
   withStatus = false,
 }): ReactElement => {
   const history: History = useHistory();
-
   const { list } = useSelector((state) => state.ingredients);
 
   const handleClick = () => {
     history.push({
-      pathname: `${Pages.Feed}/${number}`,
+      pathname: `${history.location.pathname}/${number}`,
       state: { background: history.location },
     });
   };
