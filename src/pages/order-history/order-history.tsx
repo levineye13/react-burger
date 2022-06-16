@@ -3,12 +3,9 @@ import { useParams } from 'react-router-dom';
 
 import Order from '../../components/order/order';
 import { useDispatch, useSelector } from '../../hooks';
-import { TOrderResponce, TFilterIngredients } from '../../utils/types';
+import { TFilterIngredients } from '../../utils/types';
 import { IIngredient } from '../../utils/interfaces';
-import {
-  wsHistoryConnectionStart,
-  wsHistoryConnectionClosed,
-} from '../../services/actions/web-socket';
+import { clearOrder, getOrder } from '../../services/actions/order';
 
 interface IProps {
   readonly titleStyles?: { [style: string]: string | number };
@@ -17,22 +14,16 @@ interface IProps {
 const OrderHistory: FC<IProps> = ({ titleStyles }): ReactElement => {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
-  const { list: allOrders } = useSelector(
-    (state) => state.webSocket.historyOrders
-  );
   const { list } = useSelector((state) => state.ingredients);
+  const { order } = useSelector((state) => state.order);
 
   useEffect(() => {
-    dispatch(wsHistoryConnectionStart());
+    dispatch(getOrder(id));
 
     return () => {
-      dispatch(wsHistoryConnectionClosed());
+      dispatch(clearOrder());
     };
-  }, [dispatch]);
-
-  const order: TOrderResponce | undefined = allOrders.find(
-    (order) => order.number === Number(id)
-  );
+  }, [id, dispatch]);
 
   const filteredIngredients: TFilterIngredients = useMemo(() => {
     if (!order) {
@@ -73,14 +64,12 @@ const OrderHistory: FC<IProps> = ({ titleStyles }): ReactElement => {
 
   return (
     <section>
-      {order && (
-        <Order
-          filtered={filteredIngredients.filtered}
-          price={filteredIngredients.price}
-          titleStyles={titleStyles}
-          {...order}
-        />
-      )}
+      <Order
+        filtered={filteredIngredients.filtered}
+        price={filteredIngredients.price}
+        titleStyles={titleStyles}
+        {...order}
+      />
     </section>
   );
 };
