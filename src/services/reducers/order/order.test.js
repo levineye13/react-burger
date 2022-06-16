@@ -6,7 +6,7 @@ describe('order reducer', () => {
   it('should return the initial state', () => {
     expect(orderReducer(undefined, {})).toEqual({
       isOpen: false,
-      order: {},
+      order: initialOrder.order,
     });
   });
 
