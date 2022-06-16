@@ -267,6 +267,20 @@ class Api implements IApi {
 
     return this._getDataFromResponce<'order', TOrderResponce>(res);
   }
+
+  async getOrder(
+    number: string
+  ): Promise<TResponceBody<'orders', TOrderResponce> | never> {
+    const res: Response = await fetch(
+      `${this.baseUrl}${ApiEndpoints.Orders}/${number}`,
+      {
+        method: HttpMethods.Get,
+        headers: this.options.headers,
+      }
+    );
+
+    return this._getDataFromResponce<'orders', TOrderResponce>(res);
+  }
 }
 
 export const api = new Api(API_BASE_URL, {
